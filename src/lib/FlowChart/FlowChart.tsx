@@ -79,7 +79,6 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
           ref={canvasRef}
           canvas={canvasRef.current}
           ctx={ctx}
-          matrix={matrix}
           translateOffset={translateOffset}
           scale={scale}
           nodes={nodes}

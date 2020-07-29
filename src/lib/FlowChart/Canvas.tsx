@@ -12,7 +12,6 @@ interface CanvasProps {
   className?: string
   canvas: HTMLCanvasElement | null
   ctx: CanvasRenderingContext2D | null
-  matrix: DOMMatrix
   nodes: Node[]
   activeId?: number
   translateOffset: Point
@@ -29,7 +28,6 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       className,
       canvas,
       ctx,
-      matrix,
       nodes,
       activeId,
       translateOffset,

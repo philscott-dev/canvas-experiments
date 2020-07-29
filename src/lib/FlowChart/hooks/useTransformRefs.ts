@@ -1,15 +1,4 @@
-import { useEffect, useRef, useState, RefObject } from 'react'
-// export default function useCtx(canvasRef: RefObject<HTMLCanvasElement>) {
-//   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>()
-//   const [matrix] = useState(new DOMMatrix())
-//   useEffect(() => {
-//     const canvas = canvasRef.current
-//     if (canvas) {
-//       setCtx(canvas.getContext('2d'))
-//     }
-//   }, [canvasRef])
-//   return [ctx, matrix]
-// }
+import { useEffect, useState, RefObject } from 'react'
 
 export default function useTransformRefs(
   canvasRef: RefObject<HTMLCanvasElement>,
