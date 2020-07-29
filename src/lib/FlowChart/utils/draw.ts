@@ -31,9 +31,10 @@ export function drawRoundRect(
     }
   } else {
     let defaultRadius = { tl: 0, tr: 0, br: 0, bl: 0 }
-    for (let side in defaultRadius) {
-      borderRadius[side] = borderRadius[side] || defaultRadius[side]
-    }
+    borderRadius.bl = borderRadius.bl || defaultRadius.bl
+    borderRadius.bl = borderRadius.br || defaultRadius.br
+    borderRadius.bl = borderRadius.tl || defaultRadius.tl
+    borderRadius.bl = borderRadius.tr || defaultRadius.tr
   }
   ctx.beginPath()
 
