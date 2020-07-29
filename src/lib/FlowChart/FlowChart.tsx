@@ -15,7 +15,7 @@ interface FlowChartProps {
 }
 const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { ctx, matrix } = useTransformRefs(canvasRef)
+  const { ctx } = useTransformRefs(canvasRef)
   const [nodes, setNodes] = useState<Node[]>([])
   const [dragStartOffset, setDragStartOffset] = useState<Point>({ x: 0, y: 0 })
   const [translateOffset, setTranslateOffset] = useState<Point>({ x: 0, y: 0 })

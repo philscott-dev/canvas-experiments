@@ -64,10 +64,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     ) => {
       if (canvas) {
         const { x, y } = getCanvasPoint(e, canvas, translateOffset)
-        console.log(x + translateOffset.x, y + translateOffset.y)
-        const node = nodes.find((n) =>
-          pointInRect(x + translateOffset.x, y + translateOffset.y, n.rect),
-        )
+        const node = nodes.find((n) => pointInRect(x, y, n.rect))
         if (node) {
           document.body.style.webkitUserSelect = 'none'
           document.body.style.userSelect = 'none'
@@ -166,7 +163,6 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
-        onWheel={onWheel}
         onDrop={onDrop}
         onDragOver={(e) => e.preventDefault()}
       ></StyledCanvas>
