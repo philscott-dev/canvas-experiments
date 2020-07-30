@@ -90,14 +90,12 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
           onScale={handleScale}
         />
       </Container>
-
-      <EditPanel nodes={nodes} activeId={activeId} />
     </div>
   )
 }
 
 export default styled(FlowChart)`
-  height: 900px;
+  height: 100vh;
   display: flex;
 `
 

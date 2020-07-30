@@ -61,20 +61,26 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
       if (canvas) {
-        const { x, y } = getCanvasPoint(e, canvas, translateOffset)
-        const node = nodes.find((n) => pointInRect(x, y, n.rect))
+        const { x: pX, y: pY } = getCanvasPoint(e, canvas)
+        const x = pX / scale
+        const y = pY / scale
+        const node = nodes.find((n) =>
+          pointInRect(x - translateOffset.x, y - translateOffset.y, n.rect),
+        )
         if (node) {
           document.body.style.webkitUserSelect = 'none'
           document.body.style.userSelect = 'none'
           setDragging(true)
           setDragIndex(node.id)
           setClickOffset({
-            x: x - node.rect.x + translateOffset.x,
-            y: y - node.rect.y + translateOffset.y,
+            x: x - node.rect.x, // + translateOffset.x,
+            y: y - node.rect.y, // + translateOffset.y,
           })
           onClickNode(node.id)
         } else {
-          const { x, y } = getCanvasPoint(e, canvas)
+          const { x: pX, y: pY } = getCanvasPoint(e, canvas)
+          const x = pX / scale
+          const y = pY / scale
           setDragging(true)
           setClickOffset({ x, y })
         }
@@ -101,14 +107,14 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
             ...nodes.slice(dragIndex + 1),
           ])
         } else if (isDragging && clickOffset) {
-          const dragX = x - clickOffset.x / scale
-          const dragY = y - clickOffset.y / scale
+          const dragX = x - clickOffset.x // / scale
+          const dragY = y - clickOffset.y // / scale
 
           // do the new translate
           ctx.translate(dragX, dragY)
 
           //set the position
-          setClickOffset({ x: x * scale, y: y * scale })
+          setClickOffset({ x, y })
 
           //accumulate the translate
           onTranslate({
@@ -155,21 +161,20 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     }
 
     return (
-      <StyledCanvas
+      <canvas
         ref={canvasRef}
         className={className}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
+        onWheel={onWheel}
         onDrop={onDrop}
         onDragOver={(e) => e.preventDefault()}
-      ></StyledCanvas>
+      />
     )
   },
 )
 
-const StyledCanvas = styled.canvas`
+export default styled(Canvas)`
   background: ${({ theme }) => theme.color.blue[500]};
 `
-
-export default Canvas

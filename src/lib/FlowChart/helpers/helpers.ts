@@ -12,10 +12,8 @@ export const getCanvasPoint = (
 ) => {
   const boundingRect = elem.getBoundingClientRect()
   //there might be some issue with subtracting the translate???????
-  const x =
-    event.clientX - boundingRect.left - (translate?.x ?? 0) / (scale || 1)
-  const y =
-    event.clientY - boundingRect.top - (translate?.y ?? 0) / (scale || 1)
+  const x = event.clientX - boundingRect.left // - (translate?.x ?? 0) / (scale || 1)
+  const y = event.clientY - boundingRect.top // - (translate?.y ?? 0) / (scale || 1)
   return { x, y }
 }
 
