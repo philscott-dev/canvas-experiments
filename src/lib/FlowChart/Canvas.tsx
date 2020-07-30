@@ -51,7 +51,6 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     const draw = useDrawCallback(
       canvas,
       ctx,
-      origin,
       translateOffset,
       scale,
       nodes,

@@ -5,7 +5,6 @@ import { drawRoundRect, drawText, drawPathAngle, drawGrid } from '../utils/draw'
 export default function useDraw(
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null | undefined,
-  origin: Point,
   translateOffset: Point,
   scale: number,
   nodes: Node[],
@@ -63,7 +62,7 @@ export default function useDraw(
           node.rect.y + TEXT_OFFSET_Y + translateOffset.y,
           {
             color: '#ffffff',
-            face: 'Poppins-Regular',
+            face: 'Poppins',
           },
         )
       })
