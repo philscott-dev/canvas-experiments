@@ -16,6 +16,8 @@ interface CanvasProps {
   activeId?: number
   translateOffset: Point
   scale: number
+  isDragging: boolean
+  onDragging: (isDragging: boolean) => void
   onSetNodes: (nodes: Node[]) => void
   onDrop: (e: DragEvent) => void
   onClickNode: (id: number) => void
@@ -32,15 +34,16 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       activeId,
       translateOffset,
       scale,
+      isDragging,
       onSetNodes,
       onDrop,
+      onDragging,
       onClickNode,
       onTranslate,
       onScale,
     },
     canvasRef,
   ) => {
-    const [isDragging, setDragging] = useState(false)
     const [dragIndex, setDragIndex] = useState<number | undefined>()
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
     const [origin, setOrigin] = useState<Point>({ x: 0, y: 0 }) // for scale calculations
@@ -70,7 +73,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
         if (node) {
           document.body.style.webkitUserSelect = 'none'
           document.body.style.userSelect = 'none'
-          setDragging(true)
+          onDragging(true)
           setDragIndex(node.id)
           setClickOffset({
             x: x - node.rect.x, // + translateOffset.x,
@@ -81,7 +84,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
           const { x: pX, y: pY } = getCanvasPoint(e, canvas)
           const x = pX / scale
           const y = pY / scale
-          setDragging(true)
+          onDragging(true)
           setClickOffset({ x, y })
         }
       }
@@ -132,7 +135,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     ) => {
       document.body.style.webkitUserSelect = 'inherit'
       document.body.style.userSelect = 'inherit'
-      setDragging(false)
+      onDragging(false)
       setDragIndex(undefined)
       setClickOffset(undefined)
     }

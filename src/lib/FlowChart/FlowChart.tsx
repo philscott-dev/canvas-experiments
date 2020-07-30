@@ -22,11 +22,15 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const [scale, setScale] = useState<number>(1)
   const [color, setColor] = useState('')
   const [activeId, setActiveId] = useState<number>()
+  const [isDragging, setDragging] = useState(false)
 
   //get initial mouse offset in dom object
   const handleDragNewNode = (e: DragEvent<HTMLDivElement>) => {
     const elem = e.currentTarget
-    const { x, y } = getCanvasPoint(e, elem)
+    const { x: pX, y: pY } = getCanvasPoint(e, elem)
+    const x = pX / scale
+    const y = pY / scale
+    setDragging(true)
     setDragStartOffset({ x, y })
     setColor(elem.getAttribute('color') || '')
   }
@@ -43,7 +47,9 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
     e.preventDefault()
     const { current: canvas } = canvasRef
     if (canvas) {
-      const { x, y } = getCanvasPoint(e, canvas)
+      const { x: pX, y: pY } = getCanvasPoint(e, canvas)
+      const x = pX / scale
+      const y = pY / scale
       const node: Node = {
         id: nodes.length,
         title: color,
@@ -56,6 +62,7 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
         },
       }
       setNodes([...nodes, node])
+      setDragging(false)
     }
   }
 
@@ -83,6 +90,8 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
           scale={scale}
           nodes={nodes}
           activeId={activeId}
+          isDragging={isDragging}
+          onDragging={setDragging}
           onSetNodes={setNodes}
           onClickNode={handleClickNode}
           onDrop={handleDropNewNode}
