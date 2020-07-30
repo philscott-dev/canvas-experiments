@@ -91,7 +91,9 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
       if (canvas && ctx) {
-        const { x, y } = getCanvasPoint(e, canvas)
+        const { x: pX, y: pY } = getCanvasPoint(e, canvas)
+        const x = pX / scale
+        const y = pY / scale
         if (isDragging && dragIndex !== undefined && clickOffset) {
           const node = nodes[dragIndex]
           const { width, height } = node.rect
