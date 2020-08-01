@@ -40,8 +40,8 @@ export default function useDraw(
         if (nodes.length && r) {
           const rect = {
             ...node.rect,
-            x: node.rect.x + +translateOffset.x,
-            y: node.rect.y + +translateOffset.y,
+            x: node.rect.x + translateOffset.x,
+            y: node.rect.y + translateOffset.y,
           }
           const nextRect = {
             x: r.x + translateOffset.x,
