@@ -38,13 +38,18 @@ export default function useDraw(
         //draw paths for nodes
         const r = nodes[index + 1]?.rect
         if (nodes.length && r) {
+          const rect = {
+            ...node.rect,
+            x: node.rect.x + +translateOffset.x,
+            y: node.rect.y + +translateOffset.y,
+          }
           const nextRect = {
             x: r.x + translateOffset.x,
             y: r.y + translateOffset.y,
             width: r.width,
             height: r.height,
           }
-          drawPathAngle(ctx, node.rect, nextRect)
+          drawPathAngle(ctx, rect, nextRect)
         }
       })
     }
