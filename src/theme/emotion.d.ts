@@ -42,9 +42,15 @@ declare module '@emotion/react' {
       purple: {
         300: string
       }
+      indigo: {
+        300: string
+        400: string
+        600: string
+      }
     }
     gradient: {
       blue: string
+      gray: string
     }
     font: {
       family: string

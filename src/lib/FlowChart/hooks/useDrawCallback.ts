@@ -27,7 +27,7 @@ export default function useDraw(
         canvas.height / scale, //divide by scale to grow the grid
         40,
         translateOffset,
-        '#0253B1',
+        '#0253B150',
       )
 
       //draw nodes

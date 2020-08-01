@@ -180,5 +180,5 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
 )
 
 export default styled(Canvas)`
-  background: ${({ theme }) => theme.color.blue[500]};
+  background: ${({ theme }) => theme.color.blue[700]};
 `

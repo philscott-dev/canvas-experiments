@@ -6,9 +6,9 @@ import Canvas from './Canvas'
 import { Node, Point } from './types'
 import { getCanvasPoint } from './helpers/helpers'
 import useTransformRefs from './hooks/useTransformRefs'
-import { NODE_HEIGHT, NODE_WIDTH, colors } from './constants'
-import { Text } from 'lib'
-import EditPanel from './EditPanel'
+import { NODE_HEIGHT, NODE_WIDTH } from './constants'
+import Toolbar from './FlowChartToolbar'
+import FlowChartInsert from './FlowChartNodeMenu/FlowChartNodeMenu'
 
 interface FlowChartProps {
   className?: string
@@ -25,7 +25,7 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const [isDragging, setDragging] = useState(false)
 
   //get initial mouse offset in dom object
-  const handleDragNewNode = (e: DragEvent<HTMLDivElement>) => {
+  const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
     const elem = e.currentTarget
     const { x: pX, y: pY } = getCanvasPoint(e, elem)
     const x = pX / scale
@@ -72,7 +72,10 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
 
   return (
     <div className={className}>
-      <Sidebar>
+      <Toolbar>
+        <FlowChartInsert onDragStart={handleDragStart} />
+      </Toolbar>
+      {/* <Sidebar>
         {colors.map((color) => (
           <Wrapper key={color}>
             <Square draggable onDragStart={handleDragNewNode} color={color}>
@@ -80,7 +83,7 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
             </Square>
           </Wrapper>
         ))}
-      </Sidebar>
+      </Sidebar> */}
       <Container>
         <Canvas
           ref={canvasRef}
@@ -104,24 +107,25 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
 }
 
 export default styled(FlowChart)`
+  position: relative;
   height: 100vh;
   display: flex;
 `
 
-const Wrapper = styled.div`
-  background-color: transparent;
-  padding: 16px;
-`
+// const Wrapper = styled.div`
+//   background-color: transparent;
+//   padding: 16px;
+// `
 
-const Square = styled.div<{ color: string }>`
-  min-width: ${NODE_WIDTH}px;
-  min-height: ${NODE_HEIGHT}px;
-  border-radius: 12px;
-  background-color: ${({ color }) => color};
-  box-sizing: border-box;
-  padding-top: 8px;
-  padding-left: 16px;
-`
+// const Square = styled.div<{ color: string }>`
+//   min-width: ${NODE_WIDTH}px;
+//   min-height: ${NODE_HEIGHT}px;
+//   border-radius: 12px;
+//   background-color: ${({ color }) => color};
+//   box-sizing: border-box;
+//   padding-top: 8px;
+//   padding-left: 16px;
+// `
 
 const Container = styled.div`
   flex: 1;

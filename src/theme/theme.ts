@@ -41,9 +41,16 @@ const theme: Theme = {
     orange: {
       300: '#FF8A00',
     },
+    indigo: {
+      300: '#0030AC',
+      400: '#002585',
+      600: '#001343',
+    }
   },
   gradient: {
     blue: 'linear-gradient(145deg, #0d102e, #0b0e27)',
+    gray:
+      'linear-gradient(180deg, #6B6B6B 0%, #484848 99.99%, rgba(107, 107, 107, 0) 100%)',
   },
   font: {
     family: 'Poppins',
@@ -77,8 +84,8 @@ const theme: Theme = {
   },
   shadow: {
     up: {
-      two: '20px 20px 40px #050611, -20px -20px 40px #131845',
-      one: '20px 20px 20px #050611, -20px -20px 20px #131845',
+      two: '20px 20px 40px #0A0D25, -20px -20px 40px #0E1131',
+      one: '20px 20px 20px #0A0D25, -20px -20px 20px #0E1131',
     },
     down: {
       one: 'inset 20px 20px 40px #050611; inset -20px -20px 40px #131845',
