@@ -20,6 +20,7 @@ const InsertButton: FC<InsertButtonProps> = ({ className, onMouseDown }) => {
 }
 
 export default styled(InsertButton)`
+  pointer-events: all;
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 14px;

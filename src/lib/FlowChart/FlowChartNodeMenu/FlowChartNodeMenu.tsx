@@ -62,5 +62,5 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
 
 export default styled(FlowChartNodeMenu)`
   position: relative;
-  pointer-events: all;
+  height: 100%;
 `

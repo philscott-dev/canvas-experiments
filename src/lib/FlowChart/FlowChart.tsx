@@ -7,8 +7,7 @@ import { Node, Point } from './types'
 import { getCanvasPoint } from './helpers/helpers'
 import useTransformRefs from './hooks/useTransformRefs'
 import { NODE_HEIGHT, NODE_WIDTH } from './constants'
-import Toolbar from './FlowChartToolbar'
-import FlowChartInsert from './FlowChartNodeMenu/FlowChartNodeMenu'
+import { FlowChartUI } from './FlowChartUI'
 
 interface FlowChartProps {
   className?: string
@@ -72,9 +71,7 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
 
   return (
     <div className={className}>
-      <Toolbar>
-        <FlowChartInsert onDragStart={handleDragStart} />
-      </Toolbar>
+      <FlowChartUI onDragStart={handleDragStart} />
       {/* <Sidebar>
         {colors.map((color) => (
           <Wrapper key={color}>

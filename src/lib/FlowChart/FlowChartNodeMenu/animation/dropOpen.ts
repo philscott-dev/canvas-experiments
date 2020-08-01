@@ -12,7 +12,7 @@ export const dropOpen = keyframes`
     box-shadow: none;
   }
   100% {
-    height: 504px;
+    height: 100%;
     width: 256px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
@@ -20,9 +20,9 @@ export const dropOpen = keyframes`
 
 export const dropOpenReverse = keyframes`
   0% {
-    height: 504px;
+    height: 100%;
     width: 256px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
   50%  {
     height: 40px;

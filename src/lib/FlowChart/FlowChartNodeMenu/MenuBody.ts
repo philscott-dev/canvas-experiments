@@ -5,4 +5,8 @@ export default styled.div`
   overflow-y: auto;
   padding: 0 16px 0 16px;
   box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
