@@ -25,7 +25,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta name="mobile-web-app-capable" content="yes" />
       </Head>
       <ThemeProvider theme={theme}>
-        <PortalMount id="portal" />
+        {/* <PortalMount id="portal" /> */}
         <Component {...pageProps} />
       </ThemeProvider>
     </>

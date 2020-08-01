@@ -1,9 +1,23 @@
 html {
-  height: -webkit-fill-available;
+  height: 100%;
+  height: -webkit-fill-available; 
+  height: fill-available;
+
+  min-height: 100%;
+  min-height: -webkit-fill-available; 
+  min-height: fill-available;
+
+
 }
 body {
   margin: 0;
   background: #0f1337;
   overflow: hidden;
-  min-height: -webkit-fill-available;
+  height: inherit;
+  min-height: inherit;
+}
+
+#__next {
+  height: inherit;
+  min-height: inherit;
 }

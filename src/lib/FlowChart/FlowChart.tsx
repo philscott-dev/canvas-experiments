@@ -94,6 +94,7 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
 
 export default styled(FlowChart)`
   position: relative;
-  min-height: -webkit-fill-available;
+  height: inherit;
+  min-height: inherit;
   display: flex;
 `
