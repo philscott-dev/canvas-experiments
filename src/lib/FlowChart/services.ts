@@ -1,6 +1,6 @@
-import { Node } from './types'
+import { BaseNode } from './types'
 
-export const virustotal: Node = {
+export const virustotal: BaseNode = {
   id: '0',
   type: 'service',
   name: 'virustotal',
@@ -9,7 +9,7 @@ export const virustotal: Node = {
   colorSecondary: '#117944',
 }
 
-export const domainTools: Node = {
+export const domainTools: BaseNode = {
   id: '1',
   type: 'service',
   name: 'domaintools',
@@ -18,7 +18,7 @@ export const domainTools: Node = {
   colorSecondary: '#880062',
 }
 
-export const farsight: Node = {
+export const farsight: BaseNode = {
   id: '2',
   type: 'service',
   name: 'farsight',
@@ -27,7 +27,7 @@ export const farsight: Node = {
   colorSecondary: '#002E63',
 }
 
-export const recordedFuture: Node = {
+export const recordedFuture: BaseNode = {
   id: '3',
   type: 'service',
   name: 'recorded_future',
@@ -36,7 +36,7 @@ export const recordedFuture: Node = {
   colorSecondary: '#703C00',
 }
 
-export const threatstream: Node = {
+export const threatstream: BaseNode = {
   id: '4',
   type: 'service',
   name: 'threatstream',
@@ -45,7 +45,7 @@ export const threatstream: Node = {
   colorSecondary: '#540087',
 }
 
-export const urlHaus: Node = {
+export const urlHaus: BaseNode = {
   id: '5',
   type: 'service',
   name: 'urlhaus',
@@ -54,7 +54,7 @@ export const urlHaus: Node = {
   colorSecondary: '#00526B',
 }
 
-export const spur: Node = {
+export const spur: BaseNode = {
   id: '6',
   type: 'service',
   name: 'spur',
@@ -63,7 +63,7 @@ export const spur: Node = {
   colorSecondary: '#545454',
 }
 
-export const phishlabs: Node = {
+export const phishlabs: BaseNode = {
   id: '7',
   type: 'service',
   name: 'phishlabs',
@@ -72,7 +72,7 @@ export const phishlabs: Node = {
   colorSecondary: '#25008F',
 }
 
-export const riskIQ: Node = {
+export const riskIQ: BaseNode = {
   id: '8',
   type: 'service',
   name: 'riskiq',
@@ -81,7 +81,7 @@ export const riskIQ: Node = {
   colorSecondary: '#126368',
 }
 
-export const virustotalFileFeed: Node = {
+export const virustotalFileFeed: BaseNode = {
   id: '9',
   type: 'service',
   name: 'virustotal_file_feed',
@@ -90,7 +90,7 @@ export const virustotalFileFeed: Node = {
   colorSecondary: '#8C952B',
 }
 
-export const hyas: Node = {
+export const hyas: BaseNode = {
   id: '10',
   type: 'service',
   name: 'hyas',
