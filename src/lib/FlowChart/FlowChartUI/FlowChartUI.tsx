@@ -9,15 +9,13 @@ import TitleBar from './TitleBar'
 import { FlowChartZoomControl } from '../FlowChartZoomControl'
 import { FlowChartTitleBar } from '../FlowChartTitleBar'
 import { FlowChartDetailPanel } from '../FlowChartDetailPanel'
+import { BaseNode } from '../types'
 
-interface FlowChartToolbarProps {
+interface FlowChartUIProps {
   className?: string
-  onDragStart: (e: DragEvent<HTMLDivElement>) => void
+  onDragStart: (node: BaseNode, e: DragEvent<HTMLDivElement>) => void
 }
-const FlowChartToolbar: FC<FlowChartToolbarProps> = ({
-  className,
-  onDragStart,
-}) => {
+const FlowChartUI: FC<FlowChartUIProps> = ({ className, onDragStart }) => {
   return (
     <div className={className}>
       <Section>
@@ -38,7 +36,7 @@ const FlowChartToolbar: FC<FlowChartToolbarProps> = ({
   )
 }
 
-export default styled(FlowChartToolbar)`
+export default styled(FlowChartUI)`
   position: absolute;
   box-sizing: border-box;
   display: flex;

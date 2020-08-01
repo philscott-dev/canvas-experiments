@@ -1,11 +1,38 @@
 import { Point, Rect } from '../types'
 import { distance } from './math'
+import { theme } from 'theme'
 
 interface Radius {
   tl: number
   tr: number
   br: number
   bl: number
+}
+
+export function drawNode(
+  ctx: CanvasRenderingContext2D,
+  { x, y, width, height }: Rect,
+  borderRadius: Radius | number,
+  fillStyle: string,
+  fill: boolean = true,
+  stroke: boolean = false,
+) {
+  drawRoundRect(ctx, rect, 8, node.colorSecondary, true, activeId === node.id)
+
+  const tabRect = {
+    x: node.rect.x + translateOffset.x,
+    y: node.rect.y + translateOffset.y,
+    width: 48,
+    height: node.rect.height,
+  }
+  //draw inner tab
+  drawRoundRect(
+    ctx,
+    tabRect,
+    { tl: 8, tr: 0, br: 0, bl: 8 },
+    node.colorPrimary,
+    true,
+  )
 }
 
 export function drawRoundRect(
@@ -32,9 +59,9 @@ export function drawRoundRect(
   } else {
     let defaultRadius = { tl: 0, tr: 0, br: 0, bl: 0 }
     borderRadius.bl = borderRadius.bl || defaultRadius.bl
-    borderRadius.bl = borderRadius.br || defaultRadius.br
-    borderRadius.bl = borderRadius.tl || defaultRadius.tl
-    borderRadius.bl = borderRadius.tr || defaultRadius.tr
+    borderRadius.br = borderRadius.br || defaultRadius.br
+    borderRadius.tl = borderRadius.tl || defaultRadius.tl
+    borderRadius.tr = borderRadius.tr || defaultRadius.tr
   }
   ctx.beginPath()
 
@@ -63,7 +90,7 @@ export function drawRoundRect(
   }
   if (stroke) {
     ctx.lineWidth = 5
-    ctx.strokeStyle = '#028FFF'
+    ctx.strokeStyle = theme.color.blue[300]
 
     ctx.closePath()
     ctx.stroke()
@@ -83,10 +110,10 @@ export function drawText(
   y: number,
   { size, face, color, align }: TextOptions,
 ) {
-  ctx.font = `${size || 16}px ${face || 'Arial'}`
+  ctx.font = `${size || 12}px ${face || 'Arial'}`
   if (align) ctx.textAlign = align
   if (color) ctx.fillStyle = color
-  ctx.fillText(text, x, y)
+  ctx.fillText(text.toUpperCase(), x, y)
 }
 
 export function drawPath(

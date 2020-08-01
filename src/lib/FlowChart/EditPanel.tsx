@@ -7,7 +7,7 @@ import { Node } from './types'
 interface EditPanelProps {
   className?: string
   nodes: Node[]
-  activeId?: number
+  activeId?: string
 }
 const EditPanel: FC<EditPanelProps> = ({ className, activeId }) => {
   const handleSubmit = (obj: any) => {

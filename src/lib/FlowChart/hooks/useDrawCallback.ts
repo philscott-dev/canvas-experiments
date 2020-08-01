@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { Node, Point } from '../types'
+import { RectNode, Point } from '../types'
 import { drawRoundRect, drawText, drawPathAngle, drawGrid } from '../utils/draw'
 
 export default function useDraw(
@@ -7,9 +7,9 @@ export default function useDraw(
   ctx: CanvasRenderingContext2D | null | undefined,
   translateOffset: Point,
   scale: number,
-  nodes: Node[],
+  nodes: RectNode[],
   isDragging: boolean,
-  activeId?: number,
+  activeId?: string,
 ) {
   const draw = useCallback(() => {
     if (canvas && ctx) {
@@ -38,8 +38,31 @@ export default function useDraw(
           width: node.rect.width,
           height: node.rect.height,
         }
+        const tabRect = {
+          x: node.rect.x + translateOffset.x,
+          y: node.rect.y + translateOffset.y,
+          width: 48,
+          height: node.rect.height,
+        }
         // draw each rect
-        drawRoundRect(ctx, rect, 12, node.color, true, activeId === node.id)
+        drawRoundRect(
+          ctx,
+          rect,
+          12,
+          node.colorSecondary,
+          true,
+          activeId === node.id,
+        )
+
+        //draw inner tab
+        drawRoundRect(
+          ctx,
+          tabRect,
+          { tl: 8, tr: 0, br: 0, bl: 8 },
+          node.colorPrimary,
+          true,
+        )
+
         //draw paths for nodes
         const r = nodes[index + 1]?.rect
         if (nodes.length && r) {
@@ -53,16 +76,16 @@ export default function useDraw(
         }
 
         // draw text in nodes
-        const TEXT_OFFSET_Y = 24
-        const TEXT_OFFSET_X = 16
+        const TEXT_OFFSET_Y = 22
+        const TEXT_OFFSET_X = 56
         drawText(
           ctx,
-          node.title,
+          node.displayName,
           node.rect.x + TEXT_OFFSET_X + translateOffset.x,
           node.rect.y + TEXT_OFFSET_Y + translateOffset.y,
           {
             color: '#ffffff',
-            face: 'Poppins',
+            face: 'Poppins-Medium',
           },
         )
       })

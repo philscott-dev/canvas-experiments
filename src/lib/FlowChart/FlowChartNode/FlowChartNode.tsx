@@ -2,30 +2,30 @@
 import { FC, DragEvent } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
-import { Text } from 'lib'
+import { BaseNode } from '../types'
 import FlowChartNodeTab from './FlowChartNodeTab'
 import FlowChartNodeBody from './FlowChartNodeBody'
 import FlowChartNodeText from './FlowChartNodeText'
 
 interface FlowChartNodeProps {
   className?: string
-  displayName: string
-  colorPrimary: string
-  colorSecondary: string
-  onDragStart: (e: DragEvent<HTMLDivElement>) => void
+  node: BaseNode
+  onDragStart: (node: BaseNode, e: DragEvent<HTMLDivElement>) => void
 }
 const FlowChartNode: FC<FlowChartNodeProps> = ({
   className,
-  displayName,
-  colorPrimary,
-  colorSecondary,
+  node,
   onDragStart,
 }) => {
+  const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
+    onDragStart(node, e)
+  }
+
   return (
-    <div draggable onDragStart={onDragStart} className={className}>
-      <FlowChartNodeTab color={colorPrimary} />
-      <FlowChartNodeBody color={colorSecondary}>
-        <FlowChartNodeText>{displayName}</FlowChartNodeText>
+    <div draggable onDragStart={handleDragStart} className={className}>
+      <FlowChartNodeTab color={node.colorPrimary} />
+      <FlowChartNodeBody color={node.colorSecondary}>
+        <FlowChartNodeText>{node.displayName}</FlowChartNodeText>
       </FlowChartNodeBody>
     </div>
   )

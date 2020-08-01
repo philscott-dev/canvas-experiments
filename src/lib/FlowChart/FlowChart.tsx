@@ -2,8 +2,9 @@
 import { FC, useRef, useState, DragEvent } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
+import { v4 as uuid } from 'uuid'
 import Canvas from './Canvas'
-import { Node, Point } from './types'
+import { Point, BaseNode, RectNode } from './types'
 import { getCanvasPoint } from './helpers/helpers'
 import useTransformRefs from './hooks/useTransformRefs'
 import { NODE_HEIGHT, NODE_WIDTH } from './constants'
@@ -15,23 +16,26 @@ interface FlowChartProps {
 const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useTransformRefs(canvasRef)
-  const [nodes, setNodes] = useState<Node[]>([])
+  const [nodes, setNodes] = useState<RectNode[]>([])
   const [dragStartOffset, setDragStartOffset] = useState<Point>({ x: 0, y: 0 })
   const [translateOffset, setTranslateOffset] = useState<Point>({ x: 0, y: 0 })
   const [scale, setScale] = useState<number>(1)
-  const [color, setColor] = useState('')
-  const [activeId, setActiveId] = useState<number>()
+  const [node, setNode] = useState<BaseNode>()
+  const [activeId, setActiveId] = useState<string>()
   const [isDragging, setDragging] = useState(false)
 
-  //get initial mouse offset in dom object
-  const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
+  /**
+   * Transfer data as a placeholder in state
+   * once you start dragging
+   */
+  const handleDragStart = (n: BaseNode, e: DragEvent<HTMLDivElement>) => {
     const elem = e.currentTarget
     const { x: pX, y: pY } = getCanvasPoint(e, elem)
     const x = pX / scale
     const y = pY / scale
     setDragging(true)
     setDragStartOffset({ x, y })
-    setColor(elem.getAttribute('color') || '')
+    setNode(n)
   }
 
   const handleTranslate = (pt: Point) => {
@@ -49,23 +53,26 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
       const { x: pX, y: pY } = getCanvasPoint(e, canvas)
       const x = pX / scale
       const y = pY / scale
-      const node: Node = {
-        id: nodes.length,
-        title: color,
-        color,
-        rect: {
-          x: x - dragStartOffset.x - translateOffset.x,
-          y: y - dragStartOffset.y - translateOffset.y,
-          width: NODE_WIDTH,
-          height: NODE_HEIGHT,
-        },
+      if (node) {
+        setNodes([
+          ...nodes,
+          {
+            ...node,
+            id: uuid(),
+            rect: {
+              x: x - dragStartOffset.x - translateOffset.x,
+              y: y - dragStartOffset.y - translateOffset.y,
+              width: NODE_WIDTH,
+              height: NODE_HEIGHT,
+            },
+          },
+        ])
       }
-      setNodes([...nodes, node])
       setDragging(false)
     }
   }
 
-  const handleClickNode = (id: number) => {
+  const handleClickNode = (id: string) => {
     setActiveId(id)
   }
 

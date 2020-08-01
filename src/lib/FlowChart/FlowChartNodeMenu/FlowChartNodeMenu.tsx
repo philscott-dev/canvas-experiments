@@ -13,11 +13,14 @@ import Header from './Header'
 import SearchInput from './SearchInput'
 import MenuBody from './MenuBody'
 import Text from './Text'
-import services from 'constants/services'
+
+//make this date driven
+import services from '../services'
+import { BaseNode } from '../types'
 
 interface FlowChartNodeMenuProps {
   className?: string
-  onDragStart: (e: DragEvent<HTMLDivElement>) => void
+  onDragStart: (node: BaseNode, e: DragEvent<HTMLDivElement>) => void
 }
 
 const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
@@ -25,11 +28,16 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
   onDragStart,
 }) => {
   const [isVisible, setVisibility] = useState<Animation>(Animation.NONE)
+
   const handleClick = () => {
     if (isVisible === Animation.NONE || isVisible === Animation.OUT) {
       return setVisibility(Animation.IN)
     }
     setVisibility(Animation.OUT)
+  }
+
+  const handleDragStart = (node: BaseNode,e: DragEvent<HTMLDivElement>) => {
+    onDragStart(node, e)
   }
   return (
     <div className={className}>
@@ -47,10 +55,8 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
             {services.map((service) => (
               <FlowChartNode
                 key={service.id}
-                displayName={service.displayName}
-                colorPrimary={service.colorPrimary}
-                colorSecondary={service.colorSecondary}
-                onDragStart={onDragStart}
+                node={service}
+                onDragStart={handleDragStart}
               />
             ))}
           </MenuBody>
