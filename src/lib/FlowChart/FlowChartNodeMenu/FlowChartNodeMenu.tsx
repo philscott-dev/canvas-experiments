@@ -36,7 +36,7 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
     setVisibility(Animation.OUT)
   }
 
-  const handleDragStart = (node: BaseNode,e: DragEvent<HTMLDivElement>) => {
+  const handleDragStart = (node: BaseNode, e: DragEvent<HTMLDivElement>) => {
     onDragStart(node, e)
   }
   return (

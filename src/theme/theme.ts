@@ -45,7 +45,7 @@ const theme: Theme = {
       300: '#0030AC',
       400: '#002585',
       600: '#001343',
-    }
+    },
   },
   gradient: {
     blue: 'linear-gradient(145deg, #0d102e, #0b0e27)',
