@@ -1,6 +1,12 @@
 export type Circle = { x: number; y: number; radius: number }
 export type Point = { x: number; y: number }
 export type Rect = { x: number; y: number; width: number; height: number }
+export interface Radius {
+  tl: number
+  tr: number
+  br: number
+  bl: number
+}
 
 export type BaseNodeType = 'service'
 

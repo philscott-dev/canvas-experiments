@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { RectNode, Point } from '../types'
-import { drawRoundRect, drawText, drawPathAngle, drawGrid } from '../utils/draw'
+import { drawPathAngle, drawGrid, drawNode } from '../utils/draw'
 
 export default function useDraw(
   canvas: HTMLCanvasElement | null,
@@ -32,36 +32,8 @@ export default function useDraw(
 
       //draw nodes
       nodes.forEach((node, index) => {
-        const rect = {
-          x: node.rect.x + translateOffset.x,
-          y: node.rect.y + translateOffset.y,
-          width: node.rect.width,
-          height: node.rect.height,
-        }
-        const tabRect = {
-          x: node.rect.x + translateOffset.x,
-          y: node.rect.y + translateOffset.y,
-          width: 48,
-          height: node.rect.height,
-        }
         // draw each rect
-        drawRoundRect(
-          ctx,
-          rect,
-          12,
-          node.colorSecondary,
-          true,
-          activeId === node.id,
-        )
-
-        //draw inner tab
-        drawRoundRect(
-          ctx,
-          tabRect,
-          { tl: 8, tr: 0, br: 0, bl: 8 },
-          node.colorPrimary,
-          true,
-        )
+        drawNode(ctx, node, translateOffset, activeId)
 
         //draw paths for nodes
         const r = nodes[index + 1]?.rect
@@ -72,22 +44,8 @@ export default function useDraw(
             width: r.width,
             height: r.height,
           }
-          drawPathAngle(ctx, rect, nextRect)
+          drawPathAngle(ctx, node.rect, nextRect)
         }
-
-        // draw text in nodes
-        const TEXT_OFFSET_Y = 22
-        const TEXT_OFFSET_X = 56
-        drawText(
-          ctx,
-          node.displayName,
-          node.rect.x + TEXT_OFFSET_X + translateOffset.x,
-          node.rect.y + TEXT_OFFSET_Y + translateOffset.y,
-          {
-            color: '#ffffff',
-            face: 'Poppins-Medium',
-          },
-        )
       })
     }
   }, [canvas, ctx, scale, translateOffset, isDragging, nodes, activeId])

@@ -1,37 +1,56 @@
-import { Point, Rect } from '../types'
+import { Point, Rect, RectNode, Radius } from '../types'
 import { distance } from './math'
 import { theme } from 'theme'
 
-interface Radius {
-  tl: number
-  tr: number
-  br: number
-  bl: number
-}
-
 export function drawNode(
   ctx: CanvasRenderingContext2D,
-  { x, y, width, height }: Rect,
-  borderRadius: Radius | number,
-  fillStyle: string,
-  fill: boolean = true,
-  stroke: boolean = false,
+  node: RectNode,
+  translateOffset: Point,
+  activeId?: string,
 ) {
-  drawRoundRect(ctx, rect, 8, node.colorSecondary, true, activeId === node.id)
-
-  const tabRect = {
+  ctx.beginPath()
+  const rect = {
     x: node.rect.x + translateOffset.x,
     y: node.rect.y + translateOffset.y,
-    width: 48,
+    width: node.rect.width,
     height: node.rect.height,
   }
+
+  drawRoundRect(ctx, rect, 8, node.colorSecondary, true)
+
+  //highlight with border
+  const isActive = activeId === node.id
+  if (isActive) {
+    ctx.lineWidth = 5
+    ctx.strokeStyle = theme.color.blue[300]
+    ctx.stroke()
+  }
+
   //draw inner tab
-  drawRoundRect(
+  const ACTIVE_OFFSET = 2.5
+  const radius = { tl: 8, tr: 0, br: 0, bl: 8 }
+  const tabRect = {
+    x: node.rect.x + translateOffset.x + (isActive ? ACTIVE_OFFSET : 0),
+    y: node.rect.y + translateOffset.y + (isActive ? ACTIVE_OFFSET : 0),
+    width: 48 - (isActive ? ACTIVE_OFFSET : 0),
+    height: node.rect.height - (isActive ? ACTIVE_OFFSET * 2 : 0),
+  }
+
+  ctx.beginPath()
+  drawRoundRect(ctx, tabRect, radius, node.colorPrimary)
+
+  // draw text in nodes
+  const TEXT_OFFSET_Y = 22
+  const TEXT_OFFSET_X = 56
+  drawText(
     ctx,
-    tabRect,
-    { tl: 8, tr: 0, br: 0, bl: 8 },
-    node.colorPrimary,
-    true,
+    node.displayName,
+    node.rect.x + TEXT_OFFSET_X + translateOffset.x,
+    node.rect.y + TEXT_OFFSET_Y + translateOffset.y,
+    {
+      color: '#ffffff',
+      face: 'Poppins-Medium',
+    },
   )
 }
 
@@ -40,12 +59,11 @@ export function drawRoundRect(
   { x, y, width, height }: Rect,
   borderRadius: Radius | number,
   fillStyle: string,
-  fill: boolean = true,
-  stroke: boolean = false,
+  showShadow: boolean = false,
 ) {
-  if (typeof stroke === 'undefined') {
-    stroke = true
-  }
+  // if (typeof stroke === 'undefined') {
+  //   stroke = true
+  // }
   if (typeof borderRadius === 'undefined') {
     borderRadius = 3
   }
@@ -63,12 +81,14 @@ export function drawRoundRect(
     borderRadius.tl = borderRadius.tl || defaultRadius.tl
     borderRadius.tr = borderRadius.tr || defaultRadius.tr
   }
-  ctx.beginPath()
 
-  ctx.shadowColor = '#00000040'
-  ctx.shadowBlur = 30
-  ctx.shadowOffsetX = 16
-  ctx.shadowOffsetY = 16
+  if (showShadow) {
+    ctx.shadowColor = '#00000040'
+    ctx.shadowBlur = 30
+    ctx.shadowOffsetX = 16
+    ctx.shadowOffsetY = 16
+  }
+
   ctx.fillStyle = fillStyle
 
   ctx.moveTo(x + borderRadius.tl, y)
@@ -85,16 +105,8 @@ export function drawRoundRect(
   ctx.quadraticCurveTo(x, y + height, x, y + height - borderRadius.bl)
   ctx.lineTo(x, y + borderRadius.tl)
   ctx.quadraticCurveTo(x, y, x + borderRadius.tl, y)
-  if (fill) {
-    ctx.fill()
-  }
-  if (stroke) {
-    ctx.lineWidth = 5
-    ctx.strokeStyle = theme.color.blue[300]
 
-    ctx.closePath()
-    ctx.stroke()
-  }
+  ctx.fill()
 }
 
 interface TextOptions {
