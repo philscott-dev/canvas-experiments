@@ -7,8 +7,6 @@ export default styled.div<{ isVisible: Animation }>`
   flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
-  height: 100%;
-  padding-top: 8px;
   > * {
     animation-name: ${({ isVisible }) =>
       isVisible !== Animation.NONE

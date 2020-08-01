@@ -3,7 +3,10 @@ import { dropOpen, dropOpenReverse } from './animation/dropOpen'
 import { Animation } from './animation/enum'
 
 export default styled.div<{ isVisible: Animation }>`
+  display: flex;
+  flex-direction: column;
   pointer-events: all;
+  box-sizing: border-box;
   position: absolute;
   overflow: hidden;
   height: 40px;

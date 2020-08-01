@@ -72,62 +72,28 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
   return (
     <div className={className}>
       <FlowChartUI onDragStart={handleDragStart} />
-      {/* <Sidebar>
-        {colors.map((color) => (
-          <Wrapper key={color}>
-            <Square draggable onDragStart={handleDragNewNode} color={color}>
-              <Text>{color}</Text>
-            </Square>
-          </Wrapper>
-        ))}
-      </Sidebar> */}
-      <Container>
-        <Canvas
-          ref={canvasRef}
-          canvas={canvasRef.current}
-          ctx={ctx}
-          translateOffset={translateOffset}
-          scale={scale}
-          nodes={nodes}
-          activeId={activeId}
-          isDragging={isDragging}
-          onDragging={setDragging}
-          onSetNodes={setNodes}
-          onClickNode={handleClickNode}
-          onDrop={handleDropNewNode}
-          onTranslate={handleTranslate}
-          onScale={handleScale}
-        />
-      </Container>
+      <Canvas
+        ref={canvasRef}
+        canvas={canvasRef.current}
+        ctx={ctx}
+        translateOffset={translateOffset}
+        scale={scale}
+        nodes={nodes}
+        activeId={activeId}
+        isDragging={isDragging}
+        onDragging={setDragging}
+        onSetNodes={setNodes}
+        onClickNode={handleClickNode}
+        onDrop={handleDropNewNode}
+        onTranslate={handleTranslate}
+        onScale={handleScale}
+      />
     </div>
   )
 }
 
 export default styled(FlowChart)`
   position: relative;
-  height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
-`
-
-// const Wrapper = styled.div`
-//   background-color: transparent;
-//   padding: 16px;
-// `
-
-// const Square = styled.div<{ color: string }>`
-//   min-width: ${NODE_WIDTH}px;
-//   min-height: ${NODE_HEIGHT}px;
-//   border-radius: 12px;
-//   background-color: ${({ color }) => color};
-//   box-sizing: border-box;
-//   padding-top: 8px;
-//   padding-left: 16px;
-// `
-
-const Container = styled.div`
-  flex: 1;
-`
-
-const Sidebar = styled.div`
-  min-height: 100px;
 `

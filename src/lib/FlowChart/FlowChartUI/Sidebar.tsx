@@ -14,4 +14,10 @@ export const SidebarRight = styled.div`
   min-width: 304px;
   max-width: 304px;
   padding: 24px;
+  @media screen and (max-width: ${({ theme }) => theme.breakpoint.medium}) {
+    font-size: 14px;
+    line-height: 18px;
+    min-width: unset;
+    max-width: unset;
+  }
 `

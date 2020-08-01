@@ -61,6 +61,7 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
 }
 
 export default styled(FlowChartNodeMenu)`
+  box-sizing: border-box;
   position: relative;
   height: 100%;
 `

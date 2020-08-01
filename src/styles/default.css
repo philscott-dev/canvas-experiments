@@ -1,5 +1,9 @@
+html {
+  height: -webkit-fill-available;
+}
 body {
   margin: 0;
-  background: #0F1337;
+  background: #0f1337;
   overflow: hidden;
+  min-height: -webkit-fill-available;
 }

@@ -7,7 +7,7 @@ interface StyledProps {
 
 const Overlay = styled.div<StyledProps>`
   position: fixed;
-  height: 100vh;
+  min-height: -webkit-fill-available;
   width: 100%;
   background: ${({ theme }) => theme.color.blue[700]};
   z-index: ${({ isVisible, theme }) => (isVisible ? theme.index[100] : 0)};
