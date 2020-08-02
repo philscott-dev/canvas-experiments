@@ -6,6 +6,7 @@ export default function useResize(
   useEffect(() => {
     function resize() {
       if (canvas) {
+        console.log('resize')
         const parent = canvas.parentElement
         canvas.width = parent?.clientWidth ?? 0
         canvas.height = parent?.clientHeight ?? 0

@@ -13,9 +13,13 @@ export default function useDraw(
 ) {
   const draw = useCallback(() => {
     if (canvas && ctx) {
+      const parent = canvas.parentElement
+      canvas.width = parent?.clientWidth ?? 0
+      canvas.height = parent?.clientHeight ?? 0
+
       ctx.save()
       ctx.setTransform(1, 0, 0, 1, 0, 0)
-      ctx.clearRect(0, 0, canvas.width / scale, canvas.height / scale)
+      ctx.clearRect(0, 0, 1000 / scale, 1000 / scale)
       ctx.restore()
 
       ctx.scale(scale, scale)
@@ -54,6 +58,8 @@ export default function useDraw(
       })
     }
   }, [canvas, ctx, scale, translateOffset, isDragging, nodes, activeId])
-  useEffect(draw)
+  useEffect(() => {
+    draw()
+  }, [draw])
   return draw
 }

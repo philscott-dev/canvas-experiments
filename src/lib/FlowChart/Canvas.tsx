@@ -1,5 +1,12 @@
 /** @jsx jsx */
-import { useState, forwardRef, WheelEvent, MouseEvent, DragEvent } from 'react'
+import {
+  useState,
+  forwardRef,
+  WheelEvent,
+  MouseEvent,
+  DragEvent,
+  useEffect,
+} from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import useResize from './hooks/useResize'
@@ -7,6 +14,7 @@ import useDrawCallback from './hooks/useDrawCallback'
 import { RectNode, Point } from './types'
 import { pointInRect } from './utils/math'
 import { getCanvasPoint } from './helpers/helpers'
+import { zoom } from './utils/zoom'
 
 interface CanvasProps {
   className?: string
@@ -16,6 +24,7 @@ interface CanvasProps {
   activeId?: string
   translateOffset: Point
   scale: number
+  origin: Point
   isDragging: boolean
   onDragging: (isDragging: boolean) => void
   onSetNodes: (nodes: RectNode[]) => void
@@ -23,6 +32,7 @@ interface CanvasProps {
   onClickNode: (id: string) => void
   onTranslate: (point: Point) => void
   onScale: (factor: number) => void
+  onOrigin: (pt: Point) => void
 }
 const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
   (
@@ -34,6 +44,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       activeId,
       translateOffset,
       scale,
+      origin,
       isDragging,
       onSetNodes,
       onDrop,
@@ -41,14 +52,13 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       onClickNode,
       onTranslate,
       onScale,
+      onOrigin,
     },
     canvasRef,
   ) => {
-    // const [dragIndex, setDragIndex] = useState<number>()
+    const [hasLoaded, setHasLoaded] = useState(false)
     const [dragId, setDragId] = useState<string>()
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
-    const [origin, setOrigin] = useState<Point>({ x: 0, y: 0 }) // for scale calculations
-
     const draw = useDrawCallback(
       canvas,
       ctx,
@@ -58,15 +68,21 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       isDragging,
       activeId,
     )
-    useResize(canvas, draw)
+    //draw once
+    useEffect(() => {
+      if (canvas && !hasLoaded) {
+        setHasLoaded(true)
+        draw()
+      }
+    }, [hasLoaded, draw, canvas])
 
     const onMouseDown = (
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
       if (canvas) {
-        const { x: pX, y: pY } = getCanvasPoint(e, canvas)
-        const x = pX / scale
-        const y = pY / scale
+        const point = getCanvasPoint(e, canvas)
+        const x = point.x / scale
+        const y = point.y / scale
         const node = nodes.find((n) =>
           pointInRect(x - translateOffset.x, y - translateOffset.y, n.rect),
         )
@@ -74,17 +90,16 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
           document.body.style.webkitUserSelect = 'none'
           document.body.style.userSelect = 'none'
           onDragging(true)
-          //setDragIndex(node.id)
           setDragId(node.id)
           setClickOffset({
-            x: x - node.rect.x, // + translateOffset.x,
-            y: y - node.rect.y, // + translateOffset.y,
+            x: x - node.rect.x,
+            y: y - node.rect.y,
           })
           onClickNode(node.id)
         } else {
-          const { x: pX, y: pY } = getCanvasPoint(e, canvas)
-          const x = pX / scale
-          const y = pY / scale
+          const point = getCanvasPoint(e, canvas)
+          const x = point.x / scale
+          const y = point.y / scale
           onDragging(true)
           setClickOffset({ x, y })
         }
@@ -94,11 +109,10 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     const onMouseMove = (
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
-      if (canvas && ctx) {
-        const { x: pX, y: pY } = getCanvasPoint(e, canvas)
-        const x = pX / scale
-        const y = pY / scale
-        // if (isDragging && dragIndex !== undefined && clickOffset) {
+      if (canvas) {
+        const point = getCanvasPoint(e, canvas)
+        const x = point.x / scale
+        const y = point.y / scale
         if (isDragging && dragId !== undefined && clickOffset) {
           const index = nodes.findIndex((n) => n.id === dragId)
           if (index > -1) {
@@ -119,9 +133,6 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
         } else if (isDragging && clickOffset) {
           const dragX = x - clickOffset.x // / scale
           const dragY = y - clickOffset.y // / scale
-
-          // do the new translate
-          ctx.translate(dragX, dragY)
 
           //set the position
           setClickOffset({ x, y })
@@ -146,27 +157,12 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     }
 
     const onWheel = (e: WheelEvent<HTMLCanvasElement>) => {
-      if (ctx && canvas) {
-        const intensity = 0.001
-        // dont pass in translate offset, as this zoom
-        // is based off of canvas position only
-        const { x, y } = getCanvasPoint(e, canvas)
-        const zoom = Math.exp(e.deltaY * intensity)
-        //ctx.translate(origin.x, origin.y)
-        const factor = scale * zoom
-        const positionX = origin.x - (x / factor - x / scale)
-        const positionY = origin.y - (y / factor - y / scale)
-        // ctx.scale(zoom, zoom)
-        // ctx.translate(-positionX, -positionY)
-
-        //update state
-        onTranslate({
-          x: origin.x + translateOffset.x - positionX,
-          y: origin.y + translateOffset.y - positionY,
-        })
-        //set scale and fac
-        onScale(factor)
-        setOrigin({ x: positionX, y: positionY })
+      if (canvas) {
+        const x = zoom(canvas, scale, origin, translateOffset, e)
+        onTranslate(x.translate)
+        onScale(x.factor)
+        onOrigin(x.origin)
+        draw()
       }
     }
 
@@ -185,6 +181,4 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
   },
 )
 
-export default styled(Canvas)`
-  background: ${({ theme }) => theme.color.blue[700]};
-`
+export default styled(Canvas)``

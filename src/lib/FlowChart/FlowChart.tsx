@@ -9,6 +9,7 @@ import { getCanvasPoint } from './helpers/helpers'
 import useTransformRefs from './hooks/useTransformRefs'
 import { NODE_HEIGHT, NODE_WIDTH } from './constants'
 import { FlowChartUI } from './FlowChartUI'
+import { zoom } from './utils/zoom'
 
 interface FlowChartProps {
   className?: string
@@ -20,6 +21,7 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const [dragStartOffset, setDragStartOffset] = useState<Point>({ x: 0, y: 0 })
   const [translateOffset, setTranslateOffset] = useState<Point>({ x: 0, y: 0 })
   const [scale, setScale] = useState<number>(1)
+  const [origin, setOrigin] = useState<Point>({ x: 0, y: 0 }) // for scale calculations
   const [node, setNode] = useState<BaseNode>()
   const [activeId, setActiveId] = useState<string>()
   const [isDragging, setDragging] = useState(false)
@@ -30,9 +32,9 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
    */
   const handleDragStart = (n: BaseNode, e: DragEvent<HTMLDivElement>) => {
     const elem = e.currentTarget
-    const { x: pX, y: pY } = getCanvasPoint(e, elem)
-    const x = pX / scale
-    const y = pY / scale
+    const point = getCanvasPoint(e, elem)
+    const x = point.x / scale
+    const y = point.y / scale
     setDragging(true)
     setDragStartOffset({ x, y })
     setNode(n)
@@ -46,13 +48,40 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
     setScale(factor)
   }
 
+  const handleOrigin = (pt: Point) => {
+    setOrigin(pt)
+  }
+
   const handleZoomIn = () => {
-    setScale(scale + 0.25)
+    if (canvasRef.current) {
+      const x = zoom(
+        canvasRef.current,
+        scale,
+        origin,
+        translateOffset,
+        undefined,
+        'in',
+      )
+      setScale(x.factor)
+      setTranslateOffset(x.translate)
+      setOrigin(x.origin)
+    }
   }
 
   const handleZoomOut = () => {
-    let val = scale - 0.25
-    setScale(val <= 0.1 ? 0.1 : val)
+    if (canvasRef.current) {
+      const x = zoom(
+        canvasRef.current,
+        scale,
+        origin,
+        translateOffset,
+        undefined,
+        'out',
+      )
+      setScale(x.factor)
+      setTranslateOffset(x.translate)
+      setOrigin(x.origin)
+    }
   }
 
   const handleCenter = () => {
@@ -64,9 +93,9 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
     e.preventDefault()
     const { current: canvas } = canvasRef
     if (canvas) {
-      const { x: pX, y: pY } = getCanvasPoint(e, canvas)
-      const x = pX / scale
-      const y = pY / scale
+      const point = getCanvasPoint(e, canvas)
+      const x = point.x / scale
+      const y = point.y / scale
       if (node) {
         setNodes([
           ...nodes,
@@ -104,6 +133,7 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
         ctx={ctx}
         translateOffset={translateOffset}
         scale={scale}
+        origin={origin}
         nodes={nodes}
         activeId={activeId}
         isDragging={isDragging}
@@ -113,6 +143,7 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
         onDrop={handleDropNewNode}
         onTranslate={handleTranslate}
         onScale={handleScale}
+        onOrigin={handleOrigin}
       />
     </div>
   )

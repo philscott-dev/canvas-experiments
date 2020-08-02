@@ -1,23 +1,32 @@
-export function zoom(canvas: HTMLCanvasElement, scale: number, delta: number) {
-  const intensity = 0.001
-  // dont pass in translate offset, as this zoom
-  // is based off of canvas position only
-  // const { x, y } = getCanvasPoint(e, canvas)
-  // const zoom = Math.exp(e.deltaY * intensity)
-  // ctx.translate(origin.x, origin.y)
-  // const factor = scale * zoom
-  // const positionX = origin.x - (x / factor - x / scale)
-  // const positionY = origin.y - (y / factor - y / scale)
-  // ctx.scale(zoom, zoom)
-  // ctx.translate(-positionX, -positionY)
+import { WheelEvent } from 'react'
+import { getCanvasPoint, getCanvasCenter } from '../helpers/helpers'
+import { Point } from '../types'
 
-  // //update state
-  // onTranslate({
-  //   x: origin.x + translateOffset.x - positionX,
-  //   y: origin.y + translateOffset.y - positionY,
-  // })
-  // //set scale and fac
-  // onScale(factor)
-  // setOrigin({ x: positionX, y: positionY })
-  return intensity
+export function zoom(
+  canvas: HTMLCanvasElement,
+  scale: number,
+  origin: Point,
+  offset: Point,
+  e?: WheelEvent<HTMLCanvasElement>,
+  direction?: 'in' | 'out',
+) {
+  const intensity = 0.001
+  const { x, y } = e ? getCanvasPoint(e, canvas) : getCanvasCenter(canvas)
+  const delta = e ? e.deltaY : direction && direction === 'in' ? 100 : -100
+  const zoom = Math.exp(delta * intensity)
+  const factor = scale * zoom
+  const originX = origin.x - (x / factor - x / scale)
+  const originY = origin.y - (y / factor - y / scale)
+
+  return {
+    translate: {
+      x: origin.x + offset.x - originX,
+      y: origin.y + offset.y - originY,
+    },
+    origin: {
+      x: originX,
+      y: originY,
+    },
+    factor,
+  }
 }
