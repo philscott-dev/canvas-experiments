@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export default styled.p`
-  margin: 4px 0 0 8px;
+  margin: 4px 0 0 4px;
   padding: 0;
   font-size: 12px;
   font-weight: 500;

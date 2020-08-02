@@ -26,10 +26,6 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const [activeId, setActiveId] = useState<string>()
   const [isDragging, setDragging] = useState(false)
 
-  /**
-   * Transfer data as a placeholder in state
-   * once you start dragging
-   */
   const handleDragStart = (n: BaseNode, e: DragEvent<HTMLDivElement>) => {
     const elem = e.currentTarget
     const point = getCanvasPoint(e, elem)

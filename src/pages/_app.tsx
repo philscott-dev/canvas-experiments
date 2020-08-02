@@ -1,5 +1,6 @@
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from '../graphql/apollo/apolloClient'
 import Head from 'next/head'
-import PortalMount from 'lib/Portal/PortalMount'
 import { getYear } from 'date-fns'
 import { ThemeProvider } from '@emotion/react'
 import { theme } from 'theme'
@@ -8,6 +9,7 @@ import 'styles/fonts.css'
 import 'styles/default.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const apolloClient = useApollo(pageProps.initialApolloState)
   return (
     <>
       <Head>
@@ -24,10 +26,11 @@ const App = ({ Component, pageProps }: AppProps) => {
         />
         <meta name="mobile-web-app-capable" content="yes" />
       </Head>
-      <ThemeProvider theme={theme}>
-        {/* <PortalMount id="portal" /> */}
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <ApolloProvider client={apolloClient}>
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </ApolloProvider>
     </>
   )
 }

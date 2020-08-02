@@ -3,8 +3,9 @@ import { FC } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import { IconButton } from 'lib'
-import { FiZoomIn, FiZoomOut, FiAlignCenter } from 'react-icons/fi'
+import { FiZoomIn, FiZoomOut } from 'react-icons/fi'
 import { MdFilterCenterFocus } from 'react-icons/md'
+import Control from '../FlowChartControl'
 
 interface FlowChartZoomControlProps {
   className?: string
@@ -40,19 +41,14 @@ export default styled(FlowChartZoomControl)`
   border-radius: 8px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   pointer-events: all;
-  overflow: hidden;
-`
-
-const Control = styled(IconButton)`
-  box-sizing: border-box;
-  border-left: 1px solid ${({ theme }) => theme.color.indigo[600]};
-  height: 40px;
-  width: 48px;
-  &:hover {
-    background: ${({ theme }) => theme.color.indigo[300]};
-    & * {
-      color: ${({ theme }) => theme.color.white[100]};
+  > * {
+    border-right: 1px solid ${({ theme }) => theme.color.indigo[600]};
+    &:nth-last-of-type(1) {
+      border-radius: 0 8px 8px 0;
+      border-right: 0;
+    }
+    &:nth-of-type(1) {
+      border-radius: 8px 0 0 8px;
     }
   }
-  transition: all 0.25s ease-in-out;
 `
