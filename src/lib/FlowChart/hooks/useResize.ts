@@ -13,7 +13,6 @@ export default function useResize(
         draw()
       }
     }
-    resize()
     window.addEventListener('resize', resize)
     return () => window.removeEventListener('resize', resize)
   }, [canvas, draw])

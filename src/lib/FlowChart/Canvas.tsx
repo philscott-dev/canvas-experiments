@@ -75,6 +75,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
         draw()
       }
     }, [hasLoaded, draw, canvas])
+    useResize(canvas, draw)
 
     const onMouseDown = (
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
