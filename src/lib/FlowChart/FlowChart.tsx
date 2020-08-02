@@ -46,6 +46,20 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
     setScale(factor)
   }
 
+  const handleZoomIn = () => {
+    setScale(scale + 0.25)
+  }
+
+  const handleZoomOut = () => {
+    let val = scale - 0.25
+    setScale(val <= 0.1 ? 0.1 : val)
+  }
+
+  const handleCenter = () => {
+    setTranslateOffset({ x: 0, y: 0 })
+    setScale(1)
+  }
+
   const handleDropNewNode = (e: DragEvent) => {
     e.preventDefault()
     const { current: canvas } = canvasRef
@@ -78,7 +92,12 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
 
   return (
     <div className={className}>
-      <FlowChartUI onDragStart={handleDragStart} />
+      <FlowChartUI
+        onDragStart={handleDragStart}
+        onCenter={handleCenter}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+      />
       <Canvas
         ref={canvasRef}
         canvas={canvasRef.current}

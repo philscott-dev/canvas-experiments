@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import { IconButton } from 'lib'
-import { FiInfo, FiPlay, FiSkipForward } from 'react-icons/fi'
+import { FiPlay, FiSkipForward, FiHome } from 'react-icons/fi'
 import Text from '../Text'
 
 interface FlowCharTitleBarProps {
@@ -13,8 +13,10 @@ const FlowCharTitleBar: FC<FlowCharTitleBarProps> = ({ className }) => {
   return (
     <div className={className}>
       <Flex>
-        <Info />
-        <Text>PHIL'S WORKFLOW</Text>
+        <Control>
+          <FiHome />
+        </Control>
+        <Title>PHIL'S WORKFLOW</Title>
       </Flex>
       <Flex>
         <Control>
@@ -33,22 +35,21 @@ export default styled(FlowCharTitleBar)`
   justify-content: space-between;
   align-items: center;
   flex: 1;
-  padding-left: 16px;
   background: ${({ theme }) => theme.color.indigo[400]};
   height: 40px;
   border-radius: 8px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   pointer-events: all;
-`
-
-const Info = styled(FiInfo)`
-  margin-right: 8px;
-  color: ${({ theme }) => theme.color.white[100]};
+  overflow: hidden;
 `
 
 const Flex = styled.div`
   display: flex;
   align-items: center;
+`
+
+const Title = styled(Text)`
+  padding-left: 16px;
 `
 
 const Control = styled(IconButton)`

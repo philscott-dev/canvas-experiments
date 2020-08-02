@@ -13,9 +13,18 @@ import { BaseNode } from '../types'
 
 interface FlowChartUIProps {
   className?: string
+  onCenter: () => void
+  onZoomIn: () => void
+  onZoomOut: () => void
   onDragStart: (node: BaseNode, e: DragEvent<HTMLDivElement>) => void
 }
-const FlowChartUI: FC<FlowChartUIProps> = ({ className, onDragStart }) => {
+const FlowChartUI: FC<FlowChartUIProps> = ({
+  className,
+  onCenter,
+  onZoomIn,
+  onZoomOut,
+  onDragStart,
+}) => {
   return (
     <div className={className}>
       <Section>
@@ -26,7 +35,11 @@ const FlowChartUI: FC<FlowChartUIProps> = ({ className, onDragStart }) => {
           <FlowChartTitleBar />
         </TitleBar>
         <SidebarRight>
-          <FlowChartZoomControl />
+          <FlowChartZoomControl
+            onCenter={onCenter}
+            onZoomIn={onZoomIn}
+            onZoomOut={onZoomOut}
+          />
         </SidebarRight>
       </Section>
       <Detail>

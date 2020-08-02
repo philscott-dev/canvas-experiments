@@ -3,18 +3,30 @@ import { FC } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import { IconButton } from 'lib'
-import { FiZoomIn, FiZoomOut } from 'react-icons/fi'
+import { FiZoomIn, FiZoomOut, FiAlignCenter } from 'react-icons/fi'
+import { MdFilterCenterFocus } from 'react-icons/md'
 
 interface FlowChartZoomControlProps {
   className?: string
+  onCenter: () => void
+  onZoomIn: () => void
+  onZoomOut: () => void
 }
-const FlowChartZoomControl: FC<FlowChartZoomControlProps> = ({ className }) => {
+const FlowChartZoomControl: FC<FlowChartZoomControlProps> = ({
+  className,
+  onCenter,
+  onZoomIn,
+  onZoomOut,
+}) => {
   return (
     <div className={className}>
-      <Control>
+      <Control onMouseDown={onZoomOut}>
         <FiZoomOut />
       </Control>
-      <Control>
+      <Control onMouseDown={onCenter}>
+        <MdFilterCenterFocus />
+      </Control>
+      <Control onMouseDown={onZoomIn}>
         <FiZoomIn />
       </Control>
     </div>
