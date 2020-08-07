@@ -3,8 +3,8 @@ import { BaseNode } from './types'
 export const virustotal: BaseNode = {
   id: '0',
   type: 'service',
-  name: 'virustotal',
-  displayName: 'VirusTotal',
+  name: 'service1',
+  displayName: 'Service 1',
   colorPrimary: '#1DC971',
   colorSecondary: '#117944',
 }
@@ -12,8 +12,8 @@ export const virustotal: BaseNode = {
 export const domainTools: BaseNode = {
   id: '1',
   type: 'service',
-  name: 'domaintools',
-  displayName: 'DomainTools',
+  name: 'service2',
+  displayName: 'Service 2',
   colorPrimary: '#FF00B8',
   colorSecondary: '#880062',
 }
@@ -21,8 +21,8 @@ export const domainTools: BaseNode = {
 export const farsight: BaseNode = {
   id: '2',
   type: 'service',
-  name: 'farsight',
-  displayName: 'Farsight',
+  name: 'service0',
+  displayName: 'Service 0',
   colorPrimary: '#0253B1',
   colorSecondary: '#002E63',
 }
@@ -30,8 +30,8 @@ export const farsight: BaseNode = {
 export const recordedFuture: BaseNode = {
   id: '3',
   type: 'service',
-  name: 'recorded_future',
-  displayName: 'RecordedFuture',
+  name: 'service3',
+  displayName: 'Service 3',
   colorPrimary: '#FF8A00',
   colorSecondary: '#703C00',
 }
@@ -39,8 +39,8 @@ export const recordedFuture: BaseNode = {
 export const threatstream: BaseNode = {
   id: '4',
   type: 'service',
-  name: 'threatstream',
-  displayName: 'Threatstream',
+  name: 'service4',
+  displayName: 'Service 4',
   colorPrimary: '#9E00FF',
   colorSecondary: '#540087',
 }
@@ -48,8 +48,8 @@ export const threatstream: BaseNode = {
 export const urlHaus: BaseNode = {
   id: '5',
   type: 'service',
-  name: 'urlhaus',
-  displayName: 'URLhaus',
+  name: 'service5',
+  displayName: 'Service 5',
   colorPrimary: '#0287B1',
   colorSecondary: '#00526B',
 }
@@ -57,8 +57,8 @@ export const urlHaus: BaseNode = {
 export const spur: BaseNode = {
   id: '6',
   type: 'service',
-  name: 'spur',
-  displayName: 'Spur',
+  name: 'service6',
+  displayName: 'Service 6',
   colorPrimary: '#222832',
   colorSecondary: '#545454',
 }
@@ -66,8 +66,8 @@ export const spur: BaseNode = {
 export const phishlabs: BaseNode = {
   id: '7',
   type: 'service',
-  name: 'phishlabs',
-  displayName: 'PhishLabs',
+  name: 'service7',
+  displayName: 'Service 7',
   colorPrimary: '#4004EB',
   colorSecondary: '#25008F',
 }
@@ -75,8 +75,8 @@ export const phishlabs: BaseNode = {
 export const riskIQ: BaseNode = {
   id: '8',
   type: 'service',
-  name: 'riskiq',
-  displayName: 'RiskIQ',
+  name: 'service8',
+  displayName: 'Service 8',
   colorPrimary: '#00F0FF',
   colorSecondary: '#126368',
 }
@@ -84,8 +84,8 @@ export const riskIQ: BaseNode = {
 export const virustotalFileFeed: BaseNode = {
   id: '9',
   type: 'service',
-  name: 'virustotal_file_feed',
-  displayName: 'VirusTotal File Feed',
+  name: 'service9',
+  displayName: 'Service 9',
   colorPrimary: '#D2E033',
   colorSecondary: '#8C952B',
 }
@@ -93,8 +93,8 @@ export const virustotalFileFeed: BaseNode = {
 export const hyas: BaseNode = {
   id: '10',
   type: 'service',
-  name: 'hyas',
-  displayName: 'HYAS',
+  name: 'service10',
+  displayName: 'Service10',
   colorPrimary: '#FD5A51',
   colorSecondary: '#882D28',
 }

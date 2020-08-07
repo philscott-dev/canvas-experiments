@@ -6,6 +6,7 @@ import { FiSettings, FiLink2 } from 'react-icons/fi'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import Control from '../FlowChartControl'
 import Text from '../Text'
+import { FlowChartCodeEditor } from '../FlowChartCodeEditor'
 
 interface FlowChartDetailPanelProps {
   className?: string
@@ -41,7 +42,9 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
           </Control>
         </FlexLeft>
       </Bar>
-      <Body isExpanded={isExpanded}></Body>
+      <Body isExpanded={isExpanded}>
+        <FlowChartCodeEditor isExpanded={isExpanded} />
+      </Body>
     </div>
   )
 }
@@ -81,6 +84,6 @@ const Body = styled.div<{ isExpanded: boolean }>`
   box-sizing: border-box;
   pointer-events: all;
   flex: ${({ isExpanded }) => (isExpanded ? 1 : 0)};
-  background: ${({ theme }) => theme.color.blue[700]};
+  background: ${({ theme }) => '#202124' || theme.color.blue[700]};
   transition: all 0.25s ease-in-out;
 `

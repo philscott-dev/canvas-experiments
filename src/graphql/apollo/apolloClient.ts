@@ -1,30 +1,15 @@
 import { useMemo } from 'react'
-import {
-  ApolloClient,
-  HttpLink,
-  InMemoryCache,
-  NormalizedCacheObject,
-} from '@apollo/client'
-import { concatPagination } from '@apollo/client/utilities'
+import link from './link'
+import cache from './cache'
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 const createApolloClient = () => {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: new HttpLink({
-      uri: 'https://api.graph.cool/simple/v1/cixmkt2ul01q00122mksg82pn', // Server URL (must be absolute)
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-    }),
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            allPosts: concatPagination(),
-          },
-        },
-      },
-    }),
+    link,
+    cache,
   })
 }
 
