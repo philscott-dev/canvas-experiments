@@ -26,6 +26,10 @@ body {
 }
 
 .editor {
-  padding: 16px 0;
+  color: #636363;
+}
+
+.editor-wrapper {
+  flex: 1;
   transition: all 0.25s ease-in-out;
 }
