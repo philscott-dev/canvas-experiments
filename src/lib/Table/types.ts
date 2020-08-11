@@ -5,3 +5,9 @@ export type ExtraTableData = {
     cell?: (row: Data, index: number, data: Data[]) => JSX.Element
   }
 }
+
+export type ValueType = (
+  row: Data,
+  rowIndex: number,
+  data: Data[],
+) => JSX.Element | string | boolean | number

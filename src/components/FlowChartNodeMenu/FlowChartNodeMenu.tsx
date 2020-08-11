@@ -15,8 +15,8 @@ import MenuBody from './MenuBody'
 import Text from './Text'
 
 //make this date driven
-import services from '../services'
-import { BaseNode } from '../types'
+import services from '../FlowChart/services'
+import { BaseNode } from '../FlowChart/types'
 
 interface FlowChartNodeMenuProps {
   className?: string

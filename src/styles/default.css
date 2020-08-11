@@ -9,9 +9,8 @@ html {
 
   height: 100vh;
   min-height: 100vh;
-
-
 }
+
 body {
   margin: 0;
   background: #06091F;
@@ -26,10 +25,13 @@ body {
 }
 
 .editor {
+  flex: 1;
   color: #636363;
+  width: 50%;
 }
 
 .editor-wrapper {
   flex: 1;
   transition: all 0.25s ease-in-out;
+  width: 50%;
 }

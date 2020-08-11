@@ -1,53 +1,112 @@
-import React, { FC } from 'react'
+/** @jsx jsx */
 import styled from '@emotion/styled'
-import { Data } from './types'
-import { isBoolean, isFunction, isNumber, isString } from 'helpers/typecheck'
-// import isDate from 'date-fns/isDate'
-// import format from 'date-fns/format'
+import { FC } from 'react'
+import { jsx } from '@emotion/react'
+import { Data, ValueType } from './types'
+import { useValueTypeCustom } from './useValueTypeCustom'
+import RowExpandArrow from './RowExpand/RowExpandArrow'
 
 export interface TableHeadingProps {
-  value?: (
-    row: Data,
-    rowIndex: number,
-    data: Data[],
-  ) => JSX.Element | string | boolean | number
+  className?: string
   row: Data
   data: Data[]
   rowIndex: number
-  className?: string
+  cellKey: string
+  activeKey?: string
+  expandKey?: string
+  value?: ValueType
+  onCellClick: (key: string, isExpandable: boolean) => void
 }
 
 const Td: FC<TableHeadingProps> = ({
-  value,
   row,
   data,
   rowIndex,
   className,
+  cellKey,
+  expandKey,
+  activeKey,
+  value,
+  onCellClick,
 }) => {
-  // stringify bools
-  if (isBoolean(value)) {
-    return <td className={className}>{String(value)}</td>
+  const cell = useValueTypeCustom(row, data, rowIndex, value)
+  const handleCellClick = () => {
+    onCellClick(cellKey, cell.type === 'object')
   }
-
-  // call functions
-  if (isFunction(value)) {
-    return <td className={className}>{value(row, rowIndex, data)}</td>
-  }
-
-  // return normal render
-  if (isString(value) || isNumber(value)) {
-    return <td className={className}>{value}</td>
-  }
-
-  // if not renderable, return an empty TD
-  return <td className={className}></td>
+  return (
+    <TdWrapper
+      className={className}
+      hasExpandKey={!!expandKey}
+      isExpanded={expandKey === cellKey}
+    >
+      <Cell
+        type="button"
+        cell={cell.type}
+        isExpanded={expandKey === cellKey}
+        onMouseDown={handleCellClick}
+      >
+        <p>{cell.value}</p>
+        {cell.type === 'object' ? (
+          <RowExpandArrow isActive={expandKey === cellKey} />
+        ) : null}
+      </Cell>
+    </TdWrapper>
+  )
 }
 
-export default styled(Td)`
-  font-size: 14px;
+export default Td
+
+const TdWrapper = styled.div<{ isExpanded: boolean; hasExpandKey: boolean }>`
+  display: table-cell;
   vertical-align: top;
-  padding: 8px;
-  font-weight: 400;
-  font-family: ${({ theme }) => theme.font.family};
-  color: ${({ theme }) => theme.color.white[100]};
+  min-height: 40px;
+  font-weight: 300;
+  &:nth-of-type(1) {
+    & > button {
+      border-radius: ${({ hasExpandKey }) =>
+        hasExpandKey ? '8px 0 0 0' : '8px 0 0 8px'};
+    }
+  }
+  &:nth-last-of-type(1) {
+    & > button {
+      border-radius: ${({ hasExpandKey }) =>
+        hasExpandKey ? '0 8px 0 0 ' : '0 8px 8px 0'};
+    }
+  }
+`
+
+type CellType = 'text' | 'array' | 'object' | 'date'
+
+const Cell = styled.button<{ cell: CellType; isExpanded: boolean }>`
+  outline: none;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 12px;
+  margin: 0;
+  min-height: 40px;
+  width: 100%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  background: ${({ theme, isExpanded }) =>
+    isExpanded ? theme.color.indigo[300] : theme.color.indigo[400]};
+  &:hover {
+    border: 2px solid ${({ theme }) => theme.color.blue[300]};
+  }
+  & > p {
+    font-size: 12px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    margin: 0;
+    padding: 0;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+    white-space: ${({ cell }) =>
+      cell === 'object' || cell === 'date' ? 'nowrap' : 'inherit'};
+    font-family: ${({ theme }) => theme.font.family};
+    color: ${({ theme }) => theme.color.white[100]};
+  }
+  transition: all 0.1s ease-in-out;
 `

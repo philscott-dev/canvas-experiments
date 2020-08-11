@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import styled from '@emotion/styled'
-import { FC, DragEvent } from 'react'
+import { FC, DragEvent, useState } from 'react'
 import { jsx } from '@emotion/react'
 import { FlowChartNodeMenu } from '../FlowChartNodeMenu'
 import Section from './Section'
@@ -8,8 +8,8 @@ import { SidebarLeft, SidebarRight } from './Sidebar'
 import TitleBar from './TitleBar'
 import { FlowChartZoomControl } from '../FlowChartZoomControl'
 import { FlowChartTitleBar } from '../FlowChartTitleBar'
-import { FlowChartDetailPanel } from '../FlowChartDetailPanel'
-import { BaseNode } from '../types'
+import { BaseNode } from '../FlowChart/types'
+import { FlowChartDetailPanel, ExpandLevel } from '../FlowChartDetailPanel'
 
 interface FlowChartUIProps {
   className?: string
@@ -25,9 +25,16 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
   onZoomOut,
   onDragStart,
 }) => {
+  const [activePanel, setActivePanel] = useState('link')
+  const [expanded, setExpanded] = useState<ExpandLevel>(ExpandLevel.NONE)
+
+  const handleExpand = (expand: ExpandLevel, panel: string) => {
+    setActivePanel(panel)
+    setExpanded(expand)
+  }
   return (
     <div className={className}>
-      <Section>
+      <Section expand={'none'}>
         <SidebarLeft>
           <FlowChartNodeMenu onDragStart={onDragStart} />
         </SidebarLeft>
@@ -43,7 +50,11 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
         </SidebarRight>
       </Section>
       <Detail>
-        <FlowChartDetailPanel />
+        <FlowChartDetailPanel
+          activePanel={activePanel}
+          expanded={expanded}
+          onExpand={handleExpand}
+        />
       </Detail>
     </div>
   )

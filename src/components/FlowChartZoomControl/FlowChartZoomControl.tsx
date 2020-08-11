@@ -2,7 +2,6 @@
 import { FC } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
-import { IconButton } from 'lib'
 import { FiZoomIn, FiZoomOut } from 'react-icons/fi'
 import { MdFilterCenterFocus } from 'react-icons/md'
 import Control from '../FlowChartControl'
@@ -21,13 +20,13 @@ const FlowChartZoomControl: FC<FlowChartZoomControlProps> = ({
 }) => {
   return (
     <div className={className}>
-      <Control onMouseDown={onZoomOut}>
+      <Control value="zoom-out" onClick={onZoomOut}>
         <FiZoomOut />
       </Control>
-      <Control onMouseDown={onCenter}>
+      <Control value="center" onClick={onCenter}>
         <MdFilterCenterFocus />
       </Control>
-      <Control onMouseDown={onZoomIn}>
+      <Control value="zoom-in" onClick={onZoomIn}>
         <FiZoomIn />
       </Control>
     </div>

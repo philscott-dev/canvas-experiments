@@ -7,3 +7,11 @@ export function capitalize(string: string): string {
 export function splitAndCapitalize(string: string): string {
   return humps.decamelize(string).split('_').map(capitalize).join(' ')
 }
+
+export function splitAndUpperCase(string: string): string {
+  return humps
+    .decamelize(string)
+    .split('_')
+    .map((string) => string.toUpperCase())
+    .join(' ')
+}

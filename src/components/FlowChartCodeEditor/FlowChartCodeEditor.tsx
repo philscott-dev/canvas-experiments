@@ -4,18 +4,18 @@ import { FC, useRef, useState, useEffect } from 'react'
 import { jsx, css } from '@emotion/react'
 import dynamic from 'next/dynamic'
 import { format } from 'date-fns'
-import { monaco } from '@monaco-editor/react'
+import { ExpandLevel } from 'components/FlowChartDetailPanel'
 const Editor = dynamic(() => import('@monaco-editor/react'), { ssr: false })
 
 const dateFormat = 'HH:mm:ss'
 
 interface FlowChartCodeEditorProps {
   className?: string
-  isExpanded: boolean
+  expanded: ExpandLevel
 }
 const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
   className,
-  isExpanded,
+  expanded,
 }) => {
   const editorRef = useRef<{
     className: string
@@ -37,15 +37,15 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
 
   // useDelayedExpand
   useEffect(() => {
-    if (isExpanded) {
+    if (expanded) {
       const timeout = setTimeout(() => {
-        setVisible(isExpanded)
+        setVisible(true)
       }, 250)
       return () => clearTimeout(timeout)
     } else {
-      setVisible(isExpanded)
+      setVisible(false)
     }
-  }, [isExpanded])
+  }, [expanded])
 
   const handleEditorDidMount = (_: () => string, editor: any) => {
     editorRef.current = editor
@@ -64,7 +64,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
           setTerminalValue(terminalValue + `${date}:~$ Success \r\n`)
         } catch (err) {
           console.log(err)
-          setTerminalValue(terminalValue + `${date}:~$ Error \r\n`)
+          setTerminalValue(terminalValue + date + ':~$ ' + err + '\r\n')
         }
       }
     }
@@ -110,6 +110,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
           display: ${isVisible ? 'visible' : 'none'};
           box-sizing: border-box;
           height: calc((100vh / 2) - 40px - 24px);
+          width: 200px;
           transition: all 0.25s ease-in-out;
         `}
       />

@@ -2,29 +2,53 @@
 import { FC } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
-import { IconButton } from 'lib'
-import { FiPlay, FiSkipForward, FiHome } from 'react-icons/fi'
-import Text from '../Text'
+import Text from '../FlowChart/Text'
 import Control from '../FlowChartControl'
+import { useRouter } from 'next/router'
+import {
+  FiPlay,
+  FiSkipForward,
+  FiHome,
+  FiDatabase,
+  FiGitPullRequest,
+} from 'react-icons/fi'
 
 interface FlowCharTitleBarProps {
   className?: string
 }
 const FlowCharTitleBar: FC<FlowCharTitleBarProps> = ({ className }) => {
+  const router = useRouter()
+  const handleRoute = (route?: string) => {
+    if (route) {
+      router.push(route)
+    }
+  }
+
+  const handleAction = (action?: string) => {
+    console.log(action)
+  }
   return (
     <div className={className}>
       <FlexLeft>
-        <Control>
+        <Control value="options" onClick={handleAction}>
+          <Title>PHIL'S WORKFLOW</Title>
+        </Control>
+        <Control value={'/'} onClick={handleRoute}>
           <FiHome />
         </Control>
-        <Title>PHIL'S WORKFLOW</Title>
+        <Control value={'/'} onClick={handleRoute}>
+          <FiGitPullRequest />
+        </Control>
+        <Control value={'/data'} onClick={handleRoute}>
+          <FiDatabase />
+        </Control>
       </FlexLeft>
 
       <FlexRight>
-        <Control>
+        <Control value={'next'} onClick={handleAction}>
           <FiSkipForward />
         </Control>
-        <Control>
+        <Control value={'play'} onClick={handleAction}>
           <FiPlay />
         </Control>
       </FlexRight>
@@ -47,9 +71,9 @@ export default styled(FlowCharTitleBar)`
 const FlexLeft = styled.div`
   display: flex;
   align-items: center;
-  > * {
+  > button {
+    border-right: 1px solid ${({ theme }) => theme.color.indigo[600]};
     &:nth-of-type(1) {
-      border-right: 1px solid ${({ theme }) => theme.color.indigo[600]};
       border-radius: 8px 0 0 8px;
     }
   }
@@ -57,14 +81,11 @@ const FlexLeft = styled.div`
 const FlexRight = styled.div`
   display: flex;
   align-items: center;
-  > * {
+  > button {
     border-left: 1px solid ${({ theme }) => theme.color.indigo[600]};
     &:nth-last-of-type(1) {
       border-radius: 0 8px 8px 0;
-      border-right: 0;
     }
   }
 `
-const Title = styled(Text)`
-  padding-left: 16px;
-`
+const Title = styled(Text)``

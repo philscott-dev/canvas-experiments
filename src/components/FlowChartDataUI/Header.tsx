@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
 
 export default styled.section`
-  box-sizing: border-box;
   display: flex;
-  flex: 1;
+  justify-content: space-between;
+  margin-top: 64px;
+  margin-bottom: 24px;
 `

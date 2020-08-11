@@ -1,13 +1,79 @@
+import React, { FC, useState, useEffect } from 'react'
 import styled from '@emotion/styled'
-const Tr = styled.tr`
-  background: ${({ theme }) => theme.color.blue[600]};
-  border-bottom: 1px solid ${({ theme }) => theme.color.blue[700]};
-  :nth-of-type(2) {
-    background: ${({ theme }) => theme.color.blue[500]};
+import { Data, ExtraTableData } from './types'
+import { RowExpand } from './RowExpand'
+import Td from './Td'
+
+interface TrExpandProps {
+  className?: string
+  keys: string[]
+  index: number
+  originalRow: Data
+  extraData?: ExtraTableData
+  data: Data[]
+}
+const TrExpand: FC<TrExpandProps> = ({
+  className,
+  keys,
+  index,
+  originalRow,
+  extraData,
+  data,
+}) => {
+  const [row, setRow] = useState<{ [x: string]: any }>({})
+  const [activeKey, setActiveKey] = useState<string>()
+  const [expandKey, setExpandKey] = useState<string>()
+
+  useEffect(() => {
+    setRow({ ...originalRow, ...extraData })
+  }, [originalRow, extraData])
+
+  const handleSetActiveKey = (key: string, isObjectType: boolean) => {
+    setActiveKey(key === activeKey ? undefined : key)
+    if (isObjectType) {
+      setExpandKey(key === expandKey ? undefined : key)
+    }
   }
-  :last-child {
-    border-bottom: none;
-  }
+
+  return (
+    <>
+      <Row className={className}>
+        {keys.map((key) => (
+          <Td
+            key={key}
+            value={row[key]}
+            cellKey={key}
+            activeKey={activeKey}
+            expandKey={expandKey}
+            rowIndex={index}
+            row={originalRow}
+            data={data}
+            onCellClick={handleSetActiveKey}
+          />
+        ))}
+      </Row>
+      <RowExpand
+        colSpan={keys.length}
+        cellKey={expandKey}
+        data={expandKey ? row[expandKey] : null}
+      />
+      <Spacer />
+    </>
+  )
+}
+
+export default TrExpand
+
+export const Row = styled.div`
+  display: table-row;
+  max-height: 40px;
+  /* &:hover {
+    & > div > button {
+      background: ${({ theme }) => theme.color.indigo[300]};
+    }
+  } */
 `
 
-export default Tr
+const Spacer = styled.div`
+  margin-bottom: 12px;
+`

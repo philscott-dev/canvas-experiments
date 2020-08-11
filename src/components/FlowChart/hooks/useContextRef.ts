@@ -1,6 +1,6 @@
 import { useEffect, useState, RefObject } from 'react'
 
-export default function useTransformRefs(
+export default function useContextRef(
   canvasRef: RefObject<HTMLCanvasElement>,
 ): { ctx: CanvasRenderingContext2D | null } {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
