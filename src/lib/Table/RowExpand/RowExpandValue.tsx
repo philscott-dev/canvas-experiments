@@ -65,9 +65,9 @@ const ValueButton = styled.button<{ isActive: boolean }>`
   border-radius: 2px;
   cursor: pointer;
   background: transparent;
-  border: 2px solid transparent;
-  ${({ theme, isActive }) =>
-    isActive ? theme.color.blue[300] : 'transparent'};
+  border: 2px solid
+    ${({ theme, isActive }) =>
+      isActive ? theme.color.blue[300] : 'transparent'};
   &:hover {
     border: 2px solid ${({ theme }) => theme.color.blue[300]};
   }

@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import { initialValue } from './initialValue'
 import Terminal from './Terminal'
 import dynamic from 'next/dynamic'
+
 const Editor = dynamic(() => import('@monaco-editor/react'), { ssr: false })
 
 const dateFormat = 'HH:mm:ss'
