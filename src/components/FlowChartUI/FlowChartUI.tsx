@@ -9,7 +9,8 @@ import TitleBar from './TitleBar'
 import { FlowChartZoomControl } from '../FlowChartZoomControl'
 import { FlowChartTitleBar } from '../FlowChartTitleBar'
 import { BaseNode } from '../FlowChart/types'
-import { FlowChartDetailPanel, ExpandLevel } from '../FlowChartDetailPanel'
+import { FlowChartDetailPanel } from '../FlowChartDetailPanel'
+import { ExpandLevel } from 'enums'
 
 interface FlowChartUIProps {
   className?: string
@@ -26,21 +27,19 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
   onDragStart,
 }) => {
   const [activePanel, setActivePanel] = useState('link')
-  const [expanded, setExpanded] = useState<ExpandLevel>(ExpandLevel.NONE)
+  const [expandLevel, setExpandLevel] = useState<ExpandLevel>(ExpandLevel.NONE)
 
   const handleExpand = (expand: ExpandLevel, panel: string) => {
     setActivePanel(panel)
-    setExpanded(expand)
+    setExpandLevel(expand)
   }
   return (
     <div className={className}>
-      <Section expand={'none'}>
+      <Section expandLevel={expandLevel}>
         <SidebarLeft>
           <FlowChartNodeMenu onDragStart={onDragStart} />
         </SidebarLeft>
-        <TitleBar>
-          <FlowChartTitleBar />
-        </TitleBar>
+        <FlowChartTitleBar />
         <SidebarRight>
           <FlowChartZoomControl
             onCenter={onCenter}
@@ -49,13 +48,11 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
           />
         </SidebarRight>
       </Section>
-      <Detail>
-        <FlowChartDetailPanel
-          activePanel={activePanel}
-          expanded={expanded}
-          onExpand={handleExpand}
-        />
-      </Detail>
+      <FlowChartDetailPanel
+        activePanel={activePanel}
+        expandLevel={expandLevel}
+        onExpand={handleExpand}
+      />
     </div>
   )
 }
@@ -70,12 +67,4 @@ export default styled(FlowChartUI)`
   left: 0;
   right: 0;
   bottom: 0;
-`
-
-const Detail = styled.section`
-  box-sizing: border-box;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: flex-end;
 `

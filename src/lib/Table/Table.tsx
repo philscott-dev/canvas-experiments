@@ -26,7 +26,7 @@ const Table: FC<TableProps> = ({
 }) => {
   const keys = useUniqueKeys({ data, extraData, include, exclude })
   return (
-    <div className={className}>
+    <table className={className}>
       <Thead>
         <Row>
           {keys.map((key) => (
@@ -49,14 +49,14 @@ const Table: FC<TableProps> = ({
             )
           })}
       </Tbody>
-    </div>
+    </table>
   )
 }
 
 export default styled(Table)`
-  display: table;
   width: 100%;
   border-collapse: collapse;
-  border-radius: 2px;
+  border-spacing: 0;
+  border: 0;
   overflow: hidden;
 `

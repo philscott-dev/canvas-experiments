@@ -31,8 +31,8 @@ const RowExpand: FC<RowExpandProps> = ({
   if (!data) return null
 
   return (
-    <div className={className}>
-      <td colSpan={colSpan}>
+    <tr className={className}>
+      <Cell colSpan={colSpan}>
         <RowExpandSection
           cellKey={cellKey}
           expandKey={expandKeys[0]}
@@ -50,11 +50,14 @@ const RowExpand: FC<RowExpandProps> = ({
             onExpand={handleExpand}
           />
         ))}
-      </td>
-    </div>
+      </Cell>
+    </tr>
   )
 }
 
-export default styled(RowExpand)`
-  display: table-row;
+export default styled(RowExpand)``
+
+const Cell = styled.td`
+  box-sizing: border-box;
+  padding: 0;
 `

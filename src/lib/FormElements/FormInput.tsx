@@ -9,6 +9,7 @@ import { Size } from './types'
 import { INPUT_LARGE, INPUT_SMALL } from './constants'
 
 export interface FormInputProps {
+  className?: string
   name: string
   placeholder: string
   type: string
@@ -26,6 +27,7 @@ export interface FormInputProps {
 }
 
 const FormInput: FC<FormInputProps> = ({
+  className,
   name,
   label,
   inputSize = 'large',

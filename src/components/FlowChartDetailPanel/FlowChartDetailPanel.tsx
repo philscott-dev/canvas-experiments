@@ -5,27 +5,31 @@ import { jsx } from '@emotion/react'
 import { Text } from 'lib'
 import { FiLink2, FiDatabase } from 'react-icons/fi'
 import { FaCode, FaChevronDown, FaChevronUp } from 'react-icons/fa'
-import Control from '../FlowChartControl'
-import { FlowChartCodeEditor } from '../FlowChartCodeEditor'
-import { ExpandLevel } from './index'
+import { ExpandLevel } from 'enums'
+import { FlowChartCodeEditor, FlowChartControl as Control } from 'components'
+
+import FlowChartDataPanel from '../FlowChartDataPanel/FlowChartDataPanel'
+import DetailPanelBody from './DetailPanelBody'
 
 interface FlowChartDetailPanelProps {
   className?: string
   displayName?: string
   activePanel: string
-  expanded: ExpandLevel
+  expandLevel: ExpandLevel
   onExpand: (expand: ExpandLevel, panel: string) => void
 }
 const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   className,
   displayName,
-  expanded,
+  expandLevel,
   activePanel,
   onExpand,
 }) => {
   const [lastExpand, setLastExpand] = useState<ExpandLevel>(ExpandLevel.NONE)
+
   const handleNameClick = () => {
-    const level = expanded === ExpandLevel.NONE ? lastExpand : ExpandLevel.NONE
+    const level =
+      expandLevel === ExpandLevel.NONE ? lastExpand : ExpandLevel.NONE
     onExpand(level, activePanel)
   }
   const handleCodeClick = () => {
@@ -46,7 +50,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
       <Bar>
         <FlexLeft>
           <Control value="expand" onClick={handleNameClick}>
-            {expanded !== ExpandLevel.NONE ? (
+            {expandLevel !== ExpandLevel.NONE ? (
               <FaChevronDown />
             ) : (
               <FaChevronUp />
@@ -76,9 +80,19 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
           </Control>
         </FlexLeft>
       </Bar>
-      <Body expanded={expanded}>
-        <FlowChartCodeEditor expanded={expanded} />
-      </Body>
+      <DetailPanelBody
+        isActive={activePanel === 'code'}
+        expandLevel={expandLevel}
+      >
+        <FlowChartCodeEditor />
+      </DetailPanelBody>
+
+      <DetailPanelBody
+        isActive={activePanel === 'data'}
+        expandLevel={expandLevel}
+      >
+        <FlowChartDataPanel />
+      </DetailPanelBody>
     </div>
   )
 }
@@ -90,6 +104,7 @@ export default styled(FlowChartDetailPanel)`
   flex-direction: column;
   justify-content: flex-end;
   padding-top: 24px;
+  transition: all 0.25s ease-in-out;
 `
 
 const Title = styled(Text)`
@@ -112,12 +127,4 @@ const FlexLeft = styled.div`
   > button {
     border-right: 1px solid ${({ theme }) => theme.color.indigo[600]};
   }
-`
-
-const Body = styled.div<{ expanded: ExpandLevel }>`
-  box-sizing: border-box;
-  pointer-events: all;
-  flex: ${({ expanded }) => expanded};
-  background: ${({ theme }) => '#202124' || theme.color.blue[700]};
-  transition: all 0.25s ease-in-out;
 `

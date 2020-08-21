@@ -4,9 +4,8 @@ interface TbodyProps {
   isScrollable?: boolean
 }
 
-const Tbody = styled.div<TbodyProps>`
+const Tbody = styled.tbody<TbodyProps>`
   position: relative;
-  display: table-row-group;
   width: 100%;
   overflow-y: ${({ isScrollable }) => (isScrollable ? 'auto' : 'unset')};
 `

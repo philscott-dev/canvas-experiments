@@ -57,16 +57,19 @@ const TrExpand: FC<TrExpandProps> = ({
         cellKey={expandKey}
         data={expandKey ? row[expandKey] : null}
       />
-      <Spacer />
+      <tr>
+        <Spacer />
+      </tr>
     </>
   )
 }
 
 export default TrExpand
 
-export const Row = styled.div`
-  display: table-row;
+export const Row = styled.tr`
   max-height: 40px;
+  box-sizing: border-box;
+  padding: 0;
   /* &:hover {
     & > div > button {
       background: ${({ theme }) => theme.color.indigo[300]};
@@ -74,6 +77,6 @@ export const Row = styled.div`
   } */
 `
 
-const Spacer = styled.div`
-  margin-bottom: 12px;
+const Spacer = styled.td`
+  padding-bottom: 12px;
 `

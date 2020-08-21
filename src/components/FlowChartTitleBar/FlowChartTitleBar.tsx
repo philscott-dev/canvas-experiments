@@ -60,6 +60,8 @@ export default styled(FlowCharTitleBar)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
+  margin: 24px;
   flex: 1;
   background: ${({ theme }) => theme.color.indigo[400]};
   height: 40px;

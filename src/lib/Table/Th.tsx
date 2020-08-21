@@ -19,7 +19,7 @@ const Th: FC<ThProps> = ({ heading, onClick, className }) => {
     }
   }
   return (
-    <div className={className} onClick={handleClick}>
+    <th className={className} onClick={handleClick}>
       <Wrapper>
         <IconButton>
           <FiMoreVertical
@@ -31,16 +31,16 @@ const Th: FC<ThProps> = ({ heading, onClick, className }) => {
         </IconButton>
         {splitAndCapitalize(heading)}
       </Wrapper>
-    </div>
+    </th>
   )
 }
 
 export default styled(Th)`
-  display: table-cell;
   padding: 12px;
   padding-bottom: 16px;
   font-weight: 500;
   font-size: 12px;
+  border: 0;
   text-align: left;
   white-space: nowrap;
   font-family: ${({ theme }) => theme.font.family};

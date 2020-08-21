@@ -29,7 +29,7 @@ const RowExpandSection: FC<RowExpandSectionProps> = ({
 
   return (
     <section className={className}>
-      <RowExpandTitle> {title}</RowExpandTitle>
+      <RowExpandTitle>{title}</RowExpandTitle>
       <div>
         {data
           ? Object.keys(data).map((key, i) => (

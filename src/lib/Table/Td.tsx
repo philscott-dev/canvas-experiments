@@ -56,11 +56,12 @@ const Td: FC<TableHeadingProps> = ({
 
 export default Td
 
-const TdWrapper = styled.div<{ isExpanded: boolean; hasExpandKey: boolean }>`
-  display: table-cell;
+const TdWrapper = styled.td<{ isExpanded: boolean; hasExpandKey: boolean }>`
   vertical-align: top;
   min-height: 40px;
   font-weight: 300;
+  box-sizing: border-box;
+  padding: 0;
   &:nth-of-type(1) {
     & > button {
       border-radius: ${({ hasExpandKey }) =>
@@ -83,7 +84,6 @@ const Cell = styled.button<{ cell: CellType; isExpanded: boolean }>`
   align-items: center;
   box-sizing: border-box;
   padding: 0 12px;
-  margin: 0;
   min-height: 40px;
   width: 100%;
   cursor: pointer;

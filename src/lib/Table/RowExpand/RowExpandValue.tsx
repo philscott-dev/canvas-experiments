@@ -6,6 +6,8 @@ import { splitAndUpperCase } from 'helpers/string'
 import { ValueType } from '../types'
 import { useValueType } from '../useValueType'
 import RowExpandArrow from './RowExpandArrow'
+import RowExpandValueHeading from './RowExpandValueHeading'
+import RowExpandValueText from './RowExpandValueText'
 
 interface RowExpandValueProps {
   className?: string
@@ -40,9 +42,9 @@ const RowExpandValue: FC<RowExpandValueProps> = ({
       isActive={expandKey === cellKey}
       onMouseDown={handleClick}
     >
-      <Heading>{title}</Heading>
+      <RowExpandValueHeading>{title}</RowExpandValueHeading>
       <Flex>
-        <Text>{cell.value}</Text>
+        <RowExpandValueText>{cell.value}</RowExpandValueText>
         {cell.type === 'object' ? (
           <RowExpandArrow isActive={expandKey === cellKey} />
         ) : null}
@@ -63,10 +65,9 @@ const ValueButton = styled.button<{ isActive: boolean }>`
   border-radius: 2px;
   cursor: pointer;
   background: transparent;
-  border: none;
-  border: 2px solid
-    ${({ theme, isActive }) =>
-      isActive ? theme.color.blue[300] : 'transparent'};
+  border: 2px solid transparent;
+  ${({ theme, isActive }) =>
+    isActive ? theme.color.blue[300] : 'transparent'};
   &:hover {
     border: 2px solid ${({ theme }) => theme.color.blue[300]};
   }
@@ -76,30 +77,4 @@ const ValueButton = styled.button<{ isActive: boolean }>`
 const Flex = styled.div`
   display: flex;
   align-items: center;
-`
-
-const Heading = styled.p`
-  font-family: ${({ theme }) => theme.font.family};
-  color: #9f9f9f;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 10px;
-  line-height: 15px;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  text-align: left;
-`
-
-const Text = styled.p`
-  font-family: ${({ theme }) => theme.font.family};
-  color: ${({ theme }) => theme.color.white[100]};
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 18px;
-  margin: 0;
-  padding: 0;
-  text-align: left;
 `

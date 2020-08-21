@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
-const Thead = styled.div`
-  display: table-header-group;
+const Thead = styled.thead`
+  border: 0;
 `
 
 export default Thead
