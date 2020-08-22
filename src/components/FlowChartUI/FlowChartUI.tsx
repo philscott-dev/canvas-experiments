@@ -29,8 +29,10 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
   const [activePanel, setActivePanel] = useState('link')
   const [expandLevel, setExpandLevel] = useState<ExpandLevel>(ExpandLevel.NONE)
 
-  const handleExpand = (expand: ExpandLevel, panel: string) => {
+  const handleActivePanel = (panel: string) => {
     setActivePanel(panel)
+  }
+  const handleExpand = (expand: ExpandLevel) => {
     setExpandLevel(expand)
   }
   return (
@@ -51,6 +53,7 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
       <FlowChartDetailPanel
         activePanel={activePanel}
         expandLevel={expandLevel}
+        onActivePanel={handleActivePanel}
         onExpand={handleExpand}
       />
     </div>

@@ -5,8 +5,9 @@ import { jsx } from '@emotion/react'
 
 interface FlowChartControlProps {
   className?: string
-  value: string
+  value?: string
   isActive?: boolean
+  isDisabled?: boolean
   onClick: (value?: string) => void
 }
 const FlowChartControl: FC<FlowChartControlProps> = ({
@@ -14,18 +15,18 @@ const FlowChartControl: FC<FlowChartControlProps> = ({
   children,
   value,
   isActive,
+  isDisabled,
   onClick,
 }) => {
   const handleClick = () => {
-    if (value && onClick) {
-      onClick(value)
-    }
+    onClick(value)
   }
   return (
     <Control
       type="button"
       className={className}
       isActive={isActive}
+      disabled={isDisabled}
       onMouseDown={handleClick}
     >
       {children}

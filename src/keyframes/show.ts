@@ -8,6 +8,6 @@ export const show = keyframes`
     display: none;
   }
   100% {
-    display: initial;
+    display: block;
   }
 `
