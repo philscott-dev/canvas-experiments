@@ -51,17 +51,20 @@ interface BodyProps {
 const Container = styled.div<BodyProps>`
   box-sizing: border-box;
   pointer-events: all;
-  display: ${({ isActive, expandLevel }) =>
-    isActive && expandLevel !== 0 ? 'initial' : 'none'};
+  max-height: ${({ isActive, expandLevel }) =>
+    isActive && expandLevel !== ExpandLevel.NONE ? '100%' : 0};
   flex: 1;
   background: ${({ theme }) => theme.color.blue[700] + 'f7'};
   transition: all 0.25s ease-in-out;
+
+  /* display: ${({ isActive, expandLevel }) =>
+    isActive && expandLevel !== ExpandLevel.NONE ? 'initial' : 'none'}; */
 `
 
 const Wrapper = styled.div<{ isVisible: boolean; isActive: boolean }>`
   display: none;
-  animation-name: ${({ isActive }) => (isActive ? show : null)};
+  /* animation-name: ${({ isActive }) => (isActive ? show : null)};
   animation-duration: 0.5s;
   animation-timing-function: ease-in-out;
-  animation-fill-mode: forwards;
+  animation-fill-mode: forwards; */
 `

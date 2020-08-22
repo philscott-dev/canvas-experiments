@@ -27,6 +27,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   onExpand,
   onActivePanel,
 }) => {
+  console.log(expandLevel)
   const lastExpand = useLastExpand(expandLevel)
   const handleNameClick = () => {
     const level =
@@ -38,7 +39,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
     if (value) {
       onActivePanel(value)
       if (expandLevel === ExpandLevel.NONE) {
-        onExpand(lastExpand)
+        onExpand(lastExpand || ExpandLevel.MID)
       }
     }
   }
@@ -58,7 +59,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   }
 
   return (
-    <div className={className}>
+    <Container className={className}>
       <Bar>
         <FlexLeft>
           <Control value="expand" onClick={handleNameClick}>
@@ -110,7 +111,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
         isActive={activePanel === 'link'}
         expandLevel={expandLevel}
       >
-        {/* <div>link</div> */}
+        <div>link</div>
       </DetailPanelBody>
       <DetailPanelBody
         isActive={activePanel === 'data'}
@@ -118,11 +119,13 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
       >
         <FlowChartDataPanel />
       </DetailPanelBody>
-    </div>
+    </Container>
   )
 }
 
-export default styled(FlowChartDetailPanel)`
+export default FlowChartDetailPanel
+
+const Container = styled.section`
   flex: 1;
   box-sizing: border-box;
   display: flex;
@@ -142,6 +145,7 @@ const Bar = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   pointer-events: all;
+  flex: 1;
   min-height: 40px;
   max-height: 40px;
   background: ${({ theme }) => theme.color.indigo[400]};
