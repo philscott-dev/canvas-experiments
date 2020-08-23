@@ -5,32 +5,60 @@ import { jsx, css } from '@emotion/react'
 import { format } from 'date-fns'
 import { initialValue } from './initialValue'
 import Terminal from './Terminal'
-import dynamic from 'next/dynamic'
-const Editor = dynamic(() => import('@monaco-editor/react'), { ssr: false })
+import Editor from '@monaco-editor/react'
+import { ExpandLevel } from 'enums'
 const dateFormat = 'HH:mm:ss'
 
 interface FlowChartCodeEditorProps {
   className?: string
   isActive: boolean
+  expandLevel: ExpandLevel
 }
 const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
   className,
   isActive,
+  expandLevel,
 }) => {
   const editorRef = useRef<{
-    className: string
-    wrapperClassName: string
     onDidChangeModelContent: (cb: () => void) => void
     getValue: () => void
   }>()
-
+  //const [editorValue, setEditorValue] = useState<string>()
   const [outputValue, setOutputValue] = useState(
     `${format(new Date(), dateFormat)}:~$ Initialized \r\n`,
   )
 
+  // delay render by 1 cycle
+  // const [editorDidMount, setEditorDidMount] = useState(false)
+  const [initRender, setInitRender] = useState<boolean>()
+  useEffect(() => {
+    if (initRender === undefined && isActive) {
+      setInitRender(true)
+    }
+  }, [isActive, initRender])
+
+  // update semi-controlled value
+  // useEffect(() => {
+  //   const editor = editorRef?.current ?? null
+  //   console.log(editor, editorDidMount)
+  //   if (editor && editorDidMount) {
+  //     editor.onDidChangeModelContent(() => {
+  //       console.log(editor.getValue())
+  //     })
+  //   }
+  // }, [editorDidMount])
+
+  // useEffect(() => {
+  //   if (expandLevel && editorRef.current) {
+  //     const value = editorRef.current.getValue()
+  //     setEditorValue(value)
+  //   }
+  // }, [expandLevel])
+
   const handleEditorDidMount = (_: () => string, editor: any) => {
     console.log(editor)
     editorRef.current = editor
+    //setEditorDidMount(true)
   }
 
   const handleEvalScript = () => {
@@ -63,9 +91,9 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
 
   return (
     <div className={className}>
-      {isActive ? (
+      {initRender ? (
         <Editor
-          loading={null}
+          loading={<div></div>}
           width="50%"
           height="100%"
           value={initialValue}
@@ -73,14 +101,13 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
           language="javascript"
           theme="dark"
           options={{
-            tabSize: 2,
             minimap: {
               enabled: false,
             },
           }}
-          css={editorCss}
         />
       ) : null}
+
       <Terminal outputValue={outputValue} onEvalScript={handleEvalScript} />
     </div>
   )
@@ -96,8 +123,12 @@ export default styled(FlowChartCodeEditor)`
 `
 
 const editorCss = css`
+  display: flex;
   flex: 1;
   box-sizing: border-box;
-  width: 200px;
   transition: all 0.25s ease-in-out;
+  > {
+    height: inherit;
+    flex: 1;
+  }
 `
