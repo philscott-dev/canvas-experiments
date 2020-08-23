@@ -16,28 +16,24 @@ const DetailPanelBody: FC<DetailPanelBodyProps> = ({
   children,
   isActive,
 }) => {
-  const [isVisible, setVisible] = useState(false)
+  //const [isVisible, setVisible] = useState(false)
   // useDelayedExpand
-  useEffect(() => {
-    if (isActive) {
-      const timeout = setTimeout(() => {
-        setVisible(true)
-      }, 250)
-      return () => clearTimeout(timeout)
-    } else {
-      setVisible(false)
-    }
-  }, [isActive])
+  // useEffect(() => {
+  //   if (isActive) {
+  //     const timeout = setTimeout(() => {
+  //       setVisible(true)
+  //     }, 250)
+  //     return () => clearTimeout(timeout)
+  //   } else {
+  //     setVisible(false)
+  //   }
+  // }, [isActive])
   return (
-    <Container
-      className={className}
-      expandLevel={expandLevel}
-      isActive={isActive}
-    >
-      <Wrapper isVisible={isVisible} isActive={isActive}>
+    <Body className={className} expandLevel={expandLevel} isActive={isActive}>
+      <Wrapper isVisible={false} isActive={isActive}>
         {children}
       </Wrapper>
-    </Container>
+    </Body>
   )
 }
 
@@ -48,20 +44,21 @@ interface BodyProps {
   isActive: boolean
 }
 
-const Container = styled.div<BodyProps>`
+const Body = styled.div<BodyProps>`
   box-sizing: border-box;
   pointer-events: all;
-  max-height: ${({ isActive, expandLevel }) =>
-    isActive && expandLevel !== ExpandLevel.NONE ? '100%' : 0};
+  height: initial;
   flex: 1;
+  overflow: auto;
+  display: ${({ isActive }) => (isActive ? 'initial' : 'none')};
   background: ${({ theme }) => theme.color.blue[700] + 'f7'};
+  max-height: ${({ expandLevel }) =>
+    expandLevel !== ExpandLevel.NONE ? '100%' : 0};
   transition: all 0.25s ease-in-out;
-
-  /* display: ${({ isActive, expandLevel }) =>
-    isActive && expandLevel !== ExpandLevel.NONE ? 'initial' : 'none'}; */
 `
 
-const Wrapper = styled.div<{ isVisible: boolean; isActive: boolean }>`
+const Wrapper = styled.div<{ isVisible?: boolean; isActive: boolean }>`
+  height: 100%;
   display: none;
   /* animation-name: ${({ isActive }) => (isActive ? show : null)};
   animation-duration: 0.5s;

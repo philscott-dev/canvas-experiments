@@ -26,7 +26,7 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
   onZoomOut,
   onDragStart,
 }) => {
-  const [activePanel, setActivePanel] = useState('link')
+  const [activePanel, setActivePanel] = useState<string>()
   const [expandLevel, setExpandLevel] = useState<ExpandLevel>(ExpandLevel.NONE)
 
   const handleActivePanel = (panel: string) => {

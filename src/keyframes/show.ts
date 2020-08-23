@@ -8,6 +8,18 @@ export const show = keyframes`
     display: none;
   }
   100% {
-    display: block;
+    display: initial;
+  }
+`
+
+export const hide = keyframes`
+  0%   {
+    display: initial;
+  }
+  50%  {
+    display: initial;
+  }
+  100% {
+    display: none;
   }
 `

@@ -2,9 +2,9 @@
 import styled from '@emotion/styled'
 import { jsx } from '@emotion/react'
 import { Button } from 'lib'
-import { FaCaretSquareDown } from 'react-icons/fa'
 import { FC } from 'react'
 import Text from './Text'
+import { FiDownload } from 'react-icons/fi'
 
 interface InsertButtonProps {
   className?: string
@@ -13,7 +13,7 @@ interface InsertButtonProps {
 const InsertButton: FC<InsertButtonProps> = ({ className, onMouseDown }) => {
   return (
     <Button.Primary onMouseDown={onMouseDown} className={className}>
-      <Text>INSERT NODE</Text>
+      <Text>NODES</Text>
       <InsertIcon />
     </Button.Primary>
   )
@@ -35,7 +35,7 @@ export default styled(InsertButton)`
   }
 `
 
-const InsertIcon = styled(FaCaretSquareDown)`
-  margin-left: 8px;
+const InsertIcon = styled(FiDownload)`
+  margin-left: 16px;
   font-size: 16px;
 `

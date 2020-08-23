@@ -14,7 +14,7 @@ import DetailPanelBody from './DetailPanelBody'
 interface FlowChartDetailPanelProps {
   className?: string
   displayName?: string
-  activePanel: string
+  activePanel?: string
   expandLevel: ExpandLevel
   onExpand: (expand: ExpandLevel) => void
   onActivePanel: (panel: string) => void
@@ -27,7 +27,6 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   onExpand,
   onActivePanel,
 }) => {
-  console.log(expandLevel)
   const lastExpand = useLastExpand(expandLevel)
   const handleNameClick = () => {
     const level =
@@ -126,12 +125,13 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
 export default FlowChartDetailPanel
 
 const Container = styled.section`
+  display: flex;
   flex: 1;
   box-sizing: border-box;
-  display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding-top: 24px;
+  height: 50%; /* Important for scrolling */
   transition: all 0.25s ease-in-out;
 `
 
@@ -145,7 +145,6 @@ const Bar = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   pointer-events: all;
-  flex: 1;
   min-height: 40px;
   max-height: 40px;
   background: ${({ theme }) => theme.color.indigo[400]};

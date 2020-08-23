@@ -1,13 +1,12 @@
 import styled from '@emotion/styled'
 
-export default styled.h2`
+export default styled.h4`
   font-family: Poppins;
   font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 36px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
   margin: 0;
-  margin-bottom: 8px;
   padding: 0;
   text-transform: uppercase;
   color: ${({ theme }) => theme.color.white[100]};
