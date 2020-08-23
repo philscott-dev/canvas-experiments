@@ -23,15 +23,3 @@ body {
   height: inherit;
   min-height: inherit;
 }
-
-.editor {
-  flex: 1;
-  color: #636363;
-  width: 50%;
-}
-
-.editor-wrapper {
-  flex: 1;
-  transition: all 0.25s ease-in-out;
-  width: 50%;
-}
