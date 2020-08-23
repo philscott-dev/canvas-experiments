@@ -101,7 +101,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
       </Bar>
       <Body expandLevel={expandLevel}>
         <DetailPanel isActive={activePanel === 'code'}>
-          <FlowChartCodeEditor />
+          <FlowChartCodeEditor isActive={activePanel === 'code'} />
         </DetailPanel>
         <DetailPanel isActive={activePanel === 'link'}>
           <div>link</div>

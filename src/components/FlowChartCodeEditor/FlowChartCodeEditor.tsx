@@ -11,8 +11,12 @@ const dateFormat = 'HH:mm:ss'
 
 interface FlowChartCodeEditorProps {
   className?: string
+  isActive: boolean
 }
-const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({ className }) => {
+const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
+  className,
+  isActive,
+}) => {
   const editorRef = useRef<{
     className: string
     wrapperClassName: string
@@ -59,21 +63,26 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({ className }) => {
 
   return (
     <div className={className}>
-      <Editor
-        className="editor"
-        wrapperClassName="editor-wrapper"
-        value={initialValue}
-        editorDidMount={handleEditorDidMount}
-        language="javascript"
-        theme="dark"
-        options={{
-          tabSize: 2,
-          minimap: {
-            enabled: false,
-          },
-        }}
-        css={editorCss}
-      />
+      {isActive ? (
+        <Editor
+          loading={null}
+          width="50%"
+          height="100%"
+          className="editor"
+          wrapperClassName="editor-wrapper"
+          value={initialValue}
+          editorDidMount={handleEditorDidMount}
+          language="javascript"
+          theme="dark"
+          options={{
+            tabSize: 2,
+            minimap: {
+              enabled: false,
+            },
+          }}
+          css={editorCss}
+        />
+      ) : null}
       <Terminal outputValue={outputValue} onEvalScript={handleEvalScript} />
     </div>
   )
