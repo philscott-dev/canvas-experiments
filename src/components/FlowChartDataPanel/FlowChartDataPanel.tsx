@@ -4,7 +4,6 @@ import { jsx } from '@emotion/react'
 import { FC } from 'react'
 import { Header, H2, H4 } from 'components/FlowChartDataPanel'
 import { Table } from 'lib'
-import { show } from 'keyframes/show'
 import { mock } from './mock'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
 

@@ -5,7 +5,6 @@ import { NextPage } from 'next'
 import { initializeApollo } from 'graphql/apollo/apolloClient'
 import { Header, H2, Sidebar } from 'components/FlowChartDataPanel'
 import { FlowChartTitleBar } from 'components/FlowChartTitleBar'
-import { Table } from 'lib'
 
 const DataPage: NextPage = (props) => {
   return (
@@ -16,7 +15,6 @@ const DataPage: NextPage = (props) => {
           <Header>
             <H2>DYNAMIC SERVICE NAME</H2>
           </Header>
-          <Table data={mock} />
         </Wrapper>
         <Sidebar />
       </Page>
