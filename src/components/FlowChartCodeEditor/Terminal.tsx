@@ -38,7 +38,6 @@ export default styled(Terminal)`
   background: #202124;
   resize: none;
   padding: 0 16px;
-  max-height: calc((100vh / 2) - 40px - 24px);
   color: #d4d4d4;
   overflow-y: auto;
   white-space: pre-wrap;

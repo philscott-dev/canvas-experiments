@@ -6,9 +6,7 @@ import { format } from 'date-fns'
 import { initialValue } from './initialValue'
 import Terminal from './Terminal'
 import dynamic from 'next/dynamic'
-
 const Editor = dynamic(() => import('@monaco-editor/react'), { ssr: false })
-
 const dateFormat = 'HH:mm:ss'
 
 interface FlowChartCodeEditorProps {
@@ -27,6 +25,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({ className }) => {
   )
 
   const handleEditorDidMount = (_: () => string, editor: any) => {
+    console.log(editor)
     editorRef.current = editor
   }
 
@@ -82,6 +81,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({ className }) => {
 
 export default styled(FlowChartCodeEditor)`
   display: flex;
+  height: 100%;
   position: relative;
   background: #202124;
   box-sizing: border-box;
@@ -91,7 +91,6 @@ export default styled(FlowChartCodeEditor)`
 const editorCss = css`
   flex: 1;
   box-sizing: border-box;
-  height: calc((100vh / 2) - 40px - 24px);
   width: 200px;
   transition: all 0.25s ease-in-out;
 `

@@ -2,14 +2,13 @@
 import styled from '@emotion/styled'
 import { FC } from 'react'
 import { jsx } from '@emotion/react'
-import { Text } from 'lib'
 import { FiLink2, FiDatabase } from 'react-icons/fi'
 import { FaCode, FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import { ExpandLevel } from 'enums'
 import { FlowChartCodeEditor, FlowChartControl as Control } from 'components'
 import useLastExpand from './useLastExpand'
 import FlowChartDataPanel from '../FlowChartDataPanel/FlowChartDataPanel'
-import DetailPanelBody from './DetailPanelBody'
+import { Bar, Body, DetailPanel, FlexLeft, FlexRight, Title } from './index'
 
 interface FlowChartDetailPanelProps {
   className?: string
@@ -58,7 +57,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   }
 
   return (
-    <Container className={className}>
+    <section className={className}>
       <Bar>
         <FlexLeft>
           <Control value="expand" onClick={handleNameClick}>
@@ -100,31 +99,22 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
           </Control>
         </FlexRight>
       </Bar>
-      <DetailPanelBody
-        isActive={activePanel === 'code'}
-        expandLevel={expandLevel}
-      >
-        <FlowChartCodeEditor />
-      </DetailPanelBody>
-      <DetailPanelBody
-        isActive={activePanel === 'link'}
-        expandLevel={expandLevel}
-      >
-        <div>link</div>
-      </DetailPanelBody>
-      <DetailPanelBody
-        isActive={activePanel === 'data'}
-        expandLevel={expandLevel}
-      >
-        <FlowChartDataPanel />
-      </DetailPanelBody>
-    </Container>
+      <Body expandLevel={expandLevel}>
+        <DetailPanel isActive={activePanel === 'code'}>
+          <FlowChartCodeEditor />
+        </DetailPanel>
+        <DetailPanel isActive={activePanel === 'link'}>
+          <div>link</div>
+        </DetailPanel>
+        <DetailPanel isActive={activePanel === 'data'}>
+          <FlowChartDataPanel />
+        </DetailPanel>
+      </Body>
+    </section>
   )
 }
 
-export default FlowChartDetailPanel
-
-const Container = styled.section`
+export default styled(FlowChartDetailPanel)`
   display: flex;
   flex: 1;
   box-sizing: border-box;
@@ -133,35 +123,4 @@ const Container = styled.section`
   padding-top: 24px;
   height: 50%; /* Important for scrolling */
   transition: all 0.25s ease-in-out;
-`
-
-const Title = styled(Text)`
-  margin-left: 16px;
-  text-transform: uppercase;
-`
-
-const Bar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
-  pointer-events: all;
-  min-height: 40px;
-  max-height: 40px;
-  background: ${({ theme }) => theme.color.indigo[400]};
-`
-
-const FlexLeft = styled.div`
-  display: flex;
-  align-items: center;
-  > button {
-    border-right: 1px solid ${({ theme }) => theme.color.indigo[600]};
-  }
-`
-
-const FlexRight = styled.div`
-  display: flex;
-  align-items: center;
-  > button {
-    border-left: 1px solid ${({ theme }) => theme.color.indigo[600]};
-  }
 `

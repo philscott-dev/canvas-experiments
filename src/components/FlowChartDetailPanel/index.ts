@@ -1,1 +1,6 @@
 export { default as FlowChartDetailPanel } from './FlowChartDetailPanel'
+export { default as Bar } from './Bar'
+export { default as Body } from './Body'
+export { default as DetailPanel } from './DetailPanel'
+export { FlexLeft, FlexRight } from './Flex'
+export { default as Title } from './Title'
