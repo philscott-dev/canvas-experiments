@@ -2,7 +2,7 @@
 import styled from '@emotion/styled'
 import { FC } from 'react'
 import { jsx, css } from '@emotion/react'
-import { splitAndCapitalize } from 'helpers/string'
+import { splitCamalized } from 'helpers/string'
 import { IconButton } from 'lib'
 import { FiMoreVertical } from 'react-icons/fi'
 
@@ -29,7 +29,7 @@ const Th: FC<ThProps> = ({ heading, onClick, className }) => {
             `}
           />
         </IconButton>
-        {splitAndCapitalize(heading)}
+        {splitCamalized(heading).join(' ')}
       </Wrapper>
     </th>
   )
@@ -43,8 +43,9 @@ export default styled(Th)`
   border: 0;
   text-align: left;
   white-space: nowrap;
+  text-transform: uppercase;
   font-family: ${({ theme }) => theme.font.family};
-  color: ${({ theme }) => theme.color.white[100]};
+  color: ${({ theme }) => theme.color.gray[200]};
 `
 
 const Wrapper = styled.div`

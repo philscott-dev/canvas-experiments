@@ -5,7 +5,6 @@ import { FlowChart } from 'components'
 import { initializeApollo } from '../graphql/apollo/apolloClient'
 
 const IndexPage: NextPage = (props) => {
-  console.log(props)
   return <FlowChart />
 }
 

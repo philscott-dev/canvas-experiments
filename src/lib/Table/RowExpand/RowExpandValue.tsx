@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react'
 import { jsx } from '@emotion/react'
 import { splitAndUpperCase } from 'helpers/string'
 import { ValueType } from '../types'
-import { useValueType } from '../useValueType'
+import { useValueType } from '../hooks/useValueType'
 import RowExpandArrow from './RowExpandArrow'
 import RowExpandValueHeading from './RowExpandValueHeading'
 import RowExpandValueText from './RowExpandValueText'
@@ -13,8 +13,8 @@ interface RowExpandValueProps {
   className?: string
   cellKey: string
   expandKey: string
-  value: ValueType
   index?: number
+  value: ValueType
   onExpand: (key: string, index?: number) => void
 }
 const RowExpandValue: FC<RowExpandValueProps> = ({

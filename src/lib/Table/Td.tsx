@@ -2,8 +2,8 @@
 import styled from '@emotion/styled'
 import { FC } from 'react'
 import { jsx } from '@emotion/react'
-import { Data, ValueType } from './types'
-import { useValueTypeCustom } from './useValueTypeCustom'
+import { Data, ValueType, CellType } from './types'
+import { useValueType } from './hooks/useValueType'
 import RowExpandArrow from './RowExpand/RowExpandArrow'
 
 export interface TableHeadingProps {
@@ -29,9 +29,11 @@ const Td: FC<TableHeadingProps> = ({
   value,
   onCellClick,
 }) => {
-  const cell = useValueTypeCustom(row, data, rowIndex, value)
+  const cell = useValueType(value, row, data, rowIndex)
+  const isExpandType = cell.type === 'object' || cell.type === 'array'
+
   const handleCellClick = () => {
-    onCellClick(cellKey, cell.type === 'object')
+    onCellClick(cellKey, isExpandType)
   }
   return (
     <TdWrapper
@@ -46,7 +48,7 @@ const Td: FC<TableHeadingProps> = ({
         onMouseDown={handleCellClick}
       >
         <p>{cell.value}</p>
-        {cell.type === 'object' ? (
+        {isExpandType ? (
           <RowExpandArrow isActive={expandKey === cellKey} />
         ) : null}
       </Cell>
@@ -75,8 +77,6 @@ const TdWrapper = styled.td<{ isExpanded: boolean; hasExpandKey: boolean }>`
     }
   }
 `
-
-type CellType = 'text' | 'array' | 'object' | 'date'
 
 const Cell = styled.button<{ cell: CellType; isExpanded: boolean }>`
   outline: none;

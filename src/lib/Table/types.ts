@@ -1,4 +1,11 @@
 export type Data = { [key: string]: any }
+
+export interface RowData {
+  row: Data
+  data: Data[]
+  rowIndex: number
+}
+
 export type ExtraTableData = {
   [key: string]: {
     heading?: () => JSX.Element
@@ -11,3 +18,10 @@ export type ValueType = (
   rowIndex: number,
   data: Data[],
 ) => JSX.Element | string | boolean | number
+
+export type CellType = 'text' | 'array' | 'object' | 'date' | 'table'
+
+export type CellState = {
+  value?: string | number | boolean | JSX.Element
+  type: CellType
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Data, ExtraTableData } from './types'
+import { Data, ExtraTableData } from '../types'
 
 interface UniqueKeysOptions {
   data: Data[]

@@ -9,11 +9,12 @@ interface FlowChartDataLinkSidebarProps {
 const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   className,
 }) => {
-  return <div className={className}></div>
+  return <div className={className}> test </div>
 }
 
 export default styled(FlowChartDataLinkSidebar)`
   min-width: 336px;
   max-width: 336px;
   background: #202124;
+  overflow-y: auto;
 `

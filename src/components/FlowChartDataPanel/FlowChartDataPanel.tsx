@@ -21,7 +21,9 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
             <H4>SERVICE SUBTITLE</H4>
           </div>
         </Header>
-        <Table isScrollable data={mock} />
+        <Container>
+          <Table isScrollable data={mock} />
+        </Container>
       </Wrapper>
       <FlowChartDataLinkSidebar />
     </div>
@@ -34,6 +36,13 @@ export default styled(FlowChartDataPanel)`
 `
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   padding: 0 24px;
+`
+
+const Container = styled.section`
+  flex: 1;
+  overflow: auto;
 `

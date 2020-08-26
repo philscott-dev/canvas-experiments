@@ -4,7 +4,7 @@ import Tbody from './Tbody'
 import Thead from './Thead'
 import Th from './Th'
 import Tr, { Row } from './Tr'
-import useUniqueKeys from './useUniqueKeys'
+import useUniqueKeys from './hooks/useUniqueKeys'
 import { Data, ExtraTableData } from './types'
 
 interface TableProps {
@@ -58,5 +58,4 @@ export default styled(Table)`
   border-collapse: collapse;
   border-spacing: 0;
   border: 0;
-  overflow: hidden;
 `

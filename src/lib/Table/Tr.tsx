@@ -21,19 +21,24 @@ const TrExpand: FC<TrExpandProps> = ({
   data,
 }) => {
   const [row, setRow] = useState<{ [x: string]: any }>({})
-  const [activeKey, setActiveKey] = useState<string>()
-  const [expandKey, setExpandKey] = useState<string>()
+  const [activeKey, setActiveKey] = useState<string>() // any clicked key cells key
+  const [expandKey, setExpandKey] = useState<string>() // key to track RowExpand
 
   useEffect(() => {
     setRow({ ...originalRow, ...extraData })
   }, [originalRow, extraData])
 
-  const handleSetActiveKey = (key: string, isObjectType: boolean) => {
-    setActiveKey(key === activeKey ? undefined : key)
-    if (isObjectType) {
+  const handleSetActiveKey = (key: string, isExpandType: boolean) => {
+    if (isExpandType) {
       setExpandKey(key === expandKey ? undefined : key)
+      setActiveKey(undefined)
+    } else {
+      setActiveKey(key === activeKey ? undefined : key)
     }
   }
+
+  console.log('active', activeKey)
+  console.log('expand', expandKey)
 
   return (
     <>

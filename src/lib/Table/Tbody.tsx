@@ -5,8 +5,6 @@ interface TbodyProps {
 }
 
 const Tbody = styled.tbody<TbodyProps>`
-  position: relative;
-  width: 100%;
   overflow-y: ${({ isScrollable }) => (isScrollable ? 'auto' : 'unset')};
 `
 
