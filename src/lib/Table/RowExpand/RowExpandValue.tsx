@@ -2,6 +2,7 @@
 import styled from '@emotion/styled'
 import { FC, useEffect, useState } from 'react'
 import { jsx } from '@emotion/react'
+import { FiDatabase } from 'react-icons/fi'
 import { splitAndUpperCase } from 'helpers/string'
 import { ValueType } from '../types'
 import { useValueType } from '../hooks/useValueType'
@@ -35,6 +36,17 @@ const RowExpandValue: FC<RowExpandValueProps> = ({
     if (cell.type === 'object') {
       onExpand(cellKey, index)
     }
+
+    switch (cell.type) {
+      case 'array':
+        return onExpand(cellKey, index)
+      case 'object':
+        return onExpand(cellKey, index)
+      case 'table':
+        return
+      default:
+        return
+    }
   }
   return (
     <ValueButton
@@ -44,8 +56,13 @@ const RowExpandValue: FC<RowExpandValueProps> = ({
     >
       <RowExpandValueHeading>{title}</RowExpandValueHeading>
       <Flex>
+        {cell.type === 'table' ? (
+          <DataIconWrap>
+            <FiDatabase />
+          </DataIconWrap>
+        ) : null}
         <RowExpandValueText>{cell.value}</RowExpandValueText>
-        {cell.type === 'object' ? (
+        {cell.type === 'object' || cell.type === 'array' ? (
           <RowExpandArrow isActive={expandKey === cellKey} />
         ) : null}
       </Flex>
@@ -77,4 +94,11 @@ const ValueButton = styled.button<{ isActive: boolean }>`
 const Flex = styled.div`
   display: flex;
   align-items: center;
+`
+
+const DataIconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  color: ${({ theme }) => theme.color.white[100]};
 `
