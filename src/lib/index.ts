@@ -11,6 +11,7 @@ export { ViewportModalContainer, ViewportModal } from './ViewportModal'
 export { Portal, PortalMount } from './Portal'
 export { Overlay } from './Overlay'
 export { Modal } from './Modal'
+export { BreadCrumbs } from './BreadCrumbs'
 export {
   Form,
   Input,

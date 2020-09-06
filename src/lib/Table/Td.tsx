@@ -5,6 +5,7 @@ import { jsx } from '@emotion/react'
 import { Data, ValueType, CellType } from './types'
 import { useValueType } from './hooks/useValueType'
 import RowExpandArrow from './RowExpand/RowExpandArrow'
+import { FiDatabase } from 'react-icons/fi'
 
 export interface TableHeadingProps {
   className?: string
@@ -15,7 +16,7 @@ export interface TableHeadingProps {
   activeKey?: string
   expandKey?: string
   value?: ValueType
-  onCellClick: (key: string, isExpandable: boolean) => void
+  onCellClick: (key: string, isExpandable: CellType, index: number) => void
 }
 
 const Td: FC<TableHeadingProps> = ({
@@ -30,10 +31,9 @@ const Td: FC<TableHeadingProps> = ({
   onCellClick,
 }) => {
   const cell = useValueType(value, row, data, rowIndex)
-  const isExpandType = cell.type === 'object' || cell.type === 'array'
 
   const handleCellClick = () => {
-    onCellClick(cellKey, isExpandType)
+    onCellClick(cellKey, cell.type, 0)
   }
   return (
     <TdWrapper
@@ -47,8 +47,13 @@ const Td: FC<TableHeadingProps> = ({
         isExpanded={expandKey === cellKey}
         onMouseDown={handleCellClick}
       >
+        {cell.type === 'table' ? (
+          <DataIconWrap>
+            <FiDatabase />
+          </DataIconWrap>
+        ) : null}
         <p>{cell.value}</p>
-        {isExpandType ? (
+        {cell.type === 'object' || cell.type === 'array' ? (
           <RowExpandArrow isActive={expandKey === cellKey} />
         ) : null}
       </Cell>
@@ -109,4 +114,11 @@ const Cell = styled.button<{ cell: CellType; isExpanded: boolean }>`
     color: ${({ theme }) => theme.color.white[100]};
   }
   transition: all 0.1s ease-in-out;
+`
+
+const DataIconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  color: ${({ theme }) => theme.color.white[100]};
 `

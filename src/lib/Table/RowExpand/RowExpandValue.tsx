@@ -13,9 +13,9 @@ interface RowExpandValueProps {
   className?: string
   cellKey: string
   expandKey: string
-  index?: number
+  index: number
   value: ValueType
-  onExpand: (key: string, index?: number) => void
+  onExpand: (key: string, index: number) => void
 }
 const RowExpandValue: FC<RowExpandValueProps> = ({
   className,

@@ -10,15 +10,15 @@ interface RowExpandArrowProps {
 }
 const RowExpandArrow: FC<RowExpandArrowProps> = ({ className, isActive }) => {
   return (
-    <Arrow className={className}>
+    <ArrowIconWrap className={className}>
       {isActive ? <FiChevronUp /> : <FiChevronDown />}
-    </Arrow>
+    </ArrowIconWrap>
   )
 }
 
 export default RowExpandArrow
 
-const Arrow = styled.div`
+const ArrowIconWrap = styled.div`
   display: flex;
   align-items: center;
   margin-left: 8px;

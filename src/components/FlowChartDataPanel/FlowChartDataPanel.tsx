@@ -15,14 +15,13 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
   return (
     <div className={className}>
       <Wrapper>
-        <Header>
-          <div>
-            <H2>DYNAMIC SERVICE NAME</H2>
-            <H4>SERVICE SUBTITLE</H4>
-          </div>
-        </Header>
         <Container>
-          <Table isScrollable data={mock} />
+          <Table
+            title="DYNAMIC SERVICE NAME"
+            subtitle="SERVICE SUBTITLE"
+            isScrollable
+            data={mock}
+          />
         </Container>
       </Wrapper>
       <FlowChartDataLinkSidebar />

@@ -20,6 +20,7 @@ const RowExpand: FC<RowExpandProps> = ({
   const [expandKeys, setExpandKeys] = useState<string[]>([])
 
   const handleExpand = (key: string, index?: number) => {
+    console.log(index)
     const expandIndex = index !== undefined && index !== null ? index + 1 : 0
     if (key === expandKeys[expandIndex]) {
       setExpandKeys([...expandKeys.slice(0, expandIndex)])

@@ -19,10 +19,10 @@ export function handleCellValue(
     if (value.every((val) => isObject(val))) {
       return { value: 'View Table', type: 'table' }
     } else {
-      return { value: `[${value.length}] View List`, type: 'array' }
+      return { value: `[ ${value.length} ] View List`, type: 'array' }
     }
   } else if (isObject(value)) {
-    return { value: 'Click for Details', type: 'object' }
+    return { value: 'View Details', type: 'object' }
   } else if (isBoolean(value)) {
     return { value: String(value), type: 'text' }
   } else if (isDateString(value)) {

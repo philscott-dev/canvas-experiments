@@ -8,11 +8,11 @@ import RowExpandValue from './RowExpandValue'
 
 interface RowExpandSectionProps {
   className?: string
-  index?: number
+  index: number
   cellKey?: string
   expandKey: string
   data?: { [key: string]: any }
-  onExpand: (key: string, index?: number) => void
+  onExpand: (key: string, index: number) => void
 }
 const RowExpandSection: FC<RowExpandSectionProps> = ({
   className,

@@ -8,7 +8,7 @@ export const mock = [
     ipAddress: '213.443.213.123',
     near: [
       {
-        name: 'Park Road Shopping Center',
+        name: 'City Center',
         distance: '1 mile',
       },
       {
@@ -17,7 +17,7 @@ export const mock = [
       },
     ],
     homeDetails: {
-      street: 'Paddock Cir',
+      street: 'Main St',
       city: 'Charlotte',
       state: 'NC',
       secondaryInformation: {
@@ -26,16 +26,16 @@ export const mock = [
       },
       near: [
         {
-          name: 'Park Road Shopping Center',
+          name: 'The Park',
           distance: '1 mile',
         },
         {
-          name: 'Montford',
+          name: 'Central Parking',
           distance: '2 miles',
         },
       ],
     },
-    listOfPets: ['Tank', 'Merm', 'Stripes', 'Sasha', 'Jessica'],
+    listOfPets: ['Pet 0', 'Pet 1', 'Pet 2', 'Pet 3', 'Pet 4'],
   },
   {
     name: 'Phil Scott',
@@ -46,16 +46,16 @@ export const mock = [
     ipAddress: '213.443.213.123',
     near: [
       {
-        name: 'Park Road Shopping Center',
+        name: 'The Spot',
         distance: '1 mile',
       },
       {
-        name: 'Montford',
+        name: 'Bowling',
         distance: '2 miles',
       },
     ],
     homeDetails: {
-      street: 'Paddock Cir',
+      street: 'Center Cir',
       city: 'Charlotte',
       state: 'NC',
       secondaryInformation: {
@@ -64,16 +64,16 @@ export const mock = [
       },
       near: [
         {
-          name: 'Park Road Shopping Center',
+          name: 'Shopping Center',
           distance: '1 mile',
         },
         {
-          name: 'Montford',
+          name: 'Grocery Store',
           distance: '2 miles',
         },
       ],
     },
-    listOfPets: ['Tank', 'Merm', 'Stripes', 'Sasha', 'Jessica'],
+    listOfPets: ['Pet 0', 'Pet 1', 'Pet 2', 'Pet 3', 'Pet 4'],
   },
   {
     name: 'Phil Scott',
@@ -84,16 +84,16 @@ export const mock = [
     ipAddress: '213.443.213.123',
     near: [
       {
-        name: 'Park Road Shopping Center',
+        name: 'Interesting Place',
         distance: '1 mile',
       },
       {
-        name: 'Montford',
+        name: 'Rest Stop',
         distance: '2 miles',
       },
     ],
     homeDetails: {
-      street: 'Paddock Cir',
+      street: 'Cool Place Lane',
       city: 'Charlotte',
       state: 'NC',
       secondaryInformation: {
@@ -102,15 +102,15 @@ export const mock = [
       },
       near: [
         {
-          name: 'Park Road Shopping Center',
+          name: 'Shopping Center',
           distance: '1 mile',
         },
         {
-          name: 'Montford',
+          name: 'Rite Aid',
           distance: '2 miles',
         },
       ],
     },
-    listOfPets: ['Tank', 'Merm', 'Stripes', 'Sasha', 'Jessica'],
+    listOfPets: ['Pet 0', 'Pet 1', 'Pet 2', 'Pet 3', 'Pet 4'],
   },
 ]
