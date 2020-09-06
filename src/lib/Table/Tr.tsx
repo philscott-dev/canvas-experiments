@@ -83,7 +83,7 @@ const TrExpand: FC<TrExpandProps> = ({
               key={index + 1}
               index={index + 1}
               cellKey={key}
-              expandKey={key}
+              expandKey={expandKeys[index + 1]}
               data={get(row, expandKeys.slice(0, index + 1))}
               onExpand={handleRowExpand}
             />

@@ -60,7 +60,9 @@ export const mock = [
       state: 'NC',
       secondaryInformation: {
         sqareFt: 245,
+        extra: { deeper: 'Way', andDeeper: 'Way Down' },
         heat: 'gas',
+        homeFeatures: ['Design', 'Location', 'Outdoor Living'],
       },
       near: [
         {

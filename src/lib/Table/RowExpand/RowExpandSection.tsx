@@ -31,18 +31,16 @@ const RowExpandSection: FC<RowExpandSectionProps> = ({
     <section className={className}>
       <RowExpandTitle>{title}</RowExpandTitle>
       <div>
-        {data
-          ? Object.keys(data).map((key, i) => (
-              <RowExpandValue
-                key={i}
-                index={index}
-                cellKey={key}
-                expandKey={expandKey}
-                value={data[key]}
-                onExpand={onExpand}
-              />
-            ))
-          : null}
+        {Object.keys(data || []).map((key, i) => (
+          <RowExpandValue
+            key={i}
+            index={index}
+            cellKey={key}
+            expandKey={expandKey}
+            value={data ? data[key] : null}
+            onExpand={onExpand}
+          />
+        ))}
       </div>
     </section>
   )
