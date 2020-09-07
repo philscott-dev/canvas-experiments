@@ -4,7 +4,7 @@ import { FC } from 'react'
 import { jsx } from '@emotion/react'
 import { Data, ValueType, CellType } from './types'
 import { useValueType } from './hooks/useValueType'
-import RowExpandArrow from './RowExpand/RowExpandArrow'
+import RowExpandArrow from './RowExpandSection/RowExpandArrow'
 import { FiDatabase } from 'react-icons/fi'
 
 export interface TableHeadingProps {
@@ -16,7 +16,12 @@ export interface TableHeadingProps {
   activeKey?: string
   expandKey?: string
   value?: ValueType
-  onCellClick: (key: string, isExpandable: CellType, index: number) => void
+  onCellClick: (
+    key: string,
+    isExpandable: CellType,
+    rowIndex: number,
+    expandIndex: number,
+  ) => void
 }
 
 const Td: FC<TableHeadingProps> = ({
@@ -33,7 +38,7 @@ const Td: FC<TableHeadingProps> = ({
   const cell = useValueType(value, row, data, rowIndex)
 
   const handleCellClick = () => {
-    onCellClick(cellKey, cell.type, 0)
+    onCellClick(cellKey, cell.type, rowIndex, 0)
   }
   return (
     <TdWrapper

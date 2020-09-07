@@ -4,12 +4,19 @@ import { css, jsx } from '@emotion/react'
 import { FiHome } from 'react-icons/fi'
 import { Anchor } from 'lib/Anchor'
 
-const TableBasePath: FC<{ label: string; href?: string }> = ({
-  label,
-  href,
-}) => {
+const TableBasePath: FC<{
+  label: string
+  href?: string
+  onClick: () => void
+}> = ({ label, href, onClick }) => {
   return (
-    <Anchor aria-label="Home" href={href} size="small" css={anchorCss}>
+    <Anchor
+      aria-label="Home"
+      href={href}
+      onMouseDown={onClick}
+      size="small"
+      css={anchorCss}
+    >
       {label}
     </Anchor>
   )

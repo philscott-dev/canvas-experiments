@@ -2,30 +2,30 @@ import React, { FC, useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { Data, ExtraTableData, CellType } from './types'
 import Td from './Td'
-import RowExpandSection from './RowExpand/RowExpandSection'
-import get from 'lodash/get'
+import { RowExpandSection } from './RowExpandSection'
+import { get } from 'helpers/collection'
 
-interface TrExpandProps {
+interface TrProps {
   className?: string
   keys: string[]
-  index: number
+  rowIndex: number
   originalRow: Data
   extraData?: ExtraTableData
   data: Data[]
-  onLoadTable: (key: string, index: number) => void
+  onLoadTable: (r: number, keys: string[], key: string) => void
 }
-const TrExpand: FC<TrExpandProps> = ({
+const Tr: FC<TrProps> = ({
   className,
   keys,
-  index,
+  rowIndex,
   originalRow,
   extraData,
   data,
   onLoadTable,
 }) => {
-  const [row, setRow] = useState<{ [x: string]: any }>({})
+  const [row, setRow] = useState<{ [x: string]: any }>({}) //originalRow + extraData props
   const [activeKey, setActiveKey] = useState<string>() // any clicked key cells key
-  const [expandKeys, setExpandKeys] = useState<string[]>([])
+  const [expandKeys, setExpandKeys] = useState<string[]>([]) // array of expanded keys
 
   // merge original and
   useEffect(() => {
@@ -35,15 +35,16 @@ const TrExpand: FC<TrExpandProps> = ({
   const handleSetActiveKey = (
     key: string,
     cellType: CellType,
-    index: number,
+    r: number,
+    e: number,
   ) => {
     switch (cellType) {
       case 'array':
-        return handleRowExpand(key, index)
+        return handleRowExpand(key, e)
       case 'object':
-        return handleRowExpand(key, index)
+        return handleRowExpand(key, e)
       case 'table':
-        return onLoadTable(key, index)
+        return onLoadTable(r, expandKeys.slice(0, e), key)
       default:
         setActiveKey(key === activeKey ? undefined : key)
     }
@@ -60,6 +61,7 @@ const TrExpand: FC<TrExpandProps> = ({
 
   return (
     <>
+      {/* Regular TR */}
       <Row className={className}>
         {keys.map((key) => (
           <Td
@@ -68,24 +70,25 @@ const TrExpand: FC<TrExpandProps> = ({
             cellKey={key}
             activeKey={activeKey}
             expandKey={expandKeys[0]}
-            rowIndex={index}
+            rowIndex={rowIndex}
             row={originalRow}
             data={data}
             onCellClick={handleSetActiveKey}
           />
         ))}
       </Row>
-      {/* Expand Row*/}
+      {/* Expand Row */}
       <tr className={className}>
         <Cell colSpan={keys.length}>
           {expandKeys.map((key, index) => (
             <RowExpandSection
               key={index + 1}
-              index={index + 1}
+              expandIndex={index + 1}
+              rowIndex={rowIndex}
               cellKey={key}
               expandKey={expandKeys[index + 1]}
               data={get(row, expandKeys.slice(0, index + 1))}
-              onExpand={handleRowExpand}
+              onCellClick={handleSetActiveKey}
             />
           ))}
         </Cell>
@@ -98,7 +101,7 @@ const TrExpand: FC<TrExpandProps> = ({
   )
 }
 
-export default TrExpand
+export default Tr
 
 export const Row = styled.tr`
   max-height: 40px;

@@ -2,23 +2,35 @@ import React, { FC } from 'react'
 import styled from '@emotion/styled'
 import TableBasePath from './TableBasePath'
 import TablePath from './TablePath'
+import { BreadCrumb } from '../types'
 
-type Path = {
-  label: string
-  href?: string
-}
 interface TableBreadCrumbsProps {
-  basePath: Path
-  paths?: Path[]
+  basePath: BreadCrumb
+  paths?: BreadCrumb[]
   onClick: () => void
+  onBaseClick: () => void
 }
 
-const TableBreadCrumbs: FC<TableBreadCrumbsProps> = ({ basePath, paths }) => {
+const TableBreadCrumbs: FC<TableBreadCrumbsProps> = ({
+  basePath,
+  paths,
+  onClick,
+  onBaseClick,
+}) => {
   return (
     <Container>
-      <TableBasePath label={basePath?.label} href={basePath?.href} />
+      <TableBasePath
+        label={basePath?.label}
+        href={basePath?.href}
+        onClick={onBaseClick}
+      />
       {paths?.map((path, index) => (
-        <TablePath key={index} href={path.href} label={path.label} />
+        <TablePath
+          key={index}
+          href={path.href}
+          label={path.label}
+          onClick={onClick}
+        />
       ))}
     </Container>
   )

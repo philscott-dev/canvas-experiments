@@ -18,7 +18,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
         <Container>
           <Table
             title="DYNAMIC SERVICE NAME"
-            subtitle="SERVICE SUBTITLE"
+            subtitle="HOME PATH"
             isScrollable
             data={mock}
           />

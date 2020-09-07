@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import Tbody from './Tbody'
@@ -7,8 +7,10 @@ import Thead from './Thead'
 import Th from './Th'
 import Tr, { Row } from './Tr'
 import useUniqueKeys from './hooks/useUniqueKeys'
-import { Data, ExtraTableData } from './types'
+import { BreadCrumb, Data, ExtraTableData } from './types'
 import TableTitlebar from './TableTitlebar/TableTitlebar'
+import { get } from 'helpers/collection'
+import { splitAndCapitalize, splitCamalized } from 'helpers/string'
 
 interface TableProps {
   data: Data[]
@@ -31,17 +33,34 @@ const Table: FC<TableProps> = ({
   subtitle,
   className,
 }) => {
-  const [secondaryData, setSecondaryData] = useState<Data[]>()
-  const keys = useUniqueKeys({ data, extraData, include, exclude })
+  const [tablePath, setTablePath] = useState<string[][]>([])
+  const [tableData, setTableData] = useState<Data[]>([])
+  const [breadCrumbs, setBreadCrumbs] = useState<BreadCrumb[]>([])
+  useEffect(() => {
+    const d = get(data, tablePath.join(), data)
+    setTableData(d)
+  }, [data, tablePath])
+  const keys = useUniqueKeys({ data: tableData, extraData, include, exclude })
 
+  const handleBaseBreadCrumbClick = () => {
+    setBreadCrumbs([])
+    setTablePath([])
+  }
   const handleBreadCrumbClick = () => {}
-  const handleLoadTable = () => {}
+  const handleLoadTable = (r: number, keys: string[], key: string) => {
+    const row = String(r)
+    const label = splitCamalized(key).join(' ')
+    setTablePath([...tablePath, [row, ...keys, key]])
+    setBreadCrumbs([...breadCrumbs, { label: `[${r}] ${label}` }])
+  }
 
   return (
     <>
       <TableTitlebar
         title={title}
         subtitle={subtitle}
+        breadCrumbs={breadCrumbs}
+        onBaseBreadCrumbClick={handleBaseBreadCrumbClick}
         onBreadCrumbClick={handleBreadCrumbClick}
       />
       <table className={className}>
@@ -53,11 +72,11 @@ const Table: FC<TableProps> = ({
           </Row>
         </Thead>
         <Tbody isScrollable={isScrollable}>
-          {data?.map((obj, index) => {
+          {tableData?.map((obj, index) => {
             return (
               <Tr
-                key={index}
-                index={index}
+                key={breadCrumbs[index]?.label ?? '__home' + String(index)}
+                rowIndex={index}
                 keys={keys}
                 originalRow={obj}
                 extraData={extraData}

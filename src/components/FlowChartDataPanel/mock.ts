@@ -9,11 +9,11 @@ export const mock = [
     near: [
       {
         name: 'City Center',
-        distance: '1 mile',
+        distance: '101 mile',
       },
       {
-        name: 'Montford',
-        distance: '2 miles',
+        name: 'Interesting Place',
+        distance: '202 miles',
       },
     ],
     homeDetails: {
@@ -60,7 +60,14 @@ export const mock = [
       state: 'NC',
       secondaryInformation: {
         sqareFt: 245,
-        extra: { deeper: 'Way', andDeeper: 'Way Down' },
+        extra: {
+          deeper: 'Way',
+          andDeeper: 'Way Down',
+          theBottom: [
+            { a: 1, b: 2 },
+            { a: 3, b: 4 },
+          ],
+        },
         heat: 'gas',
         homeFeatures: ['Design', 'Location', 'Outdoor Living'],
       },

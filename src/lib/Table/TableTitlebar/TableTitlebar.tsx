@@ -4,11 +4,14 @@ import { FC } from 'react'
 import { jsx } from '@emotion/react'
 import { H4 } from 'lib'
 import { TableBreadCrumbs } from '../TableBreadCrumbs'
+import { BreadCrumb } from '../types'
 
 interface TableTitlebarProps {
   className?: string
   title?: string
   subtitle?: string
+  breadCrumbs: BreadCrumb[]
+  onBaseBreadCrumbClick: () => void
   onBreadCrumbClick: () => void
 }
 
@@ -16,6 +19,8 @@ const TableTitlebar: FC<TableTitlebarProps> = ({
   className,
   title,
   subtitle,
+  breadCrumbs,
+  onBaseBreadCrumbClick,
   onBreadCrumbClick,
 }) => {
 
@@ -28,8 +33,9 @@ const TableTitlebar: FC<TableTitlebarProps> = ({
       <div>
         <H4>{title}</H4>
         <TableBreadCrumbs
-          basePath={{ label: 'Service Subtitle' }}
-          paths={[{ label: 'Dollar Ammount' }, { label: 'things' }]}
+          basePath={{ label: subtitle }}
+          paths={breadCrumbs}
+          onBaseClick={onBaseBreadCrumbClick}
           onClick={handleBreadCrumbClick}
         />
       </div>

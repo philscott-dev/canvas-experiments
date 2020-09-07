@@ -25,3 +25,8 @@ export type CellState = {
   value?: string | number | boolean | JSX.Element
   type: CellType
 }
+
+export type BreadCrumb = {
+  label?: string
+  href?: string
+}

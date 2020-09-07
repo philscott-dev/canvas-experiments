@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react'
 import { jsx } from '@emotion/react'
 import { FiDatabase } from 'react-icons/fi'
 import { splitAndUpperCase } from 'helpers/string'
-import { ValueType } from '../types'
+import { CellType, ValueType } from '../types'
 import { useValueType } from '../hooks/useValueType'
 import RowExpandArrow from './RowExpandArrow'
 import RowExpandValueHeading from './RowExpandValueHeading'
@@ -14,17 +14,24 @@ interface RowExpandValueProps {
   className?: string
   cellKey: string
   expandKey: string
-  index: number
+  expandIndex: number
+  rowIndex: number
   value: ValueType
-  onExpand: (key: string, index: number) => void
+  onCellClick: (
+    key: string,
+    isExpandable: CellType,
+    rowIndex: number,
+    expandIndex: number,
+  ) => void
 }
 const RowExpandValue: FC<RowExpandValueProps> = ({
   className,
   cellKey,
   expandKey,
-  index,
+  expandIndex,
+  rowIndex,
   value,
-  onExpand,
+  onCellClick,
 }) => {
   const cell = useValueType(value)
   const [title, setTitle] = useState('')
@@ -33,20 +40,7 @@ const RowExpandValue: FC<RowExpandValueProps> = ({
   }, [cellKey])
 
   const handleClick = () => {
-    if (cell.type === 'object') {
-      onExpand(cellKey, index)
-    }
-
-    switch (cell.type) {
-      case 'array':
-        return onExpand(cellKey, index)
-      case 'object':
-        return onExpand(cellKey, index)
-      case 'table':
-        return
-      default:
-        return
-    }
+    onCellClick(cellKey, cell.type, rowIndex, expandIndex)
   }
   return (
     <ValueButton
