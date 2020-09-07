@@ -54,6 +54,12 @@ const Table: FC<TableProps> = ({
     setBreadCrumbs([...breadCrumbs, { label: `[${r}] ${label}` }])
   }
 
+  const genrateRowKey = (index: number) => {
+    const i = String(index)
+    const len = breadCrumbs.length - 1
+    return breadCrumbs[len]?.label + i ?? '__home' + i
+  }
+
   return (
     <>
       <TableTitlebar
@@ -75,7 +81,7 @@ const Table: FC<TableProps> = ({
           {tableData?.map((obj, index) => {
             return (
               <Tr
-                key={breadCrumbs[index]?.label ?? '__home' + String(index)}
+                key={genrateRowKey(index)}
                 rowIndex={index}
                 keys={keys}
                 originalRow={obj}

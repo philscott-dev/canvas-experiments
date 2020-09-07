@@ -46,5 +46,4 @@ const TableTitlebar: FC<TableTitlebarProps> = ({
 export default styled(TableTitlebar)`
   display: flex;
   justify-content: space-between;
-  margin-top: 32px;
 `
