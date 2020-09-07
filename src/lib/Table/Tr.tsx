@@ -35,16 +35,16 @@ const Tr: FC<TrProps> = ({
   const handleSetActiveKey = (
     key: string,
     cellType: CellType,
-    r: number,
-    e: number,
+    rIndex: number, // row
+    eIndex: number, // expand
   ) => {
     switch (cellType) {
       case 'array':
-        return handleRowExpand(key, e)
+        return handleRowExpand(key, eIndex)
       case 'object':
-        return handleRowExpand(key, e)
+        return handleRowExpand(key, eIndex)
       case 'table':
-        return onLoadTable(r, expandKeys.slice(0, e), key)
+        return onLoadTable(rIndex, expandKeys.slice(0, eIndex), key)
       default:
         setActiveKey(key === activeKey ? undefined : key)
     }

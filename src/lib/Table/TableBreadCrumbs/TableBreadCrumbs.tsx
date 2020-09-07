@@ -7,7 +7,7 @@ import { BreadCrumb } from '../types'
 interface TableBreadCrumbsProps {
   basePath: BreadCrumb
   paths?: BreadCrumb[]
-  onClick: () => void
+  onClick: (index: number, breadCrumb: BreadCrumb) => void
   onBaseClick: () => void
 }
 
@@ -27,6 +27,7 @@ const TableBreadCrumbs: FC<TableBreadCrumbsProps> = ({
       {paths?.map((path, index) => (
         <TablePath
           key={index}
+          index={index}
           href={path.href}
           label={path.label}
           onClick={onClick}

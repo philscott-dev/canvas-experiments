@@ -27,6 +27,6 @@ export type CellState = {
 }
 
 export type BreadCrumb = {
-  label?: string
+  label: string
   href?: string
 }

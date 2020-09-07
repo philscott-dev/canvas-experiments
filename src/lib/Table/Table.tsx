@@ -46,7 +46,11 @@ const Table: FC<TableProps> = ({
     setBreadCrumbs([])
     setTablePath([])
   }
-  const handleBreadCrumbClick = () => {}
+  const handleBreadCrumbClick = (index: number) => {
+    setBreadCrumbs(breadCrumbs.slice(0, index + 1))
+    setTablePath(tablePath.slice(0, index + 1))
+  }
+
   const handleLoadTable = (r: number, keys: string[], key: string) => {
     const row = String(r)
     const label = splitCamalized(key).join(' ')

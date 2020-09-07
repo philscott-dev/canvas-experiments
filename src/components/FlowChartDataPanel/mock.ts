@@ -64,8 +64,15 @@ export const mock = [
           deeper: 'Way',
           andDeeper: 'Way Down',
           theBottom: [
-            { a: 1, b: 2 },
-            { a: 3, b: 4 },
+            {
+              a: 1,
+              b: 2,
+              c: 3,
+              d: 4,
+              e: 5,
+              data: [{ another: 'nested table' }],
+            },
+            { a: 3, b: 4, c: 5, d: 6, e: 7, data: [{ with: 'nested keys' }] },
           ],
         },
         heat: 'gas',

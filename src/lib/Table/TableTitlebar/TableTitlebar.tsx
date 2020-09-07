@@ -12,7 +12,7 @@ interface TableTitlebarProps {
   subtitle?: string
   breadCrumbs: BreadCrumb[]
   onBaseBreadCrumbClick: () => void
-  onBreadCrumbClick: () => void
+  onBreadCrumbClick: (index: number, breadCrumb: BreadCrumb) => void
 }
 
 const TableTitlebar: FC<TableTitlebarProps> = ({
@@ -23,9 +23,8 @@ const TableTitlebar: FC<TableTitlebarProps> = ({
   onBaseBreadCrumbClick,
   onBreadCrumbClick,
 }) => {
-
-  const handleBreadCrumbClick = () => {
-    onBreadCrumbClick()
+  const handleBreadCrumbClick = (index: number, breadCrumb: BreadCrumb) => {
+    onBreadCrumbClick(index, breadCrumb)
   }
 
   return (
@@ -33,7 +32,7 @@ const TableTitlebar: FC<TableTitlebarProps> = ({
       <div>
         <H4>{title}</H4>
         <TableBreadCrumbs
-          basePath={{ label: subtitle }}
+          basePath={{ label: subtitle || '' }}
           paths={breadCrumbs}
           onBaseClick={onBaseBreadCrumbClick}
           onClick={handleBreadCrumbClick}

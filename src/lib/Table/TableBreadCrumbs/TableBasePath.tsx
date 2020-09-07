@@ -17,7 +17,7 @@ const TableBasePath: FC<{
       size="small"
       css={anchorCss}
     >
-      {label}
+      {label?.length ? label : <FiHome />}
     </Anchor>
   )
 }
