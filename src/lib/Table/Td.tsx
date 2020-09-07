@@ -76,14 +76,16 @@ const TdWrapper = styled.td<{ isExpanded: boolean; hasExpandKey: boolean }>`
   padding: 0;
   &:nth-of-type(1) {
     & > button {
-      border-radius: ${({ hasExpandKey }) =>
-        hasExpandKey ? '8px 0 0 0' : '8px 0 0 8px'};
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: ${({ hasExpandKey }) =>
+        hasExpandKey ? '0' : '8px'};
     }
   }
   &:nth-last-of-type(1) {
     & > button {
-      border-radius: ${({ hasExpandKey }) =>
-        hasExpandKey ? '0 8px 0 0 ' : '0 8px 8px 0'};
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: ${({ hasExpandKey }) =>
+        hasExpandKey ? '0' : '8px'};
     }
   }
 `
