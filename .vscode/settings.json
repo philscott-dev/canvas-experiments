@@ -1,3 +1,3 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "/Users/phil/Projects/canvas-experiments/node_modules/typescript/lib"
 }

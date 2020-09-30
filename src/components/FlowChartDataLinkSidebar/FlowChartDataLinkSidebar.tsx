@@ -9,7 +9,7 @@ interface FlowChartDataLinkSidebarProps {
 const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   className,
 }) => {
-  return <div className={className}> test </div>
+  return <div className={className}> </div>
 }
 
 export default styled(FlowChartDataLinkSidebar)`

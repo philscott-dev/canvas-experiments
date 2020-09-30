@@ -4,7 +4,7 @@ import { jsx } from '@emotion/react'
 import { Button } from 'lib'
 import { FC } from 'react'
 import Text from './Text'
-import { FiDownload } from 'react-icons/fi'
+import { FiChevronDown } from 'react-icons/fi'
 
 interface InsertButtonProps {
   className?: string
@@ -35,7 +35,7 @@ export default styled(InsertButton)`
   }
 `
 
-const InsertIcon = styled(FiDownload)`
+const InsertIcon = styled(FiChevronDown)`
   margin-left: 16px;
   font-size: 16px;
 `
