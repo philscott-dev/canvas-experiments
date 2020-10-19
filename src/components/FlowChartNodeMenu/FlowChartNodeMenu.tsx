@@ -15,7 +15,7 @@ import MenuBody from './MenuBody'
 import Text from './Text'
 
 //make this date driven
-import services from '../FlowChart/services'
+import services from '../../mock/services'
 import { BaseNode } from '../FlowChart/types'
 
 interface FlowChartNodeMenuProps {

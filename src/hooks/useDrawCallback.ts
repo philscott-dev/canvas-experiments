@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { RectNode, Point } from '../types'
-import { drawPathAngle, drawGrid, drawNode } from '../utils/draw'
+import { drawPathAngle, drawGrid, drawNode } from 'utils/draw'
 
 export default function useDraw(
   canvas: HTMLCanvasElement | null,
@@ -41,6 +41,8 @@ export default function useDraw(
 
         //draw paths for nodes
         const r = nodes[index + 1]?.rect
+
+        //if nodes length
         if (nodes.length && r) {
           const rect = {
             ...node.rect,
@@ -57,7 +59,10 @@ export default function useDraw(
         }
       })
     }
-  }, [canvas, ctx, scale, translateOffset, isDragging, nodes, activeId])
+  }, [canvas, ctx, scale, translateOffset, nodes, activeId])
+  // TODO: look at isDragging seems to be needed to properly update
+  // removing for now. The bug might have resolved in an update
+
   useEffect(() => {
     draw()
   }, [draw])

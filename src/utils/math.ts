@@ -1,4 +1,4 @@
-import { Circle, Point, Rect } from '../types'
+import { Circle, Point, Rect } from 'types'
 
 export const norm = (value: number, min: number, max: number) => {
   return (value - min) / (max - min)

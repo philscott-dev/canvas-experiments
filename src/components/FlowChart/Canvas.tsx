@@ -1,4 +1,6 @@
 /** @jsx jsx */
+import { jsx } from '@emotion/react'
+import styled from '@emotion/styled'
 import {
   useState,
   forwardRef,
@@ -7,14 +9,11 @@ import {
   DragEvent,
   useEffect,
 } from 'react'
-import { jsx } from '@emotion/react'
-import styled from '@emotion/styled'
-import useResize from './hooks/useResize'
-import useDrawCallback from './hooks/useDrawCallback'
-import { RectNode, Point } from './types'
-import { pointInRect } from './utils/math'
-import { getCanvasPoint } from './helpers/helpers'
-import { zoom } from './utils/zoom'
+import { useDrawCallback, useResize } from 'hooks'
+import { RectNode, Point } from 'types'
+import { pointInRect } from 'utils/math'
+import { zoom } from 'utils/zoom'
+import { getCanvasPoint } from 'helpers/canvas'
 
 interface CanvasProps {
   className?: string

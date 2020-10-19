@@ -1,5 +1,5 @@
 import { MouseEvent, DragEvent } from 'react'
-import { Point } from '../types'
+import { Point } from 'types/index.d'
 
 export const getCanvasPoint = (
   event:

@@ -1,6 +1,6 @@
 import { WheelEvent } from 'react'
-import { getCanvasPoint, getCanvasCenter } from '../helpers/helpers'
-import { Point } from '../types'
+import { getCanvasPoint, getCanvasCenter } from 'helpers/canvas'
+import { Point } from 'types'
 
 export function zoom(
   canvas: HTMLCanvasElement,

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { FC, useState, useEffect, useRef, useCallback } from 'react'
 import { jsx } from '@emotion/react'
 import { useResize, useContextRef } from './FlowChart/hooks'
-import { drawGrid } from './FlowChart/utils/draw'
+import { drawGrid } from '../utils/draw'
 
 interface GridProps {
   className?: string

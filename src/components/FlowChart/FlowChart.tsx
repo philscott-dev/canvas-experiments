@@ -4,12 +4,12 @@ import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import { v4 as uuid } from 'uuid'
 import Canvas from './Canvas'
-import { Point, BaseNode, RectNode } from './types'
-import { getCanvasPoint } from './helpers/helpers'
-import useContextRef from './hooks/useContextRef'
-import { NODE_HEIGHT, NODE_WIDTH } from './constants'
+import { Point, BaseNode, RectNode } from 'types'
+import { getCanvasPoint } from 'helpers/canvas'
+import { useContextRef } from 'hooks'
+import { NODE_HEIGHT, NODE_WIDTH } from 'constants/constants'
 import { FlowChartUI } from '../FlowChartUI'
-import { zoom } from './utils/zoom'
+import { zoom } from 'utils/zoom'
 
 interface FlowChartProps {
   className?: string

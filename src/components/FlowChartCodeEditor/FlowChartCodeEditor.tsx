@@ -7,6 +7,8 @@ import { initialValue } from './initialValue'
 import Terminal from './Terminal'
 import Editor from '@monaco-editor/react'
 import { ExpandLevel } from 'enums'
+import { postPythonScript } from 'services/api'
+
 const dateFormat = 'HH:mm:ss'
 
 interface FlowChartCodeEditorProps {
@@ -61,7 +63,28 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
     //setEditorDidMount(true)
   }
 
-  const handleEvalScript = () => {
+  const handlePythonScript = async () => {
+    const date = format(new Date(), dateFormat)
+    const editor = editorRef?.current ?? null
+    if (editor) {
+      const script = editor.getValue() as string | undefined
+      if (script && script.length) {
+        try {
+          const res = await postPythonScript(script)
+          console.log(res)
+          const json = JSON.stringify(res, null, 2)
+          setOutputValue(
+            outputValue + `${date}:~$ Success \r\n` + json + '\r\n',
+          )
+        } catch (err) {
+          console.log(err)
+          setOutputValue(outputValue + date + ':~$ ' + err + '\r\n')
+        }
+      }
+    }
+  }
+
+  const handleEvalJavaScript = () => {
     const date = format(new Date(), dateFormat)
     const editor = editorRef?.current ?? null
     if (editor) {
@@ -98,7 +121,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
           height="100%"
           value={initialValue}
           editorDidMount={handleEditorDidMount}
-          language="javascript"
+          language="python"
           theme="dark"
           options={{
             minimap: {
@@ -108,7 +131,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
         />
       ) : null}
 
-      <Terminal outputValue={outputValue} onEvalScript={handleEvalScript} />
+      <Terminal outputValue={outputValue} onEvalScript={handlePythonScript} />
     </div>
   )
 }
