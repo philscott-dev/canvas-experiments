@@ -8,6 +8,7 @@ export function drawNode(
   ctx: CanvasRenderingContext2D,
   node: RectNode,
   translateOffset: Point,
+  scale: number,
   activeId?: string,
 ) {
   ctx.beginPath()
@@ -29,7 +30,7 @@ export function drawNode(
     ctx.stroke()
 
     // draw active node controls
-    drawControls(ctx, rect)
+    drawControls(ctx, rect, scale)
   }
 
   //draw inner tab

@@ -13,8 +13,7 @@ export default function useDraw(
     if (ctx) {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
       ctx.save()
-      ctx.setTransform(1, 0, 0, 1, 0, 0)
-      ctx.scale(scale, scale)
+      ctx.setTransform(scale, 0, 0, scale, 0, 0)
 
       //draw grid
       drawGrid(
@@ -29,7 +28,7 @@ export default function useDraw(
       //draw nodes
       nodes.forEach((node, index) => {
         // draw each rect
-        drawNode(ctx, node, translateOffset, activeId)
+        drawNode(ctx, node, translateOffset, scale, activeId)
 
         //draw paths for nodes
         const r = nodes[index + 1]?.rect
