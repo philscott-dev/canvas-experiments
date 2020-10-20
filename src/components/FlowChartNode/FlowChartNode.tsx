@@ -2,7 +2,7 @@
 import { FC, DragEvent } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
-import { BaseNode } from '../FlowChart/types'
+import { BaseNode } from 'types'
 import FlowChartNodeTab from './FlowChartNodeTab'
 import FlowChartNodeBody from './FlowChartNodeBody'
 import FlowChartNodeText from './FlowChartNodeText'

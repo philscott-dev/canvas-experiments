@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid'
 import Canvas from './Canvas'
 import { Point, BaseNode, RectNode } from 'types'
 import { getCanvasPoint } from 'helpers/canvas'
-import { useContextRef } from 'hooks'
+import { useCanvas } from 'hooks'
 import { NODE_HEIGHT, NODE_WIDTH } from 'constants/constants'
 import { FlowChartUI } from '../FlowChartUI'
 import { zoom } from 'utils/zoom'
@@ -16,12 +16,12 @@ interface FlowChartProps {
 }
 const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { ctx } = useContextRef(canvasRef)
+  const { ctx } = useCanvas(canvasRef)
   const [nodes, setNodes] = useState<RectNode[]>([])
   const [dragStartOffset, setDragStartOffset] = useState<Point>({ x: 0, y: 0 })
   const [translateOffset, setTranslateOffset] = useState<Point>({ x: 0, y: 0 })
-  const [scale, setScale] = useState<number>(1)
   const [origin, setOrigin] = useState<Point>({ x: 0, y: 0 }) // for scale calculations
+  const [scale, setScale] = useState<number>(1)
   const [node, setNode] = useState<BaseNode>()
   const [activeId, setActiveId] = useState<string>()
   const [isDragging, setDragging] = useState(false)

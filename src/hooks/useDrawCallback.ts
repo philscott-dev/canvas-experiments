@@ -12,23 +12,17 @@ export default function useDraw(
   activeId?: string,
 ) {
   const draw = useCallback(() => {
-    if (canvas && ctx) {
-      const parent = canvas.parentElement
-      canvas.width = parent?.clientWidth ?? 0
-      canvas.height = parent?.clientHeight ?? 0
-
+    if (ctx) {
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
       ctx.save()
       ctx.setTransform(1, 0, 0, 1, 0, 0)
-      ctx.clearRect(0, 0, 1000 / scale, 1000 / scale)
-      ctx.restore()
-
       ctx.scale(scale, scale)
 
       //draw grid
       drawGrid(
         ctx,
-        canvas.width / scale, //divide by scale to grow the grid
-        canvas.height / scale, //divide by scale to grow the grid
+        ctx.canvas.width / scale, //divide by scale to grow the grid
+        ctx.canvas.height / scale, //divide by scale to grow the grid
         40,
         translateOffset,
         '#0253B150',
@@ -58,8 +52,11 @@ export default function useDraw(
           drawPathAngle(ctx, rect, nextRect)
         }
       })
+
+      // do the restore last
+      ctx.restore()
     }
-  }, [canvas, ctx, scale, translateOffset, nodes, activeId])
+  }, [ctx, scale, translateOffset, nodes, activeId])
   // TODO: look at isDragging seems to be needed to properly update
   // removing for now. The bug might have resolved in an update
 

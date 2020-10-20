@@ -2,7 +2,7 @@
 import styled from '@emotion/styled'
 import { FC, useState, useEffect, useRef, useCallback } from 'react'
 import { jsx } from '@emotion/react'
-import { useResize, useContextRef } from './FlowChart/hooks'
+import { useResize, useCanvas } from 'hooks'
 import { drawGrid } from '../utils/draw'
 
 interface GridProps {
@@ -10,9 +10,10 @@ interface GridProps {
 }
 const Grid: FC<GridProps> = ({ className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { ctx } = useContextRef(canvasRef)
+  const { ctx } = useCanvas(canvasRef)
   const [hasLoaded, setHasLoaded] = useState(false)
   const draw = useCallback(() => {
+    console.log('Grid.tsx')
     const canvas = canvasRef.current
     if (canvas && ctx) {
       const parent = canvas.parentElement

@@ -26,10 +26,10 @@ export function drawNode(
     // highlight the border
     ctx.lineWidth = 5
     ctx.strokeStyle = theme.color.blue[300]
+    ctx.stroke()
 
     // draw active node controls
-    drawControls(ctx)
-    ctx.stroke()
+    drawControls(ctx, rect)
   }
 
   //draw inner tab

@@ -1,4 +1,4 @@
-import { BaseNode } from '../components/FlowChart/types'
+import { BaseNode } from 'types'
 
 export const virustotal: BaseNode = {
   id: '0',

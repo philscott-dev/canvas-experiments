@@ -7,7 +7,7 @@ import Section from './Section'
 import { SidebarLeft, SidebarRight } from './Sidebar'
 import { FlowChartZoomControl } from '../FlowChartZoomControl'
 import { FlowChartTitleBar } from '../FlowChartTitleBar'
-import { BaseNode } from '../FlowChart/types'
+import { BaseNode } from 'types'
 import { FlowChartDetailPanel } from '../FlowChartDetailPanel'
 import { ExpandLevel } from 'enums'
 

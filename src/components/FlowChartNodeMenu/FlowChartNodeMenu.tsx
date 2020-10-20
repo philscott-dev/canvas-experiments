@@ -16,7 +16,7 @@ import Text from './Text'
 
 //make this date driven
 import services from '../../mock/services'
-import { BaseNode } from '../FlowChart/types'
+import { BaseNode } from 'types'
 
 interface FlowChartNodeMenuProps {
   className?: string
