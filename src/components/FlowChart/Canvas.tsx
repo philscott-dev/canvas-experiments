@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
+import { Rect } from 'types'
 import {
   useState,
   forwardRef,
@@ -75,27 +76,54 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
         const point = getCanvasPoint(e, canvas)
         const x = point.x / scale
         const y = point.y / scale
-        const node = nodes.find((n) =>
-          pointInRect(x - translateOffset.x, y - translateOffset.y, n.rect),
-        )
-        if (node && node.rect) {
-          document.body.style.webkitUserSelect = 'none'
-          document.body.style.userSelect = 'none'
-          onDragging(true)
-          setDragId(node.id)
-          setClickOffset({
-            x: x - node.rect.x,
-            y: y - node.rect.y,
-          })
-          onClickNode(node.id)
-        } else {
-          const point = getCanvasPoint(e, canvas)
-          const x = point.x / scale
-          const y = point.y / scale
-          onDragging(true)
-          setClickOffset({ x, y })
+
+        // find a node
+        handleNodeClick(x, y)
+
+        // handle any control clicks
+        if (activeId) {
+          const activeNode = nodes.find((n) => n.id === activeId)
+          if (activeNode) {
+            handleTrashClick(x, y, activeNode.rect)
+          }
         }
       }
+    }
+
+    const handleNodeClick = (x: number, y: number) => {
+      // check if any node has been clicked
+      const node = nodes.find((n) =>
+        pointInRect(x - translateOffset.x, y - translateOffset.y, n.rect),
+      )
+      // handle the node click
+      if (node && node.rect) {
+        document.body.style.userSelect = 'none'
+        onDragging(true)
+        setDragId(node.id)
+        setClickOffset({
+          x: x - node.rect.x,
+          y: y - node.rect.y,
+        })
+        onClickNode(node.id)
+      } else {
+        onDragging(true)
+        setClickOffset({ x, y })
+      }
+    }
+
+    const handleTrashClick = (x: number, y: number, rect: Rect) => {
+      const clickX = x - translateOffset.x
+      const clickY = y - translateOffset.y
+      console.log(clickX, clickY, rect)
+      const trashX = rect.x + rect.width - 28
+      const trashY = rect.y + rect.height + 12
+      const isClicked = pointInRect(clickX, clickY, {
+        x: trashX,
+        y: trashY,
+        width: 18,
+        height: 20,
+      })
+      console.log(isClicked)
     }
 
     const onMouseMove = (

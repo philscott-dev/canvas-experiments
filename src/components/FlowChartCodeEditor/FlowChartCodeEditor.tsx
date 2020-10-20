@@ -121,7 +121,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
           height="100%"
           value={initialValue}
           editorDidMount={handleEditorDidMount}
-          language="python"
+          language="javascript"
           theme="dark"
           options={{
             minimap: {
@@ -131,7 +131,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
         />
       ) : null}
 
-      <Terminal outputValue={outputValue} onEvalScript={handlePythonScript} />
+      <Terminal outputValue={outputValue} onEvalScript={handleEvalJavaScript} />
     </div>
   )
 }

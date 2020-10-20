@@ -35,8 +35,8 @@ export function drawControls(
   const outline =
     'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'
   const TRASH_SVG = new Path2D(outline)
-  ctx.translate(rect.x + rect.width - 28, rect.y + rect.height + 11) //start
-  ctx.scale(0.8, 0.8)
+  ctx.translate(rect.x + rect.width - 28, rect.y + rect.height + 12) //start
+  ctx.scale(0.79, 0.79)
   ctx.lineWidth = 1
   ctx.strokeStyle = '#fcfcfc'
   ctx.moveTo(3, 6)
