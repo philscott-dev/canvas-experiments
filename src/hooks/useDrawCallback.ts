@@ -3,12 +3,10 @@ import { RectNode, Point } from '../types'
 import { drawPathAngle, drawGrid, drawNode } from 'utils/draw'
 
 export default function useDraw(
-  canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null | undefined,
   translateOffset: Point,
   scale: number,
   nodes: RectNode[],
-  isDragging: boolean,
   activeId?: string,
 ) {
   const draw = useCallback(() => {
@@ -57,8 +55,6 @@ export default function useDraw(
       ctx.restore()
     }
   }, [ctx, scale, translateOffset, nodes, activeId])
-  // TODO: look at isDragging seems to be needed to properly update
-  // removing for now. The bug might have resolved in an update
 
   useEffect(() => {
     draw()

@@ -58,15 +58,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     const [hasLoaded, setHasLoaded] = useState(false)
     const [dragId, setDragId] = useState<string>()
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
-    const draw = useDrawCallback(
-      canvas,
-      ctx,
-      translateOffset,
-      scale,
-      nodes,
-      isDragging,
-      activeId,
-    )
+    const draw = useDrawCallback(ctx, translateOffset, scale, nodes, activeId)
     //draw once
     useEffect(() => {
       if (canvas && !hasLoaded) {
