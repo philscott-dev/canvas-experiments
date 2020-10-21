@@ -7,6 +7,7 @@ import { theme } from 'theme'
 import { AppProps } from 'next/app'
 import 'styles/fonts.css'
 import 'styles/default.css'
+import { PortalMount } from 'lib'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const apolloClient = useApollo(pageProps.initialApolloState)
@@ -29,6 +30,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <Component {...pageProps} />
+          <PortalMount id="portal" />
         </ThemeProvider>
       </ApolloProvider>
     </>

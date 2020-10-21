@@ -10,6 +10,8 @@ import { useCanvas } from 'hooks'
 import { NODE_HEIGHT, NODE_WIDTH } from 'constants/constants'
 import { FlowChartUI } from '../FlowChartUI'
 import { zoom } from 'utils/zoom'
+import { Portal } from 'lib'
+import DeleteModal from 'lib/Modal/DeleteModal'
 
 interface FlowChartProps {
   className?: string
@@ -25,6 +27,11 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const [node, setNode] = useState<BaseNode>()
   const [activeId, setActiveId] = useState<string>()
   const [isDragging, setDragging] = useState(false)
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false)
+
+  /**
+   * Canvas Events
+   */
 
   const handleDragStart = (n: BaseNode, e: DragEvent<HTMLDivElement>) => {
     const elem = e.currentTarget
@@ -115,6 +122,30 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
     setActiveId(id)
   }
 
+  /**
+   * Node Controls
+   */
+
+  const handleNodePlayClick = () => {}
+
+  const handleNodeSettingsClick = () => {}
+
+  /**
+   * Delete Node
+   */
+
+  const handleNodeTrashClick = () => {
+    setDeleteModalVisible(true)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalVisible(false)
+  }
+
+  const handleConfirmDelete = async () => {
+    console.log('confirm')
+  }
+
   return (
     <div className={className}>
       <FlowChartUI
@@ -140,7 +171,17 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
         onTranslate={handleTranslate}
         onScale={handleScale}
         onOrigin={handleOrigin}
+        onNodePlayClick={handleNodePlayClick}
+        onNodeSettingsClick={handleNodeSettingsClick}
+        onNodeTrashClick={handleNodeTrashClick}
       />
+      <Portal mountId="portal">
+        <DeleteModal
+          isVisible={isDeleteModalVisible}
+          onClose={handleCloseDeleteModal}
+          onDelete={handleConfirmDelete}
+        />
+      </Portal>
     </div>
   )
 }

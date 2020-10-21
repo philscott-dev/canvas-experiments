@@ -33,6 +33,9 @@ interface CanvasProps {
   onTranslate: (point: Point) => void
   onScale: (factor: number) => void
   onOrigin: (pt: Point) => void
+  onNodePlayClick: () => void
+  onNodeSettingsClick: () => void
+  onNodeTrashClick: () => void
 }
 const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
   (
@@ -53,6 +56,9 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       onTranslate,
       onScale,
       onOrigin,
+      onNodePlayClick,
+      onNodeSettingsClick,
+      onNodeTrashClick,
     },
     canvasRef,
   ) => {
@@ -84,6 +90,8 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
         if (activeId) {
           const activeNode = nodes.find((n) => n.id === activeId)
           if (activeNode) {
+            handlePlayClick(x, y, activeNode.rect)
+            handleSettingsClick(x, y, activeNode.rect)
             handleTrashClick(x, y, activeNode.rect)
           }
         }
@@ -111,19 +119,52 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       }
     }
 
-    const handleTrashClick = (x: number, y: number, rect: Rect) => {
+    const handlePlayClick = (x: number, y: number, rect: Rect) => {
       const clickX = x - translateOffset.x
       const clickY = y - translateOffset.y
-      console.log(clickX, clickY, rect)
-      const trashX = rect.x + rect.width - 28
-      const trashY = rect.y + rect.height + 12
+      const iconX = rect.x + 8
+      const iconY = rect.y + rect.height + 10
       const isClicked = pointInRect(clickX, clickY, {
-        x: trashX,
-        y: trashY,
+        x: iconX,
+        y: iconY,
         width: 18,
         height: 20,
       })
-      console.log(isClicked)
+      if (isClicked) {
+        onNodePlayClick()
+      }
+    }
+
+    const handleSettingsClick = (x: number, y: number, rect: Rect) => {
+      const clickX = x - translateOffset.x
+      const clickY = y - translateOffset.y
+      const iconX = rect.x - 56 + rect.width
+      const iconY = rect.y + rect.height + 11
+      const isClicked = pointInRect(clickX, clickY, {
+        x: iconX,
+        y: iconY,
+        width: 18,
+        height: 20,
+      })
+      if (isClicked) {
+        onNodeSettingsClick()
+      }
+    }
+
+    const handleTrashClick = (x: number, y: number, rect: Rect) => {
+      const clickX = x - translateOffset.x
+      const clickY = y - translateOffset.y
+      const iconX = rect.x + rect.width - 28
+      const iconY = rect.y + rect.height + 12
+      const isClicked = pointInRect(clickX, clickY, {
+        x: iconX,
+        y: iconY,
+        width: 18,
+        height: 20,
+      })
+      if (isClicked) {
+        onNodeTrashClick()
+      }
     }
 
     const onMouseMove = (

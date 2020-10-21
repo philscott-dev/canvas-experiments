@@ -13,7 +13,6 @@ const Grid: FC<GridProps> = ({ className }) => {
   const { ctx } = useCanvas(canvasRef)
   const [hasLoaded, setHasLoaded] = useState(false)
   const draw = useCallback(() => {
-    console.log('Grid.tsx')
     const canvas = canvasRef.current
     if (canvas && ctx) {
       const parent = canvas.parentElement

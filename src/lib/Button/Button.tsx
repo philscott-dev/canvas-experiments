@@ -14,7 +14,7 @@ export interface ButtonProps {
 const Button = styled.button<ButtonProps>`
   ${sizes};
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   white-space: nowrap;
   align-items: center;
   border-radius: 8px;

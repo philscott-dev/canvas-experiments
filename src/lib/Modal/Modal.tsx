@@ -2,8 +2,10 @@
 import styled from '@emotion/styled'
 import { jsx } from '@emotion/react'
 import { FC } from 'react'
-import { IconButton, H3 } from 'lib'
+import { IconButton } from '../IconButton'
+import { H4 } from '../H4'
 import { FiX } from 'react-icons/fi'
+import Overlay from './Overlay'
 
 interface ModalProps {
   title: string
@@ -14,43 +16,52 @@ interface ModalProps {
 
 const Modal: FC<ModalProps> = ({ title, children, isVisible, onClose }) => {
   return (
-    <Wrapper isVisible={isVisible}>
-      <TitleBar>
-        <H3>{title}</H3>
-        {onClose ? (
-          <IconButton onMouseDown={onClose}>
-            <FiX />
-          </IconButton>
-        ) : null}
-      </TitleBar>
-      {children}
-    </Wrapper>
+    <>
+      <Overlay isVisible={isVisible} />
+      <Wrapper isVisible={isVisible}>
+        <TitleBar>
+          <Title>{title}</Title>
+          {onClose ? (
+            <IconButton color="gray" onMouseDown={onClose}>
+              <FiX />
+            </IconButton>
+          ) : null}
+        </TitleBar>
+        {children}
+      </Wrapper>
+    </>
   )
 }
 
-interface WrapperProps {
-  isVisible: boolean
-}
-
-const Wrapper = styled.div<WrapperProps>`
-  padding: 32px 40px;
+const Wrapper = styled.div<{ isVisible: boolean }>`
+  z-index: 2;
+  padding: 0 40px 32px 40px;
   position: fixed;
-  left: 0;
-  right: 0;
-  top: ${({ isVisible }) => (isVisible ? '50%' : '48%')};
-  transform: translateY(-50%);
-  margin: auto;
+  left: 50%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  background: ${({ theme }) => theme.color.indigo[600]};
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
-  background: ${({ theme }) => theme.color.blue[600]};
-  box-shadow: ${({ theme }) => theme.shadow.up.two};
-  z-index: 150;
+  min-width: 500px;
+  transition: ${({ theme }) => theme.transition.all};
+  @media screen and (max-width: ${({ theme }) => theme.breakpoint.xsmall}) {
+    min-width: inherit;
+    padding: 40px 64px;
+    max-height: 100vh;
+  }
 `
+
 const TitleBar = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 32px;
-  /* border-bottom: 1px solid */
+  margin-bottom: 40px;
+`
+
+const Title = styled(H4)`
+  margin-bottom: 0;
 `
 
 export default Modal
