@@ -12,6 +12,7 @@ import { FlowChartUI } from '../FlowChartUI'
 import { zoom } from 'utils/zoom'
 import { Portal } from 'lib'
 import DeleteModal from 'lib/Modal/DeleteModal'
+import { remove, removeByIndex } from 'helpers/array'
 
 interface FlowChartProps {
   className?: string
@@ -20,11 +21,11 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useCanvas(canvasRef)
   const [nodes, setNodes] = useState<RectNode[]>([])
+  const [node, setNode] = useState<BaseNode>() // TODO: rename this thing. dont use it for canvas interactions
   const [dragStartOffset, setDragStartOffset] = useState<Point>({ x: 0, y: 0 })
   const [translateOffset, setTranslateOffset] = useState<Point>({ x: 0, y: 0 })
   const [origin, setOrigin] = useState<Point>({ x: 0, y: 0 }) // for scale calculations
   const [scale, setScale] = useState<number>(1)
-  const [node, setNode] = useState<BaseNode>()
   const [activeId, setActiveId] = useState<string>()
   const [isDragging, setDragging] = useState(false)
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false)
@@ -144,6 +145,12 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
 
   const handleConfirmDelete = async () => {
     console.log('confirm')
+    if (node) {
+      const index = nodes.findIndex((n) => n.id === activeId)
+      const array = removeByIndex(nodes, index)
+      setNodes(array)
+    }
+    setDeleteModalVisible(false)
   }
 
   return (

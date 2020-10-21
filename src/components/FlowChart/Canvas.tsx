@@ -107,6 +107,7 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       if (node && node.rect) {
         document.body.style.userSelect = 'none'
         onDragging(true)
+        console.log(node.id)
         setDragId(node.id)
         setClickOffset({
           x: x - node.rect.x,
