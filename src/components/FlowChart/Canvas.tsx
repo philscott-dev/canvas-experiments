@@ -1,7 +1,9 @@
 /** @jsx jsx */
+/** @refresh reset */
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Rect } from 'types'
+
 import {
   useState,
   forwardRef,
@@ -66,6 +68,13 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     const [dragId, setDragId] = useState<string>()
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
     const draw = useDrawCallback(ctx, translateOffset, scale, nodes, activeId)
+
+    useEffect(() => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('/** @refresh reset [bugfix] */')
+      }
+    }, [])
+
     //draw once
     useEffect(() => {
       if (canvas && !hasLoaded) {

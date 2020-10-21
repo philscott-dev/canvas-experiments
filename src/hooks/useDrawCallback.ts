@@ -1,6 +1,11 @@
+/** @refresh reset */
 import { useCallback, useEffect } from 'react'
 import { RectNode, Point } from '../types'
 import { drawPathAngle, drawGrid, drawNode } from 'utils/draw'
+
+if (process.env.NODE_ENV !== 'production') {
+  console.log('/** @refresh reset [bugfix] */')
+}
 
 export default function useDraw(
   ctx: CanvasRenderingContext2D | null | undefined,
