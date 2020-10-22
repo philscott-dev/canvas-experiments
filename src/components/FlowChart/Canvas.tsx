@@ -1,5 +1,4 @@
 /** @jsx jsx */
-/** @refresh reset */
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Rect } from 'types'
@@ -69,12 +68,6 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
     const draw = useDrawCallback(ctx, translateOffset, scale, nodes, activeId)
 
-    useEffect(() => {
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('/** @refresh reset [bugfix] */')
-      }
-    }, [])
-
     //draw once
     useEffect(() => {
       if (canvas && !hasLoaded) {
@@ -82,6 +75,8 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
         draw()
       }
     }, [hasLoaded, draw, canvas])
+
+    //fire on window resize
     useResize(canvas, draw)
 
     const onMouseDown = (
@@ -116,7 +111,6 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
       if (node && node.rect) {
         document.body.style.userSelect = 'none'
         onDragging(true)
-        console.log(node.id)
         setDragId(node.id)
         setClickOffset({
           x: x - node.rect.x,

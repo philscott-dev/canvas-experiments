@@ -2,7 +2,7 @@
 import styled from '@emotion/styled'
 import { jsx } from '@emotion/react'
 import { NextPage } from 'next'
-import { initializeApollo } from 'graphql/apollo/apolloClient'
+import { initializeApollo } from 'graphql/apolloClient'
 import { Header, H2, Sidebar } from 'components/FlowChartDataPanel'
 import { FlowChartTitleBar } from 'components/FlowChartTitleBar'
 

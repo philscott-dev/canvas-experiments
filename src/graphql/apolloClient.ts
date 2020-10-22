@@ -7,6 +7,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject>
 
 const createApolloClient = () => {
   return new ApolloClient({
+    connectToDevTools: true || process.env.NODE_ENV !== 'production',
     ssrMode: typeof window === 'undefined',
     link,
     cache,

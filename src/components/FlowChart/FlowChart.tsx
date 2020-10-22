@@ -17,6 +17,7 @@ import { remove, removeByIndex } from 'helpers/array'
 interface FlowChartProps {
   className?: string
 }
+
 const FlowChart: FC<FlowChartProps> = ({ className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useCanvas(canvasRef)
@@ -144,7 +145,6 @@ const FlowChart: FC<FlowChartProps> = ({ className }) => {
   }
 
   const handleConfirmDelete = async () => {
-    console.log('confirm')
     if (node) {
       const index = nodes.findIndex((n) => n.id === activeId)
       const array = removeByIndex(nodes, index)

@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/react'
 import { NextPage } from 'next'
 import { FlowChart } from 'components'
-import { initializeApollo } from 'graphql/apollo/apolloClient'
+import { initializeApollo } from 'graphql/apolloClient'
 
 const IndexPage: NextPage = (props) => {
   return <FlowChart />

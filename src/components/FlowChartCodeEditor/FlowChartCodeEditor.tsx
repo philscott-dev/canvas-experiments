@@ -131,7 +131,7 @@ const FlowChartCodeEditor: FC<FlowChartCodeEditorProps> = ({
         />
       ) : null}
 
-      <Terminal outputValue={outputValue} onEvalScript={handleEvalJavaScript} />
+      {/* <Terminal outputValue={outputValue} onEvalScript={handleEvalJavaScript} /> */}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '../graphql/apollo/apolloClient'
+import { useApollo } from '../graphql/apolloClient'
 import Head from 'next/head'
 import { getYear } from 'date-fns'
 import { ThemeProvider } from '@emotion/react'
