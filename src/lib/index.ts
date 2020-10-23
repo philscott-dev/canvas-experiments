@@ -12,13 +12,21 @@ export { Portal, PortalMount } from './Portal'
 export { Overlay } from './Overlay'
 export { Modal } from './Modal'
 export { BreadCrumbs } from './BreadCrumbs'
+export { Search } from './Search'
+export { GlobalButton } from './GlobalButton'
+export { GridItem } from './GridItem'
+export { Heading } from './Heading'
+export { LoadingIndicator } from './LoadingIndicator'
+export { Page } from './Page'
 export {
   Form,
   Input,
+  FormSection,
+  Textarea,
   FormButton,
   Select,
-  DateInput,
   SelectPlaceholder,
+  Error,
 } from './FormElements'
 
 export { H1 } from './H1'

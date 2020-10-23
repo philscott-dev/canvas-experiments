@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import styled from '@emotion/styled'
-import { FC, useState, useEffect } from 'react'
+import { FC, useState, useEffect, ChangeEvent } from 'react'
 import { jsx } from '@emotion/react'
 import { useInputValidation } from './hooks/useInputValidation'
 import { Size } from './types'
@@ -25,6 +25,7 @@ export interface FormSelectProps {
   inputSize?: Size
   tabIndex?: number
   children: React.ReactNode
+  onChange?: (e: ChangeEvent<HTMLSelectElement>) => void
 }
 
 const FormSelect: FC<FormSelectProps> = ({
@@ -35,12 +36,16 @@ const FormSelect: FC<FormSelectProps> = ({
   placeholder,
   defaultValue,
   children,
+  onChange: onChangeProp,
   ...props
 }) => {
-  const { value, error, onBlur, ...fns } = useInputValidation(
-    name,
-    defaultValue,
-  )
+  const {
+    value,
+    error,
+    onBlur,
+    onChange: onChangeHook,
+    ...fns
+  } = useInputValidation(name, defaultValue)
 
   const [isVisible, setLabelVisibility] = useState(false)
 
@@ -61,6 +66,13 @@ const FormSelect: FC<FormSelectProps> = ({
     onBlur()
   }
 
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    onChangeHook(e)
+    if (onChangeProp) {
+      onChangeProp(e)
+    }
+  }
+
   return (
     <Container className={className} inputSize={inputSize}>
       <FormLabel error={!!error} isVisible={isVisible || value.length > 0}>
@@ -75,6 +87,7 @@ const FormSelect: FC<FormSelectProps> = ({
         onFocus={handleOnFocus}
         onBlur={handleOnBlur}
         inputSize={inputSize}
+        onChange={handleChange}
         {...props}
         {...fns}
       >
@@ -86,21 +99,24 @@ const FormSelect: FC<FormSelectProps> = ({
 }
 
 const Container = styled.div<{ inputSize: Size }>`
-  overflow-y: visible;
-  overflow: visible;
   display: flex;
   position: relative;
-  width: 100%;
-  border-radius: ${({ inputSize }) =>
-    inputSize === 'large' ? INPUT_LARGE : INPUT_SMALL}px;
+  flex-direction: column;
+  overflow-y: visible;
+  overflow: visible;
+  position: relative;
+  min-width: 300px;
+  border-radius: 2px;
+  /* border-radius: ${({ inputSize }) =>
+    inputSize === 'large' ? INPUT_LARGE : INPUT_SMALL}px; */
 `
 
 const ArrowDown = styled(FaCaretDown)`
   position: absolute;
-  color: ${({ theme }) => theme.color.gray[200]};
+  color: ${({ theme }) => theme.color.white[100]};
   right: 24px;
   top: 50%;
-  margin-top: -8px;
+  margin-top: 8px;
   pointer-events: none;
 `
 

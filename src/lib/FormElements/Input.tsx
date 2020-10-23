@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, FocusEvent } from 'react'
 import styled from '@emotion/styled'
 import { Size } from './types'
 import { INPUT_LARGE, INPUT_SMALL } from './constants'
@@ -11,8 +11,8 @@ interface InputProps {
   required?: boolean
   value?: string
   placeholder: string
-  onFocus: () => void
-  onBlur: () => void
+  onFocus: (e: FocusEvent<HTMLInputElement>) => void
+  onBlur: (e: FocusEvent<HTMLInputElement>) => void
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -24,22 +24,21 @@ export default styled.input<InputProps>`
   box-sizing: border-box;
   height: ${({ inputSize }) =>
     inputSize === 'large' ? INPUT_LARGE : INPUT_SMALL}px;
-  padding: 0 24px;
-  border-radius: 8px;
+  padding: 0 16px;
   outline: none;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   background-clip: padding-box;
   font-family: ${({ theme }) => theme.font.family};
-  font-weight: 200;
+  font-weight: 300;
+  border-radius: 2px;
   border: 2px solid
     ${({ theme, error }) =>
-      !error ? theme.color.blue[400] : theme.color.red[300]};
+      !error ? theme.color.indigo[300] : theme.color.red[300]};
   color: ${({ theme }) => theme.color.white[100]};
-  background: ${({ theme }) => theme.color.blue[500]};
+  background: ${({ theme }) => theme.color.indigo[600]};
   &::placeholder {
-    color: ${({ theme, error }) =>
-      !error ? theme.color.gray[200] : theme.color.red[300]};
+    color: ${({ theme }) => theme.color.gray[200]};
     font-family: ${({ theme }) => theme.font.family};
   }
   &:-webkit-autofill,
@@ -53,10 +52,7 @@ export default styled.input<InputProps>`
   &:focus {
     border: 2px solid
       ${({ theme, error }) =>
-        !error ? theme.color.blue[300] : theme.color.red[300]};
+        !error ? theme.color.indigo[300] : theme.color.red[300]};
   }
-  @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
-    border-right: 1px solid ${({ theme }) => theme.color.white[100]};
-  }
-  transition: all 0.3s ease-in-out;
+  transition: ${({ theme }) => theme.transition.all};
 `

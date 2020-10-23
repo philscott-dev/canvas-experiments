@@ -9,7 +9,7 @@ interface TextProps {
 
 const Anchor = styled.a<TextProps>`
   ${sizes};
-  text-decoration: underline;
+  text-decoration: none;
   text-align: inherit;
   cursor: pointer;
   font-weight: 500;

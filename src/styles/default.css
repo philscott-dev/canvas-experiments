@@ -17,6 +17,11 @@ body {
   overflow: hidden;
   height: inherit;
   min-height: inherit;
+  position: relative;
+}
+
+#__next-prerender-indicator {
+  display: none !important;
 }
 
 #__next {

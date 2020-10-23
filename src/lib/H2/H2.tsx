@@ -9,16 +9,16 @@ interface H2Props {
 
 const H2 = styled.h2<H2Props>`
   ${sizes}
+  text-transform: uppercase;
   text-align: inherit;
-  font-size: 32px;
-  line-height: 42px;
-  margin-bottom: 16px;
-  font-weight: 300;
+  font-size: 24px;
+  line-height: 17px;
+  margin-top: 0;
+  font-weight: 600;
   font-family: ${({ theme }) => theme.font.family};
-  color: ${({ theme }) => theme.color.white[100]};
+  color: ${({ theme }) => theme.color.gray[200]};
   @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
-    font-size: 26px;
-    line-height: 28px;
+    font-size: 18px;
   }
 `
 

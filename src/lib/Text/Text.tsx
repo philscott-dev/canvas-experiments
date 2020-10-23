@@ -24,12 +24,11 @@ const Text = styled.p<TextProps>`
           text-overflow: ellipsis;
         `
       : null}
-  
 `
 
 const Emphasized = styled(Text)`
   font-weight: 500;
-  color: ${({ theme }) => theme.color.blue[400]};
+  color: ${({ theme }) => theme.color.blue[300]};
 `
 
 const Deemphasized = styled(Text)`

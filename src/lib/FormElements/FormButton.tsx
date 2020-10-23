@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import styled from '@emotion/styled'
-import { FC, useState, useContext, useEffect } from 'react'
+import { FC, MouseEvent, useState, useContext, useEffect } from 'react'
 import { jsx, css } from '@emotion/react'
 import { ValidationContext } from './Form'
 import { LoadingStatus } from './hooks/useLoadingStatus'
@@ -8,9 +8,17 @@ import { LoadingStatus } from './hooks/useLoadingStatus'
 export interface ButtonProps {
   className?: string
   name?: string
+  onMouseDown?: (e: MouseEvent<HTMLButtonElement>) => void
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void
 }
 
-const Button: FC<ButtonProps> = ({ name, children, className }) => {
+const Button: FC<ButtonProps> = ({
+  name,
+  children,
+  className,
+  onMouseDown,
+  onClick,
+}) => {
   const { delayedStatus, animationSpeed } = useContext(ValidationContext)
   const [previousStatus, setPreviousStatus] = useState(LoadingStatus.Normal)
   const [animation, setAnimation] = useState(baseCss)
@@ -50,7 +58,14 @@ const Button: FC<ButtonProps> = ({ name, children, className }) => {
   const disabled = delayedStatus !== LoadingStatus.Normal
 
   return (
-    <button type="submit" disabled={disabled} name={name} className={className}>
+    <button
+      type="submit"
+      disabled={disabled}
+      name={name}
+      className={className}
+      onMouseDown={onMouseDown}
+      onClick={onClick}
+    >
       {children}
     </button>
   )
@@ -145,12 +160,13 @@ export const successToNormal = css`
 `
 
 export default styled(Button)`
+  position: relative;
   display: flex;
   font-size: 16px;
-  justify-content: space-between;
+  justify-content: center;
   white-space: nowrap;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 2px;
   outline: none;
   pointer-events: all;
   border-style: solid;
@@ -163,18 +179,22 @@ export default styled(Button)`
     opacity: 0.5;
     pointer-events: none;
   }
-  @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
+  /* @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
     display: block;
     width: 100%;
-  }
+  } */
+
+  margin-top: 40px;
+  min-height: 56px;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: ${({ theme }) => theme.font.family};
   color: ${({ theme }) => theme.color.white[100]};
-  background: ${({ theme }) => theme.color.blue[400]};
-  border-color: ${({ theme }) => theme.color.blue[400]};
-  box-shadow: ${({ theme }) => theme.shadow.up.one};
+  background: ${({ theme }) => theme.color.indigo[300]};
+  border-color: ${({ theme }) => theme.color.indigo[300]};
   &:hover {
     color: ${({ theme }) => theme.color.white[100]};
-    background: ${({ theme }) => theme.color.blue[300]};
-    box-shadow: ${({ theme }) => theme.shadow.up.two};
-    border-color: ${({ theme }) => theme.color.blue[300]};
+    background: ${({ theme }) => theme.color.indigo[300]};
+    border-color: ${({ theme }) => theme.color.indigo[300]};
   }
 `

@@ -12,31 +12,31 @@ interface SelectProps {
   placeholder: string
   onFocus: () => void
   onBlur: () => void
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void
 }
 
 export default styled.select<SelectProps>`
   -webkit-appearance: none;
   height: ${({ inputSize }) =>
     inputSize === 'large' ? INPUT_LARGE : INPUT_SMALL}px;
-  padding: 0 24px;
-  border-radius: 8px;
+  border-radius: 2px;
   outline: none;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   background-clip: padding-box;
   font-family: ${({ theme }) => theme.font.family};
-  font-weight: 200;
+  font-weight: 300;
+  padding: 0 16px;
   border: 2px solid
     ${({ theme, error }) =>
-      !error ? theme.color.blue[400] : theme.color.red[300]};
+      !error ? theme.color.indigo[300] : theme.color.red[300]};
   color: ${({ theme, value }) =>
     value ? theme.color.white[100] : theme.color.gray[200]};
-  background: ${({ theme }) => theme.color.blue[500]};
+  background: ${({ theme }) => theme.color.black[700]};
   &:focus {
     border: 2px solid
       ${({ theme, error }) =>
-        !error ? theme.color.blue[300] : theme.color.red[300]};
+        !error ? theme.color.indigo[300] : theme.color.red[300]};
   }
   &::placeholder {
     color: ${({ theme, error }) =>
@@ -51,10 +51,7 @@ export default styled.select<SelectProps>`
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
     transition: background-color 5000s ease-in-out 0s;
   }
-  @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
-    border-right: 1px solid ${({ theme }) => theme.color.white[100]};
-  }
-  transition: border 0.3s ease-in-out;
+  transition: ${({ theme }) => theme.transition.all};
   > option {
     :nth-of-type(1) {
       color: ${({ theme }) => theme.color.gray[200]};

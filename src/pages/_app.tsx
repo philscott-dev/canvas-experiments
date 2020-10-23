@@ -14,7 +14,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
-        <title>Canvas Experiments</title>
+        <title>Flow Automation</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no"
