@@ -1,5 +1,7 @@
 import { gql, useMutation } from '@apollo/client'
 import { AddWorkflow, AddWorkflowVariables } from './__generated__/AddWorkflow'
+import { GetAllWorkflows } from '../queries/__generated__/GetAllWorkflows'
+import { GET_ALL_WORKFLOWS } from '../queries/getAllWorkflows'
 
 const ADD_WORKFLOW = gql`
   mutation AddWorkflow($workflow: AddWorkflowInput!) {
@@ -18,16 +20,29 @@ export function useAddWorkflow() {
     AddWorkflow,
     AddWorkflowVariables
   >(ADD_WORKFLOW, {
+    /**
+     * Optimistic Updates
+     * We still have to use "mutate" to update the server
+     */
     update(cache, { data }) {
-      cache.modify({
-        fields: {
-          workflows(existingWorkflows) {
-            return {
-              ...existingWorkflows,
-            }
-          },
-        },
+      const newWorkflow = data?.addWorkflow
+      const existingData = cache.readQuery<GetAllWorkflows>({
+        query: GET_ALL_WORKFLOWS,
       })
+
+      if (newWorkflow && existingData) {
+        cache.writeQuery({
+          query: GET_ALL_WORKFLOWS,
+          data: {
+            workflows: [
+              ...existingData.workflows,
+              { __typename: 'Workflow', ...newWorkflow },
+            ],
+          },
+        })
+      }
     },
   })
+
+  return { mutate, data, error }
 }

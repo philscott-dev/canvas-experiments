@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetWorkflows
+// GraphQL query operation: GetAllWorkflows
 // ====================================================
 
-export interface GetWorkflows_workflows {
+export interface GetAllWorkflows_workflows {
   __typename: "WorkFlow";
   id: string;
   /**
@@ -19,15 +19,15 @@ export interface GetWorkflows_workflows {
    */
   description: string;
   /**
-   * Date the workflow was created
+   * Date the workflow was created.
    */
   createdDate: any;
   /**
-   * Date the workflow was last updated
+   * Date the workflow was last updated.
    */
   updatedDate: any;
 }
 
-export interface GetWorkflows {
-  workflows: GetWorkflows_workflows[];
+export interface GetAllWorkflows {
+  workflows: GetAllWorkflows_workflows[];
 }

@@ -8,7 +8,6 @@ export const GET_WORKFLOW = gql`
       title
       description
       startId
-      endId
       nodes {
         id
         parentId

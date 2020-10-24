@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { format, parseJSON } from 'date-fns'
 import CreateModal from 'lib/Modal/CreateModal'
 import { EmptyState } from 'lib/EmtpyState'
-import { useGetWorkflows } from 'graphql/queries'
+import { useGetAllWorkflows } from 'graphql/queries'
 import {
   H1,
   H2,
@@ -38,7 +38,7 @@ export async function getStaticProps() {
 function IndexPage({
   initialApolloState,
 }: InferGetServerSidePropsType<typeof getStaticProps>) {
-  const { loading, error, data } = useGetWorkflows()
+  const { loading, error, data } = useGetAllWorkflows()
   const { replace, push, query } = useRouter()
   const [searchTerm, setSearchTerm] = useState<string>(
     (query?.term as string) ?? '',
@@ -83,7 +83,7 @@ function IndexPage({
         <div>
           <Link href="/" passHref>
             <Anchor>
-              <H1>SOAR PIVOT</H1>
+              <H1>SOAR EXPLORER</H1>
               <H2>Workflows</H2>
             </Anchor>
           </Link>

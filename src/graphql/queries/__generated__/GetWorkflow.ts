@@ -32,11 +32,7 @@ export interface GetWorkflow_workflow {
    */
   startId: string;
   /**
-   * Node ID that the workflow terminates on.
-   */
-  endId: string;
-  /**
-   * List of Nodes in the workflow
+   * List of Nodes in the workflow.
    */
   nodes: GetWorkflow_workflow_nodes[];
 }

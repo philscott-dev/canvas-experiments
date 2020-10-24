@@ -29,6 +29,7 @@
     "react-dom": "^16.14.0",
     "react-icons": "^3.11.0",
     "safe-regex": "^2.1.1",
+    "subscriptions-transport-ws": "^0.9.18",
     "svg-loaders-react": "^2.2.1",
     "swr": "^0.2.2",
     "uuid": "^8.3.0",

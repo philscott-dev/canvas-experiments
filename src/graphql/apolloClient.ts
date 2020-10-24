@@ -1,16 +1,59 @@
 import { useMemo } from 'react'
-import link from './link'
 import cache from './cache'
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client'
+import { WebSocketLink } from '@apollo/client/link/ws'
+import { getMainDefinition } from '@apollo/client/utilities'
+import {
+  ApolloClient,
+  NormalizedCacheObject,
+  ApolloLink,
+  HttpLink,
+  split,
+} from '@apollo/client'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 const createApolloClient = () => {
+  // check if rendered on client or on server
+  const ssrMode = typeof window === 'undefined'
+
+  // httpLink or http + ws link
+  let link
+
+  // establish the connection to the service
+  const httpLink = new HttpLink({
+    uri: 'http://localhost:4000',
+    credentials: 'same-origin',
+  })
+
+  // assign httpLink first
+  link = httpLink
+
+  // once not in SSR, split http and ws traffic
+  if (!ssrMode) {
+    const wsLink = new WebSocketLink({
+      uri: 'ws://localhost:4000/graphql',
+      options: {
+        reconnect: true,
+      },
+    })
+
+    link = split(
+      ({ query }) => {
+        const definition = getMainDefinition(query)
+        return (
+          definition.kind === 'OperationDefinition' &&
+          definition.operation === 'subscription'
+        )
+      },
+      wsLink,
+      httpLink,
+    )
+  }
   return new ApolloClient({
     connectToDevTools: true || process.env.NODE_ENV !== 'production',
-    ssrMode: typeof window === 'undefined',
-    link,
+    ssrMode,
     cache,
+    link,
   })
 }
 
