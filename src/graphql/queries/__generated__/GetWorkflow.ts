@@ -30,7 +30,7 @@ export interface GetWorkflow_workflow {
   /**
    * Node ID that the workflow starts on.
    */
-  startId: string;
+  startId: string | null;
   /**
    * List of Nodes in the workflow.
    */

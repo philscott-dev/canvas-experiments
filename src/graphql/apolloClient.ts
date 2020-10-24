@@ -49,6 +49,8 @@ const createApolloClient = () => {
       httpLink,
     )
   }
+
+  // Configured Apollo Client
   return new ApolloClient({
     connectToDevTools: true || process.env.NODE_ENV !== 'production',
     ssrMode,

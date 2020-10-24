@@ -16,7 +16,7 @@ const ADD_WORKFLOW = gql`
 `
 
 export function useAddWorkflow() {
-  const [mutate, { data, error }] = useMutation<
+  const [mutate, { data, error, loading }] = useMutation<
     AddWorkflow,
     AddWorkflowVariables
   >(ADD_WORKFLOW, {
@@ -34,15 +34,12 @@ export function useAddWorkflow() {
         cache.writeQuery({
           query: GET_ALL_WORKFLOWS,
           data: {
-            workflows: [
-              ...existingData.workflows,
-              { __typename: 'Workflow', ...newWorkflow },
-            ],
+            workflows: [...existingData.workflows, newWorkflow],
           },
         })
       }
     },
   })
 
-  return { mutate, data, error }
+  return { mutate, data, error, loading }
 }

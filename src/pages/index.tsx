@@ -1,14 +1,13 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react'
 import { initializeApollo } from 'graphql/apolloClient'
-import { useQuery } from '@apollo/client'
 import { ChangeEvent, KeyboardEvent, useState } from 'react'
 import type { InferGetServerSidePropsType } from 'next'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { format, parseJSON } from 'date-fns'
-import CreateModal from 'lib/Modal/CreateModal'
+import CreateModal from 'components/AddWorkflowModal/AddWorkflowModal'
 import { EmptyState } from 'lib/EmtpyState'
 import { useGetAllWorkflows } from 'graphql/queries'
 import {
@@ -39,6 +38,7 @@ function IndexPage({
   initialApolloState,
 }: InferGetServerSidePropsType<typeof getStaticProps>) {
   const { loading, error, data } = useGetAllWorkflows()
+  console.log(data)
   const { replace, push, query } = useRouter()
   const [searchTerm, setSearchTerm] = useState<string>(
     (query?.term as string) ?? '',
@@ -150,7 +150,7 @@ function IndexPage({
         )}
       </Wrapper>
       <Portal mountId="portal">
-        <CreateModal isVisible={isModalVisible} onClose={handleCloseModal} />
+        <CreateModal isVisible={isModalVisible} onClose={handleCloseModal} on />
       </Portal>
     </Page>
   )

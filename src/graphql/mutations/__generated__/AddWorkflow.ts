@@ -23,11 +23,11 @@ export interface AddWorkflow_addWorkflow {
   /**
    * Node ID that the workflow starts on.
    */
-  startId: string;
+  startId: string | null;
   /**
    * Node ID that the workflow terminates on.
    */
-  endId: string;
+  endId: string | null;
 }
 
 export interface AddWorkflow {
