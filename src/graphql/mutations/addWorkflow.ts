@@ -30,11 +30,16 @@ export function useAddWorkflow() {
         query: GET_ALL_WORKFLOWS,
       })
 
+      console.log(existingData)
+
       if (newWorkflow && existingData) {
         cache.writeQuery({
           query: GET_ALL_WORKFLOWS,
           data: {
-            workflows: [...existingData.workflows, newWorkflow],
+            workflows: [
+              ...existingData.workflows,
+              { ...newWorkflow, __typename: 'Workflow' },
+            ],
           },
         })
       }

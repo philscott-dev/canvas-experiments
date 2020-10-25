@@ -74,8 +74,7 @@ const Box = styled.div<{ img?: string; isEmpty?: boolean }>`
   border-radius: 16px;
   border-color: ${({ theme }) => theme.color.indigo[300]};
   border-style: ${({ isEmpty }) => (isEmpty ? 'dashed' : 'solid')};
-  background: ${({ theme, img }) =>
-    `url("http://192.168.1.185:8080/${img}"), ${theme.color.indigo[400]}  `};
+  background: ${({ theme, img }) => theme.color.indigo[400]};
   background-size: cover, contain;
   background-position: center, right bottom;
   background-repeat: no-repeat, no-repeat;
