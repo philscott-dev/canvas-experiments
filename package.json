@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "next build && next start",
-  "bin": "",
   "scripts": {
     "main": "node scripts/start.js",
     "dev": "next dev",
@@ -49,7 +48,7 @@
     "@zeit/next-sass": "^1.0.1",
     "apollo": "^2.31.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.11.0",
+    "eslint": "^7.12.0",
     "eslint-config-prettier": "^6.14.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-flowtype": "^5.1.1",

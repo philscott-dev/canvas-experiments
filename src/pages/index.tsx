@@ -119,10 +119,8 @@ function IndexPage({
             {data.workflows.map((workflow) => (
               <Link
                 key={workflow.id}
-                href={{
-                  pathname: '[id]',
-                  query: { id: workflow.id },
-                }}
+                href={`/workflow/[id]`}
+                as={`/workflow/${workflow.id}`}
                 passHref
               >
                 <GridItem
@@ -150,7 +148,7 @@ function IndexPage({
         )}
       </Wrapper>
       <Portal mountId="portal">
-        <CreateModal isVisible={isModalVisible} onClose={handleCloseModal} on />
+        <CreateModal isVisible={isModalVisible} onClose={handleCloseModal} />
       </Portal>
     </Page>
   )

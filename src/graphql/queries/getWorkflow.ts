@@ -19,6 +19,6 @@ export const GET_WORKFLOW = gql`
   }
 `
 
-export function useGetWorkflow() {
-  const { loading, error, data } = useQuery<GetWorkflow>(GET_WORKFLOW)
+export function useGetWorkflow(id: string) {
+  return useQuery<GetWorkflow>(GET_WORKFLOW, { variables: { id } })
 }
