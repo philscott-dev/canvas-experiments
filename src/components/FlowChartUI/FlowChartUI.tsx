@@ -13,6 +13,7 @@ import { ExpandLevel } from 'enums'
 
 interface FlowChartUIProps {
   className?: string
+  title: string
   onCenter: () => void
   onZoomIn: () => void
   onZoomOut: () => void
@@ -20,6 +21,7 @@ interface FlowChartUIProps {
 }
 const FlowChartUI: FC<FlowChartUIProps> = ({
   className,
+  title,
   onCenter,
   onZoomIn,
   onZoomOut,
@@ -40,7 +42,7 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
         <SidebarLeft>
           <FlowChartNodeMenu onDragStart={onDragStart} />
         </SidebarLeft>
-        <FlowChartTitleBar />
+        <FlowChartTitleBar title={title} />
         <SidebarRight>
           <FlowChartZoomControl
             onCenter={onCenter}

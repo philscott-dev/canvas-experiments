@@ -1,4 +1,4 @@
-import { InferGetServerSidePropsType, NextPageContext } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import styled from '@emotion/styled'
 import { useGetWorkflow } from 'graphql/queries'
 import { useRef, useState, DragEvent } from 'react'
@@ -11,13 +11,14 @@ import { NODE_HEIGHT, NODE_WIDTH } from 'constants/constants'
 import { zoom } from 'utils/zoom'
 import { Portal } from 'lib'
 import DeleteModal from 'lib/Modal/DeleteModal'
-import { remove, removeByIndex } from 'helpers/array'
+import { removeByIndex } from 'helpers/array'
 
 function WorkflowPage({
-  workflowId,
+  id,
   className,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { loading, data } = useGetWorkflow(workflowId)
+  console.log(id)
+  const { loading, data } = useGetWorkflow(id)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useCanvas(canvasRef)
   const [nodes, setNodes] = useState<RectNode[]>([])
@@ -155,6 +156,7 @@ function WorkflowPage({
   return (
     <div className={className}>
       <FlowChartUI
+        title={data?.workflow.title ?? ''}
         onDragStart={handleDragStart}
         onCenter={handleCenter}
         onZoomIn={handleZoomIn}
@@ -203,10 +205,11 @@ export default styled(WorkflowPage)`
  * Server Side Props
  */
 
-export async function getServerSideProps(context: NextPageContext) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  console.log(context.query.id)
   return {
     props: {
-      workflowId: context.query.id as string,
+      id: context.query.id as string,
     },
   }
 }

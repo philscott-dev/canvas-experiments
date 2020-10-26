@@ -15,8 +15,9 @@ import {
 
 interface FlowCharTitleBarProps {
   className?: string
+  title: string
 }
-const FlowCharTitleBar: FC<FlowCharTitleBarProps> = ({ className }) => {
+const FlowCharTitleBar: FC<FlowCharTitleBarProps> = ({ className, title }) => {
   const router = useRouter()
   const handleRoute = (route?: string) => {
     if (route) {
@@ -31,7 +32,7 @@ const FlowCharTitleBar: FC<FlowCharTitleBarProps> = ({ className }) => {
     <div className={className}>
       <FlexLeft>
         <Control value="options" onClick={handleAction}>
-          <Text size="small">PHIL'S WORKFLOW</Text>
+          <Text size="small">{title}</Text>
         </Control>
         <Control value={'/'} onClick={handleRoute}>
           <FiHome />
