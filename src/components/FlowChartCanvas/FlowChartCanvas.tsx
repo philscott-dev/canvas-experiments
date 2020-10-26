@@ -1,8 +1,10 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import { Rect } from 'types'
-
+import { useDrawCallback, useResize } from 'hooks'
+import { RectNode, Point } from 'types'
+import { pointInRect } from 'utils/math'
+import { zoom } from 'utils/zoom'
+import { getCanvasPoint } from 'helpers/canvas'
 import {
   useState,
   forwardRef,
@@ -11,13 +13,8 @@ import {
   DragEvent,
   useEffect,
 } from 'react'
-import { useDrawCallback, useResize } from 'hooks'
-import { RectNode, Point } from 'types'
-import { pointInRect } from 'utils/math'
-import { zoom } from 'utils/zoom'
-import { getCanvasPoint } from 'helpers/canvas'
 
-interface CanvasProps {
+interface FlowChartCanvasProps {
   className?: string
   canvas: HTMLCanvasElement | null
   ctx: CanvasRenderingContext2D | null
@@ -38,7 +35,7 @@ interface CanvasProps {
   onNodeSettingsClick: () => void
   onNodeTrashClick: () => void
 }
-const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
+const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
   (
     {
       className,
@@ -246,4 +243,4 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
   },
 )
 
-export default styled(Canvas)``
+export default styled(FlowChartCanvas)``

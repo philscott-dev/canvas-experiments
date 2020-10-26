@@ -1,4 +1,5 @@
-export { FlowChart } from './FlowChart'
+export { FlowChartCanvas } from './FlowChartCanvas'
+export { FlowChartUI } from './FlowChartUI'
 export { FlowChartDataPanel } from './FlowChartDataPanel'
 export { FlowChartCodeEditor } from './FlowChartCodeEditor'
 export { default as FlowChartControl } from './FlowChartControl'

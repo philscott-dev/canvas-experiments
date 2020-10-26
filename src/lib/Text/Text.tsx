@@ -12,6 +12,7 @@ const Text = styled.p<TextProps>`
   ${sizes}
   text-align: ${({ align }) => align || 'initial'};
   margin: 0;
+  padding: 0;
   font-weight: 500;
   color: ${({ theme }) => theme.color.white[100]};
   font-family: ${({ theme }) => theme.font.family};

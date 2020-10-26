@@ -7,6 +7,15 @@
 // GraphQL query operation: GetWorkflow
 // ====================================================
 
+export interface GetWorkflow_workflow_nodes {
+  __typename: "Node";
+  id: string;
+  parentId: string;
+  title: string;
+  createdDate: any;
+  updatedDate: any;
+}
+
 export interface GetWorkflow_workflow {
   __typename: "WorkFlow";
   id: string;
@@ -22,6 +31,10 @@ export interface GetWorkflow_workflow {
    * Node ID that the workflow starts on.
    */
   startId: string | null;
+  /**
+   * List of Nodes in the workflow.
+   */
+  nodes: GetWorkflow_workflow_nodes[];
 }
 
 export interface GetWorkflow {

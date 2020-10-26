@@ -1,10 +1,10 @@
-/** @jsx jsx */
-import { FC } from 'react'
-import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
-import Text from '../FlowChart/Text'
 import Control from '../FlowChartControl'
+import { FC } from 'react'
 import { useRouter } from 'next/router'
+import { Text } from 'lib'
+import { FlexLeft } from './FlexLeft'
+import { FlexRight } from './FlexRight'
 import {
   FiPlay,
   FiSkipForward,
@@ -31,7 +31,7 @@ const FlowCharTitleBar: FC<FlowCharTitleBarProps> = ({ className }) => {
     <div className={className}>
       <FlexLeft>
         <Control value="options" onClick={handleAction}>
-          <Title>PHIL'S WORKFLOW</Title>
+          <Text size="small">PHIL'S WORKFLOW</Text>
         </Control>
         <Control value={'/'} onClick={handleRoute}>
           <FiHome />
@@ -69,25 +69,3 @@ export default styled(FlowCharTitleBar)`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   pointer-events: all;
 `
-
-const FlexLeft = styled.div`
-  display: flex;
-  align-items: center;
-  > button {
-    border-right: 1px solid ${({ theme }) => theme.color.indigo[600]};
-    &:nth-of-type(1) {
-      border-radius: 8px 0 0 8px;
-    }
-  }
-`
-const FlexRight = styled.div`
-  display: flex;
-  align-items: center;
-  > button {
-    border-left: 1px solid ${({ theme }) => theme.color.indigo[600]};
-    &:nth-last-of-type(1) {
-      border-radius: 0 8px 8px 0;
-    }
-  }
-`
-const Title = styled(Text)``
