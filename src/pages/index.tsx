@@ -3,13 +3,13 @@ import { jsx, css } from '@emotion/react'
 import { initializeApollo } from 'graphql/apolloClient'
 import { ChangeEvent, KeyboardEvent, useState } from 'react'
 import type { InferGetServerSidePropsType } from 'next'
-import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { format, parseJSON } from 'date-fns'
 import CreateModal from 'components/AddWorkflowModal/AddWorkflowModal'
 import { EmptyState } from 'lib/EmtpyState'
 import { useGetAllWorkflows } from 'graphql/queries'
+import { Wrapper } from 'components'
 import {
   H1,
   H2,
@@ -23,22 +23,11 @@ import {
   Page,
 } from 'lib'
 
-export async function getStaticProps() {
-  const apolloClient = initializeApollo()
-
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-    },
-    revalidate: 1,
-  }
-}
-
 function IndexPage({
   initialApolloState,
-}: InferGetServerSidePropsType<typeof getStaticProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log(initialApolloState)
   const { loading, error, data } = useGetAllWorkflows()
-  console.log(data)
   const { replace, push, query } = useRouter()
   const [searchTerm, setSearchTerm] = useState<string>(
     (query?.term as string) ?? '',
@@ -52,8 +41,6 @@ function IndexPage({
   //     shallow: true,
   //   })
   // }, [term])
-
-  console.log(loading, error, data)
 
   const handleAddClick = () => {
     setModalVisible(true)
@@ -156,7 +143,14 @@ function IndexPage({
 
 export default IndexPage
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`
+/**
+ * Get Static Server Side Props
+ */
+export async function getServerSideProps() {
+  const apolloClient = initializeApollo()
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+  }
+}

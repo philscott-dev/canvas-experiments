@@ -11,7 +11,7 @@ export const GET_WORKFLOW = gql`
       nodes {
         id
         parentId
-        title
+        name
         createdDate
         updatedDate
       }

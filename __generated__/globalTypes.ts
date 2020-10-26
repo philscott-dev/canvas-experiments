@@ -8,7 +8,16 @@
 //==============================================================
 
 /**
- * Initial workflow
+ * Create Node
+ */
+export interface AddNodeInput {
+  workflowId: string;
+  name: string;
+  description?: string | null;
+}
+
+/**
+ * Create Workflow
  */
 export interface AddWorkflowInput {
   title: string;

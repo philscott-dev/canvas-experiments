@@ -40,7 +40,7 @@ const FlowCharTitleBar: FC<FlowCharTitleBarProps> = ({ className, title }) => {
         <Control value={'/'} onClick={handleRoute}>
           <FiGitPullRequest />
         </Control>
-        <Control value={'/data'} onClick={handleRoute}>
+        <Control value={'/'} onClick={handleRoute}>
           <FiDatabase />
         </Control>
       </FlexLeft>

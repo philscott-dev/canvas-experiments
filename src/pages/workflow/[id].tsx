@@ -17,7 +17,6 @@ function WorkflowPage({
   id,
   className,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(id)
   const { loading, data } = useGetWorkflow(id)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useCanvas(canvasRef)
@@ -58,9 +57,9 @@ function WorkflowPage({
   }
 
   const handleZoomIn = () => {
-    if (canvasRef.current) {
+    if (ctx?.canvas) {
       const x = zoom(
-        canvasRef.current,
+        ctx?.canvas,
         scale,
         origin,
         translateOffset,
@@ -74,9 +73,9 @@ function WorkflowPage({
   }
 
   const handleZoomOut = () => {
-    if (canvasRef.current) {
+    if (ctx?.canvas) {
       const x = zoom(
-        canvasRef.current,
+        ctx.canvas,
         scale,
         origin,
         translateOffset,
@@ -96,12 +95,12 @@ function WorkflowPage({
 
   const handleDropNewNode = (e: DragEvent) => {
     e.preventDefault()
-    const { current: canvas } = canvasRef
-    if (canvas) {
-      const point = getCanvasPoint(e, canvas)
+    if (ctx?.canvas) {
+      const point = getCanvasPoint(e, ctx.canvas)
       const x = point.x / scale
       const y = point.y / scale
       if (node) {
+        console.log(node)
         setNodes([
           ...nodes,
           {
@@ -206,7 +205,7 @@ export default styled(WorkflowPage)`
  */
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(context.query.id)
+  // get router ID immediately to pass to the useGetWorkflow hook
   return {
     props: {
       id: context.query.id as string,

@@ -35,5 +35,5 @@ export interface AddWorkflow {
 }
 
 export interface AddWorkflowVariables {
-  workflow: AddWorkflowInput;
+  workflowInput: AddWorkflowInput;
 }

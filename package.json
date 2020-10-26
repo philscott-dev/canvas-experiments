@@ -5,7 +5,7 @@
   "main": "next build && next start",
   "scripts": {
     "main": "node scripts/start.js",
-    "dev": "next dev",
+    "dev": "npm run apollo && next dev",
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",

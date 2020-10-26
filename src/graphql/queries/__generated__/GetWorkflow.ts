@@ -11,7 +11,7 @@ export interface GetWorkflow_workflow_nodes {
   __typename: "Node";
   id: string;
   parentId: string;
-  title: string;
+  name: string;
   createdDate: any;
   updatedDate: any;
 }
