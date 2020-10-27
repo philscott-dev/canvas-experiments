@@ -1,6 +1,5 @@
-/** @jsx jsx */
+import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import { FC, useState, DragEvent } from 'react'
-import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
 import { FiX } from 'react-icons/fi'
 import { Animation } from './animation/enum'
@@ -16,11 +15,10 @@ import Text from './Text'
 
 //make this date driven
 import services from '../../mock/services'
-import { BaseNode } from 'types'
 
 interface FlowChartNodeMenuProps {
   className?: string
-  onDragStart: (node: BaseNode, e: DragEvent<HTMLDivElement>) => void
+  onDragStart: (node: WorkflowNode, e: DragEvent<HTMLDivElement>) => void
 }
 
 const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
@@ -36,7 +34,10 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
     setVisibility(Animation.OUT)
   }
 
-  const handleDragStart = (node: BaseNode, e: DragEvent<HTMLDivElement>) => {
+  const handleDragStart = (
+    node: WorkflowNode,
+    e: DragEvent<HTMLDivElement>,
+  ) => {
     onDragStart(node, e)
   }
   return (

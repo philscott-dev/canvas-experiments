@@ -42,7 +42,7 @@ export function useAddWorkflowNode(workflowId: string) {
       })
 
       if (newNode && existingData) {
-        cache.writeQuery({
+        cache.writeQuery<GetWorkflow, GetWorkflowVariables>({
           query: GET_WORKFLOW,
           variables: { id },
           data: {

@@ -1,16 +1,15 @@
-/** @jsx jsx */
+import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import { FC, DragEvent } from 'react'
 import { jsx } from '@emotion/react'
 import styled from '@emotion/styled'
-import { BaseNode } from 'types'
 import FlowChartNodeTab from './FlowChartNodeTab'
 import FlowChartNodeBody from './FlowChartNodeBody'
 import FlowChartNodeText from './FlowChartNodeText'
 
 interface FlowChartNodeProps {
   className?: string
-  node: BaseNode
-  onDragStart: (node: BaseNode, e: DragEvent<HTMLDivElement>) => void
+  node: WorkflowNode
+  onDragStart: (node: WorkflowNode, e: DragEvent<HTMLDivElement>) => void
 }
 const FlowChartNode: FC<FlowChartNodeProps> = ({
   className,

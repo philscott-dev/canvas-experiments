@@ -10,10 +10,17 @@
 export interface GetWorkflow_workflow_workflowNodes {
   __typename: "WorkflowNode";
   id: string;
+  nodeId: string;
   parentId: string | null;
   name: string;
-  createdDate: any;
-  updatedDate: any;
+  displayName: string;
+  description: string | null;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  colorPrimary: string;
+  colorSecondary: string;
 }
 
 export interface GetWorkflow_workflow {

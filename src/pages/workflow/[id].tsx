@@ -1,10 +1,11 @@
+import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import styled from '@emotion/styled'
 import { useGetWorkflow } from 'graphql/queries'
 import { useRef, useState, DragEvent } from 'react'
 import { v4 as uuid } from 'uuid'
 import { FlowChartCanvas, FlowChartUI } from 'components'
-import { Point, BaseNode, RectNode } from 'types'
+import { Point } from 'types'
 import { getCanvasPoint } from 'helpers/canvas'
 import { useCanvas } from 'hooks'
 import { NODE_HEIGHT, NODE_WIDTH } from 'constants/constants'
@@ -14,21 +15,21 @@ import DeleteModal from 'lib/Modal/DeleteModal'
 import { removeByIndex } from 'helpers/array'
 import { useAddWorkflowNode } from 'graphql/mutations/addWorkflowNode'
 import { useRouter } from 'next/router'
+import { useApolloClient } from '@apollo/client'
 
 function WorkflowPage({
   id,
   className,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const apolloClient = useApolloClient()
   const router = useRouter()
   const { data } = useGetWorkflow(id)
   const { mutate: addWorkflowNode } = useAddWorkflowNode(id)
 
-  console.log(data)
-
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useCanvas(canvasRef)
-  const [nodes, setNodes] = useState<RectNode[]>([])
-  const [node, setNode] = useState<BaseNode>() // TODO: rename this thing. dont use it for canvas interactions, it's only used for dragging DOM to canvas
+  const [nodes, setNodes] = useState<WorkflowNode[]>([])
+  const [node, setNode] = useState<WorkflowNode>() // TODO: rename this thing. dont use it for canvas interactions, it's only used for dragging DOM to canvas
   const [dragStartOffset, setDragStartOffset] = useState<Point>({ x: 0, y: 0 })
   const [translateOffset, setTranslateOffset] = useState<Point>({ x: 0, y: 0 })
   const [origin, setOrigin] = useState<Point>({ x: 0, y: 0 }) // for scale calculations
@@ -41,7 +42,7 @@ function WorkflowPage({
    * Canvas Events
    */
 
-  const handleDragStart = (n: BaseNode, e: DragEvent<HTMLDivElement>) => {
+  const handleDragStart = (n: WorkflowNode, e: DragEvent<HTMLDivElement>) => {
     const elem = e.currentTarget
     const point = getCanvasPoint(e, elem)
     const x = point.x / scale
@@ -98,32 +99,6 @@ function WorkflowPage({
   const handleCenter = () => {
     setTranslateOffset({ x: 0, y: 0 })
     setScale(1)
-  }
-
-  const handleDropNewNode = (e: DragEvent) => {
-    e.preventDefault()
-    if (ctx?.canvas) {
-      const point = getCanvasPoint(e, ctx.canvas)
-      const x = point.x / scale
-      const y = point.y / scale
-      if (node) {
-        console.log(node)
-        setNodes([
-          ...nodes,
-          {
-            ...node,
-            id: uuid(),
-            rect: {
-              x: x - dragStartOffset.x - translateOffset.x,
-              y: y - dragStartOffset.y - translateOffset.y,
-              width: NODE_WIDTH,
-              height: NODE_HEIGHT,
-            },
-          },
-        ])
-      }
-      setDragging(false)
-    }
   }
 
   // APOLLO: new refactor
@@ -205,12 +180,11 @@ function WorkflowPage({
         translateOffset={translateOffset}
         scale={scale}
         origin={origin}
-        nodes={nodes}
-        workflowNodes={data?.workflow.workflowNodes}
+        nodes={data?.workflow.workflowNodes}
+        workflow={data?.workflow}
         activeId={activeId}
         isDragging={isDragging}
         onDragging={setDragging}
-        onSetNodes={setNodes}
         onClickNode={handleClickNode}
         onDrop={handleDropNewWorkflowNode}
         onTranslate={handleTranslate}
@@ -220,6 +194,7 @@ function WorkflowPage({
         onNodeSettingsClick={handleNodeSettingsClick}
         onNodeTrashClick={handleNodeTrashClick}
       />
+
       <Portal mountId="portal">
         <DeleteModal
           isVisible={isDeleteModalVisible}

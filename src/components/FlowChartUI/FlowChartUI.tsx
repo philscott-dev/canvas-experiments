@@ -1,13 +1,11 @@
-/** @jsx jsx */
+import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import styled from '@emotion/styled'
 import { FC, DragEvent, useState } from 'react'
-import { jsx } from '@emotion/react'
 import { FlowChartNodeMenu } from '../FlowChartNodeMenu'
 import Section from './Section'
 import { SidebarLeft, SidebarRight } from './Sidebar'
 import { FlowChartZoomControl } from '../FlowChartZoomControl'
 import { FlowChartTitleBar } from '../FlowChartTitleBar'
-import { BaseNode } from 'types'
 import { FlowChartDetailPanel } from '../FlowChartDetailPanel'
 import { ExpandLevel } from 'enums'
 
@@ -17,7 +15,7 @@ interface FlowChartUIProps {
   onCenter: () => void
   onZoomIn: () => void
   onZoomOut: () => void
-  onDragStart: (node: BaseNode, e: DragEvent<HTMLDivElement>) => void
+  onDragStart: (node: WorkflowNode, e: DragEvent<HTMLDivElement>) => void
 }
 const FlowChartUI: FC<FlowChartUIProps> = ({
   className,

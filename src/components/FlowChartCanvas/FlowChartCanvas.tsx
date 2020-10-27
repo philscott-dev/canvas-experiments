@@ -1,11 +1,18 @@
+import {
+  GetWorkflow_workflow_workflowNodes,
+  GetWorkflow_workflow_workflowNodes as WorkflowNode,
+  GetWorkflow,
+  GetWorkflowVariables,
+} from 'graphql/queries/__generated__/GetWorkflow'
+import { GetWorkflow_workflow as Workflow } from 'graphql/queries/__generated__/GetWorkflow'
+
 import styled from '@emotion/styled'
-import { Rect } from 'types'
 import { useDrawCallback, useResize } from 'hooks'
-import { RectNode, Point } from 'types'
+import { Point } from 'types'
 import { pointInRect } from 'utils/math'
 import { zoom } from 'utils/zoom'
 import { getCanvasPoint } from 'helpers/canvas'
-import { GetWorkflow_workflow_nodes } from 'graphql/queries/__generated__/GetWorkflow'
+import { useApolloClient } from '@apollo/client'
 import {
   useState,
   forwardRef,
@@ -14,20 +21,20 @@ import {
   DragEvent,
   useEffect,
 } from 'react'
+import { GET_WORKFLOW } from 'graphql/queries'
 
 interface FlowChartCanvasProps {
   className?: string
   canvas: HTMLCanvasElement | null
   ctx: CanvasRenderingContext2D | null
-  nodes: RectNode[]
-  workflowNodes?: GetWorkflow_workflow_nodes[]
+  workflow?: Workflow
+  nodes?: WorkflowNode[]
   activeId?: string
   translateOffset: Point
   scale: number
   origin: Point
   isDragging: boolean
   onDragging: (isDragging: boolean) => void
-  onSetNodes: (nodes: RectNode[]) => void
   onDrop: (e: DragEvent) => void
   onClickNode: (id: string) => void
   onTranslate: (point: Point) => void
@@ -43,14 +50,13 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       className,
       canvas,
       ctx,
-      nodes,
+      nodes = [],
       activeId,
       translateOffset,
       scale,
       origin,
       isDragging,
-      workflowNodes,
-      onSetNodes,
+      workflow,
       onDrop,
       onDragging,
       onClickNode,
@@ -63,6 +69,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     },
     canvasRef,
   ) => {
+    const apolloClient = useApolloClient()
     const [hasLoaded, setHasLoaded] = useState(false)
     const [dragId, setDragId] = useState<string>()
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
@@ -94,9 +101,9 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
         if (activeId) {
           const activeNode = nodes.find((n) => n.id === activeId)
           if (activeNode) {
-            handlePlayClick(x, y, activeNode.rect)
-            handleSettingsClick(x, y, activeNode.rect)
-            handleTrashClick(x, y, activeNode.rect)
+            handlePlayClick(x, y, activeNode)
+            handleSettingsClick(x, y, activeNode)
+            handleTrashClick(x, y, activeNode)
           }
         }
       }
@@ -105,16 +112,16 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     const handleNodeClick = (x: number, y: number) => {
       // check if any node has been clicked
       const node = nodes.find((n) =>
-        pointInRect(x - translateOffset.x, y - translateOffset.y, n.rect),
+        pointInRect(x - translateOffset.x, y - translateOffset.y, n),
       )
       // handle the node click
-      if (node && node.rect) {
+      if (node) {
         document.body.style.userSelect = 'none'
         onDragging(true)
         setDragId(node.id)
         setClickOffset({
-          x: x - node.rect.x,
-          y: y - node.rect.y,
+          x: x - node.x,
+          y: y - node.y,
         })
         onClickNode(node.id)
       } else {
@@ -123,11 +130,15 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       }
     }
 
-    const handlePlayClick = (x: number, y: number, rect: Rect) => {
+    const handlePlayClick = (
+      x: number,
+      y: number,
+      workflowNode: WorkflowNode,
+    ) => {
       const clickX = x - translateOffset.x
       const clickY = y - translateOffset.y
-      const iconX = rect.x + 8
-      const iconY = rect.y + rect.height + 10
+      const iconX = workflowNode.x + 8
+      const iconY = workflowNode.y + workflowNode.height + 10
       const isClicked = pointInRect(clickX, clickY, {
         x: iconX,
         y: iconY,
@@ -139,11 +150,15 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       }
     }
 
-    const handleSettingsClick = (x: number, y: number, rect: Rect) => {
+    const handleSettingsClick = (
+      x: number,
+      y: number,
+      workflowNode: WorkflowNode,
+    ) => {
       const clickX = x - translateOffset.x
       const clickY = y - translateOffset.y
-      const iconX = rect.x - 56 + rect.width
-      const iconY = rect.y + rect.height + 11
+      const iconX = workflowNode.x - 56 + workflowNode.width
+      const iconY = workflowNode.y + workflowNode.height + 11
       const isClicked = pointInRect(clickX, clickY, {
         x: iconX,
         y: iconY,
@@ -155,11 +170,15 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       }
     }
 
-    const handleTrashClick = (x: number, y: number, rect: Rect) => {
+    const handleTrashClick = (
+      x: number,
+      y: number,
+      workflowNode: WorkflowNode,
+    ) => {
       const clickX = x - translateOffset.x
       const clickY = y - translateOffset.y
-      const iconX = rect.x + rect.width - 28
-      const iconY = rect.y + rect.height + 12
+      const iconX = workflowNode.x + workflowNode.width - 28
+      const iconY = workflowNode.y + workflowNode.height + 12
       const isClicked = pointInRect(clickX, clickY, {
         x: iconX,
         y: iconY,
@@ -175,27 +194,48 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
       if (canvas) {
+        // get initial data
         const point = getCanvasPoint(e, canvas)
         const x = point.x / scale
         const y = point.y / scale
+
+        // move the node if we've clicked a node
         if (isDragging && dragId !== undefined && clickOffset) {
           const index = nodes.findIndex((n) => n.id === dragId)
           if (index > -1) {
             const node = nodes[index]
-            const { width, height } = node.rect
+            const { width, height } = node
             const dragX = x - clickOffset.x
             const dragY = y - clickOffset.y
             const dragNode = {
               ...node,
-              rect: { ...node.rect, x: dragX, y: dragY, width, height },
+              x: dragX,
+              y: dragY,
+              width,
+              height,
             }
-            onSetNodes([
-              ...nodes.slice(0, index),
-              dragNode,
-              ...nodes.slice(index + 1),
-            ])
+
+            //write to the apollo cache
+            if (workflow) {
+              apolloClient.cache.writeQuery<GetWorkflow, GetWorkflowVariables>({
+                query: GET_WORKFLOW,
+                variables: { id: parseInt(workflow.id, 10) },
+                data: {
+                  workflow: {
+                    ...workflow,
+                    workflowNodes: [
+                      ...nodes.slice(0, index),
+                      dragNode,
+                      ...nodes.slice(index + 1),
+                    ],
+                  },
+                },
+              })
+            }
           }
-        } else if (isDragging && clickOffset) {
+        }
+        // otherwise move the canvas
+        else if (isDragging && clickOffset) {
           const dragX = x - clickOffset.x // / scale
           const dragY = y - clickOffset.y // / scale
 
@@ -207,6 +247,10 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
             x: translateOffset.x + dragX,
             y: translateOffset.y + dragY,
           })
+        }
+
+        // else we need to check for a parent connector and move the arrow
+        else {
         }
       }
     }
