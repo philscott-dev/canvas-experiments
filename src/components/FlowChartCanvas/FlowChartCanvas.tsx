@@ -5,6 +5,7 @@ import { RectNode, Point } from 'types'
 import { pointInRect } from 'utils/math'
 import { zoom } from 'utils/zoom'
 import { getCanvasPoint } from 'helpers/canvas'
+import { GetWorkflow_workflow_nodes } from 'graphql/queries/__generated__/GetWorkflow'
 import {
   useState,
   forwardRef,
@@ -19,6 +20,7 @@ interface FlowChartCanvasProps {
   canvas: HTMLCanvasElement | null
   ctx: CanvasRenderingContext2D | null
   nodes: RectNode[]
+  workflowNodes?: GetWorkflow_workflow_nodes[]
   activeId?: string
   translateOffset: Point
   scale: number
@@ -47,6 +49,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       scale,
       origin,
       isDragging,
+      workflowNodes,
       onSetNodes,
       onDrop,
       onDragging,

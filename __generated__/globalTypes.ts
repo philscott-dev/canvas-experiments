@@ -8,20 +8,28 @@
 //==============================================================
 
 /**
- * Create Node
- */
-export interface AddNodeInput {
-  workflowId: string;
-  name: string;
-  description?: string | null;
-}
-
-/**
  * Create Workflow
  */
 export interface AddWorkflowInput {
   title: string;
   description?: string | null;
+}
+
+/**
+ * Create Workflow Node
+ */
+export interface AddWorkflowNodeInput {
+  workflowId: string;
+  nodeId: string;
+  name: string;
+  displayName: string;
+  description?: string | null;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  colorPrimary: string;
+  colorSecondary: string;
 }
 
 //==============================================================

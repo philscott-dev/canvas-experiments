@@ -5,7 +5,7 @@ import { GET_ALL_WORKFLOWS } from '../queries/getAllWorkflows'
 
 const ADD_WORKFLOW = gql`
   mutation AddWorkflow($workflowInput: AddWorkflowInput!) {
-    addWorkflow(workflow: $workflowInput) {
+    addWorkflow(input: $workflowInput) {
       id
       title
       description
@@ -20,10 +20,6 @@ export function useAddWorkflow() {
     AddWorkflow,
     AddWorkflowVariables
   >(ADD_WORKFLOW, {
-    /**
-     * Optimistic Updates
-     * We still have to use "mutate" to update the server
-     */
     update(cache, { data }) {
       const newWorkflow = data?.addWorkflow
       const existingData = cache.readQuery<GetAllWorkflows>({

@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import cache from './cache'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
+import { onError } from '@apollo/client/link/error'
 import {
   ApolloClient,
   NormalizedCacheObject,
@@ -18,6 +19,20 @@ const createApolloClient = () => {
 
   // httpLink or http + ws link
   let link
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.error(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        ),
+      )
+    }
+    if (networkError) {
+      console.error(`[Network error]: ${networkError}`)
+      // do something with Error Modal
+    }
+  })
 
   // establish the connection to the service
   const httpLink = new HttpLink({
@@ -55,7 +70,7 @@ const createApolloClient = () => {
     connectToDevTools: true || process.env.NODE_ENV !== 'production',
     ssrMode,
     cache,
-    link,
+    link: errorLink.concat(link),
   })
 }
 

@@ -12,12 +12,19 @@ import { zoom } from 'utils/zoom'
 import { Portal } from 'lib'
 import DeleteModal from 'lib/Modal/DeleteModal'
 import { removeByIndex } from 'helpers/array'
+import { useAddWorkflowNode } from 'graphql/mutations/addWorkflowNode'
+import { useRouter } from 'next/router'
 
 function WorkflowPage({
   id,
   className,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { loading, data } = useGetWorkflow(id)
+  const router = useRouter()
+  const { data } = useGetWorkflow(id)
+  const { mutate: addWorkflowNode } = useAddWorkflowNode(id)
+
+  console.log(data)
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useCanvas(canvasRef)
   const [nodes, setNodes] = useState<RectNode[]>([])
@@ -119,6 +126,36 @@ function WorkflowPage({
     }
   }
 
+  // APOLLO: new refactor
+  const handleDropNewWorkflowNode = (e: DragEvent) => {
+    e.preventDefault()
+    if (ctx?.canvas) {
+      const point = getCanvasPoint(e, ctx.canvas)
+      const x = point.x / scale
+      const y = point.y / scale
+      if (node) {
+        addWorkflowNode({
+          variables: {
+            workflowNodeInput: {
+              x: x - dragStartOffset.x - translateOffset.x,
+              y: y - dragStartOffset.y - translateOffset.y,
+              width: NODE_WIDTH,
+              height: NODE_HEIGHT,
+              nodeId: uuid(),
+              workflowId: router.query.id as string,
+              name: node.name,
+              displayName: node.displayName,
+              colorPrimary: node.colorPrimary,
+              colorSecondary: node.colorSecondary,
+            },
+          },
+        })
+      }
+
+      setDragging(false)
+    }
+  }
+
   const handleClickNode = (id: string) => {
     setActiveId(id)
   }
@@ -169,12 +206,13 @@ function WorkflowPage({
         scale={scale}
         origin={origin}
         nodes={nodes}
+        workflowNodes={data?.workflow.workflowNodes}
         activeId={activeId}
         isDragging={isDragging}
         onDragging={setDragging}
         onSetNodes={setNodes}
         onClickNode={handleClickNode}
-        onDrop={handleDropNewNode}
+        onDrop={handleDropNewWorkflowNode}
         onTranslate={handleTranslate}
         onScale={handleScale}
         onOrigin={handleOrigin}

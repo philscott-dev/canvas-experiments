@@ -52,11 +52,11 @@ const AddWorkflowModal: FC<AddWorkflowModalProps> = ({
   const { mutate, loading } = useAddWorkflow()
   const handleSubmit = async ({ title, description }: Entries) => {
     try {
-      const workflow = {
+      const workflowInput = {
         title: title as string,
         description: description as string,
       }
-      mutate({ variables: { workflow } })
+      mutate({ variables: { workflowInput } })
       //router.push('/[id]', `/${ss.id}`)
     } catch (err) {
       console.log(err)
