@@ -1,5 +1,4 @@
 import { gql, useMutation } from '@apollo/client'
-import { GET_ALL_WORKFLOWS } from '../queries/getAllWorkflows'
 import {
   UpdateNodePosition,
   UpdateNodePositionVariables,
@@ -46,7 +45,7 @@ export function useUpdateNodePosition(workflowId: string) {
         )
 
         cache.writeQuery({
-          query: GET_ALL_WORKFLOWS,
+          query: GET_WORKFLOW,
           data: {
             workflow: {
               ...existingData.workflow,

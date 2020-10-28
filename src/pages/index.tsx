@@ -26,7 +26,6 @@ import {
 function IndexPage({
   initialApolloState,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(initialApolloState)
   const { loading, error, data } = useGetAllWorkflows()
   const { replace, push, query } = useRouter()
   const [searchTerm, setSearchTerm] = useState<string>(

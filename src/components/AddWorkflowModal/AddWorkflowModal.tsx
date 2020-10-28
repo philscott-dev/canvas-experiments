@@ -61,6 +61,7 @@ const AddWorkflowModal: FC<AddWorkflowModalProps> = ({
     } catch (err) {
       console.log(err)
     }
+    onClose()
   }
 
   return (

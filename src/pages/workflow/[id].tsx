@@ -16,6 +16,7 @@ import { removeByIndex } from 'helpers/array'
 import { useAddWorkflowNode } from 'graphql/mutations/addWorkflowNode'
 import { useRouter } from 'next/router'
 import { useApolloClient } from '@apollo/client'
+import { useDeleteWorkflowNode } from 'graphql/mutations/deleteWorkflowNode'
 
 function WorkflowPage({
   id,
@@ -25,10 +26,10 @@ function WorkflowPage({
   const router = useRouter()
   const { data } = useGetWorkflow(id)
   const { mutate: addWorkflowNode } = useAddWorkflowNode(id)
+  const { mutate: deleteWorkflowNode } = useDeleteWorkflowNode(id)
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useCanvas(canvasRef)
-  const [nodes, setNodes] = useState<WorkflowNode[]>([])
   const [node, setNode] = useState<WorkflowNode>() // TODO: rename this thing. dont use it for canvas interactions, it's only used for dragging DOM to canvas
   const [dragStartOffset, setDragStartOffset] = useState<Point>({ x: 0, y: 0 })
   const [translateOffset, setTranslateOffset] = useState<Point>({ x: 0, y: 0 })
@@ -156,10 +157,8 @@ function WorkflowPage({
   }
 
   const handleConfirmDelete = async () => {
-    if (node) {
-      const index = nodes.findIndex((n) => n.id === activeId)
-      const array = removeByIndex(nodes, index)
-      setNodes(array)
+    if (activeId) {
+      deleteWorkflowNode({ variables: { id: parseInt(activeId) } })
     }
     setDeleteModalVisible(false)
   }

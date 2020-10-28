@@ -14,5 +14,7 @@ export const GET_ALL_WORKFLOWS = gql`
 `
 
 export function useGetAllWorkflows() {
-  return useQuery<GetAllWorkflows>(GET_ALL_WORKFLOWS)
+  return useQuery<GetAllWorkflows>(GET_ALL_WORKFLOWS, {
+    fetchPolicy: 'network-only',
+  })
 }
