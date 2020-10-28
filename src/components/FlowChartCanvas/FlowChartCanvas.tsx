@@ -13,6 +13,8 @@ import { pointInRect } from 'utils/math'
 import { zoom } from 'utils/zoom'
 import { getCanvasPoint } from 'helpers/canvas'
 import { useApolloClient } from '@apollo/client'
+import { useUpdateNodePosition } from 'graphql/mutations/updateWorkflowNode'
+import { GET_WORKFLOW } from 'graphql/queries'
 import {
   useState,
   forwardRef,
@@ -21,12 +23,12 @@ import {
   DragEvent,
   useEffect,
 } from 'react'
-import { GET_WORKFLOW } from 'graphql/queries'
 
 interface FlowChartCanvasProps {
   className?: string
   canvas: HTMLCanvasElement | null
   ctx: CanvasRenderingContext2D | null
+  workflowId: any
   workflow?: Workflow
   nodes?: WorkflowNode[]
   activeId?: string
@@ -56,6 +58,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       scale,
       origin,
       isDragging,
+      workflowId,
       workflow,
       onDrop,
       onDragging,
@@ -70,6 +73,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     canvasRef,
   ) => {
     const apolloClient = useApolloClient()
+    const { mutate: updateNodePosition } = useUpdateNodePosition(workflowId)
     const [hasLoaded, setHasLoaded] = useState(false)
     const [dragId, setDragId] = useState<string>()
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
@@ -193,6 +197,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     const onMouseMove = (
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
+      // TODO: needs to be a helper
       if (canvas) {
         // get initial data
         const point = getCanvasPoint(e, canvas)
@@ -258,7 +263,43 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     const onMouseUp = (
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
-      document.body.style.webkitUserSelect = 'inherit'
+      // TODO: needs to be a helper
+      if (canvas) {
+        // get initial data
+        const point = getCanvasPoint(e, canvas)
+        const x = point.x / scale
+        const y = point.y / scale
+        if (isDragging && dragId !== undefined && clickOffset) {
+          const index = nodes.findIndex((n) => n.id === dragId)
+          if (index > -1) {
+            const node = nodes[index]
+            const { width, height } = node
+            const dragX = x - clickOffset.x
+            const dragY = y - clickOffset.y
+            const dragNode = {
+              ...node,
+              x: dragX,
+              y: dragY,
+              width,
+              height,
+            }
+
+            console.log(workflowId)
+            updateNodePosition({
+              variables: {
+                input: {
+                  workflowId,
+                  id: dragId,
+                  x: dragX,
+                  y: dragY,
+                },
+              },
+            })
+          }
+        }
+      }
+
+      // unset everything
       document.body.style.userSelect = 'inherit'
       onDragging(false)
       setDragId(undefined)

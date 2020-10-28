@@ -4,8 +4,8 @@ import { GetAllWorkflows } from '../queries/__generated__/GetAllWorkflows'
 import { GET_ALL_WORKFLOWS } from '../queries/getAllWorkflows'
 
 const ADD_WORKFLOW = gql`
-  mutation AddWorkflow($workflowInput: AddWorkflowInput!) {
-    addWorkflow(input: $workflowInput) {
+  mutation AddWorkflow($input: AddWorkflowInput!) {
+    addWorkflow(input: $input) {
       id
       title
       description

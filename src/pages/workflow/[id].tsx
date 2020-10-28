@@ -181,6 +181,7 @@ function WorkflowPage({
         scale={scale}
         origin={origin}
         nodes={data?.workflow.workflowNodes}
+        workflowId={id}
         workflow={data?.workflow}
         activeId={activeId}
         isDragging={isDragging}

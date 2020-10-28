@@ -32,6 +32,16 @@ export interface AddWorkflowNodeInput {
   colorSecondary: string;
 }
 
+/**
+ * Create Workflow Node
+ */
+export interface WorkflowNodePositionInput {
+  workflowId: string;
+  id: string;
+  x: number;
+  y: number;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

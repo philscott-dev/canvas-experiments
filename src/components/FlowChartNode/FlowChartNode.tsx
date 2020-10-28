@@ -5,10 +5,11 @@ import styled from '@emotion/styled'
 import FlowChartNodeTab from './FlowChartNodeTab'
 import FlowChartNodeBody from './FlowChartNodeBody'
 import FlowChartNodeText from './FlowChartNodeText'
+import { BaseNode } from 'types'
 
 interface FlowChartNodeProps {
   className?: string
-  node: WorkflowNode
+  node: BaseNode
   onDragStart: (node: WorkflowNode, e: DragEvent<HTMLDivElement>) => void
 }
 const FlowChartNode: FC<FlowChartNodeProps> = ({
@@ -17,7 +18,21 @@ const FlowChartNode: FC<FlowChartNodeProps> = ({
   onDragStart,
 }) => {
   const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
-    onDragStart(node, e)
+    onDragStart(
+      {
+        ...node,
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        __typename: 'WorkflowNode',
+        id: 'id',
+        nodeId: 'uuid',
+        parentId: 'id',
+        description: '',
+      },
+      e,
+    )
   }
 
   return (
