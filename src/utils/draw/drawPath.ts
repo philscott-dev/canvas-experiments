@@ -1,20 +1,42 @@
-import { Rect } from 'types'
+import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
+import { Point } from 'types'
+import { drawArrow } from './drawArrow'
+import {
+  getAdapterPoint,
+  getConnectorPoint,
+  getConnectorRect,
+} from 'utils/node'
 
 export function drawPath(
   ctx: CanvasRenderingContext2D,
-  rect: Rect,
-  nextRect?: Rect,
+  translateOffset: Point,
+  node: WorkflowNode,
+  nextNode?: WorkflowNode,
 ) {
-  if (nextRect) {
+  const connectorPoint = getConnectorPoint(node, translateOffset)
+  const connectorRect = getConnectorRect(connectorPoint)
+
+  ctx.beginPath()
+  ctx.rect(
+    connectorRect.x,
+    connectorRect.y,
+    connectorRect.width,
+    connectorRect.height,
+  )
+  ctx.fillStyle = '#ffffff'
+  ctx.fill()
+  if (nextNode) {
+    const adapter = getAdapterPoint(nextNode, translateOffset)
+
     ctx.beginPath()
-    ctx.moveTo(rect.x + rect.width / 2, rect.y + rect.height / 2)
-    ctx.lineTo(
-      nextRect.x + nextRect.width / 2,
-      nextRect.y + nextRect.height / 2,
-    )
+    ctx.moveTo(connectorPoint.x, connectorPoint.y)
+    ctx.lineTo(adapter.x, adapter.y)
+
     ctx.lineWidth = 2
     ctx.strokeStyle = '#ffffff'
-    ctx.closePath()
     ctx.stroke()
+
+    //no longer want arrows
+    drawArrow(ctx, adapter, 'right', 12)
   }
 }

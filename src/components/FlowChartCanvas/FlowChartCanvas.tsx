@@ -1,11 +1,9 @@
 import {
-  GetWorkflow_workflow_workflowNodes,
   GetWorkflow_workflow_workflowNodes as WorkflowNode,
   GetWorkflow,
   GetWorkflowVariables,
 } from 'graphql/queries/__generated__/GetWorkflow'
 import { GetWorkflow_workflow as Workflow } from 'graphql/queries/__generated__/GetWorkflow'
-
 import styled from '@emotion/styled'
 import { useDrawCallback, useResize } from 'hooks'
 import { Point } from 'types'
@@ -23,6 +21,8 @@ import {
   DragEvent,
   useEffect,
 } from 'react'
+import { getConnectorPoint, getConnectorRect } from 'utils/node'
+import { CONNECTOR_SIZE } from 'constants/canvas'
 
 interface FlowChartCanvasProps {
   className?: string
@@ -94,6 +94,10 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
       if (canvas) {
+        // always set these both
+        document.body.style.userSelect = 'none'
+        onDragging(true)
+
         const point = getCanvasPoint(e, canvas)
         const x = point.x / scale
         const y = point.y / scale
@@ -114,24 +118,38 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     }
 
     const handleNodeClick = (x: number, y: number) => {
-      // check if any node has been clicked
-      const node = nodes.find((n) =>
-        pointInRect(x - translateOffset.x, y - translateOffset.y, n),
-      )
-      // handle the node click
-      if (node) {
-        document.body.style.userSelect = 'none'
-        onDragging(true)
-        setDragId(node.id)
-        setClickOffset({
-          x: x - node.x,
-          y: y - node.y,
-        })
-        onClickNode(node.id)
-      } else {
-        onDragging(true)
-        setClickOffset({ x, y })
+      const clickPoint = {
+        x: x - translateOffset.x,
+        y: y - translateOffset.y,
       }
+      for (const node of nodes) {
+        const connectorPoint = getConnectorPoint(node) // no translateOffset. idk why?
+        const connectorRect = getConnectorRect(connectorPoint) // no translateOffset
+        const isNodeClick = pointInRect(clickPoint.x, clickPoint.y, node)
+        const isConnectorClick = pointInRect(
+          clickPoint.x,
+          clickPoint.y,
+          connectorRect,
+        )
+
+        if (isConnectorClick) {
+          console.log('connector click')
+          return
+        }
+
+        if (isNodeClick) {
+          setDragId(node.id)
+          setClickOffset({
+            x: x - node.x,
+            y: y - node.y,
+          })
+          onClickNode(node.id)
+          return
+        }
+      }
+
+      // finally set offset for canvas drag
+      setClickOffset({ x, y })
     }
 
     const handlePlayClick = (
@@ -283,8 +301,6 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
               width,
               height,
             }
-
-            console.log(workflowId)
             updateNodePosition({
               variables: {
                 input: {

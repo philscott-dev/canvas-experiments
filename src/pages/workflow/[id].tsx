@@ -1,6 +1,9 @@
+// @refresh reset
+
+import styled from '@emotion/styled'
+import DeleteModal from 'lib/Modal/DeleteModal'
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import styled from '@emotion/styled'
 import { useGetWorkflow } from 'graphql/queries'
 import { useRef, useState, DragEvent } from 'react'
 import { v4 as uuid } from 'uuid'
@@ -8,21 +11,17 @@ import { FlowChartCanvas, FlowChartUI } from 'components'
 import { Point } from 'types'
 import { getCanvasPoint } from 'helpers/canvas'
 import { useCanvas } from 'hooks'
-import { NODE_HEIGHT, NODE_WIDTH } from 'constants/constants'
+import { NODE_HEIGHT, NODE_WIDTH } from 'constants/canvas'
 import { zoom } from 'utils/zoom'
 import { Portal } from 'lib'
-import DeleteModal from 'lib/Modal/DeleteModal'
-import { removeByIndex } from 'helpers/array'
 import { useAddWorkflowNode } from 'graphql/mutations/addWorkflowNode'
 import { useRouter } from 'next/router'
-import { useApolloClient } from '@apollo/client'
 import { useDeleteWorkflowNode } from 'graphql/mutations/deleteWorkflowNode'
 
 function WorkflowPage({
   id,
   className,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const apolloClient = useApolloClient()
   const router = useRouter()
   const { data } = useGetWorkflow(id)
   const { mutate: addWorkflowNode } = useAddWorkflowNode(id)
@@ -37,6 +36,7 @@ function WorkflowPage({
   const [scale, setScale] = useState<number>(1)
   const [activeId, setActiveId] = useState<string>()
   const [isDragging, setDragging] = useState(false)
+  const [isConnecting, setConnecting] = useState(false)
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false)
 
   /**
