@@ -57,7 +57,7 @@ export function drawNode(
     node.y + TEXT_OFFSET_Y + translateOffset.y,
     {
       color: '#ffffff',
-      face: 'Poppins-Medium',
+      face: 'Poppins',
     },
   )
 }
