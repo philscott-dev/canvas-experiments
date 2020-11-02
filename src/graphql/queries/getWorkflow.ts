@@ -10,7 +10,6 @@ export const GET_WORKFLOW = gql`
       startId
       workflowNodes {
         id
-        nodeId
         parentId
         name
         displayName

@@ -116,7 +116,6 @@ function WorkflowPage({
               y: y - dragStartOffset.y - translateOffset.y,
               width: NODE_WIDTH,
               height: NODE_HEIGHT,
-              nodeId: uuid(),
               workflowId: router.query.id as string,
               name: node.name,
               displayName: node.displayName,

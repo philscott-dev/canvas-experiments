@@ -20,7 +20,6 @@ export interface AddWorkflowInput {
  */
 export interface AddWorkflowNodeInput {
   workflowId: string;
-  nodeId: string;
   name: string;
   displayName: string;
   description?: string | null;
@@ -30,6 +29,15 @@ export interface AddWorkflowNodeInput {
   height: number;
   colorPrimary: string;
   colorSecondary: string;
+}
+
+/**
+ * Workflow Node connector
+ */
+export interface WorkflowNodeParentInput {
+  workflowId: string;
+  parentId?: string | null;
+  id: string;
 }
 
 /**

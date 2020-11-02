@@ -12,7 +12,6 @@ import { AddWorkflowNodeInput } from "./../../../../__generated__/globalTypes";
 export interface AddWorkflowNode_addWorkflowNode {
   __typename: "WorkflowNode";
   id: string;
-  nodeId: string;
   parentId: string | null;
   name: string;
   displayName: string;

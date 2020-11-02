@@ -11,7 +11,7 @@ import { pointInRect } from 'utils/math'
 import { zoom } from 'utils/zoom'
 import { getCanvasPoint } from 'helpers/canvas'
 import { useApolloClient } from '@apollo/client'
-import { useUpdateNodePosition } from 'graphql/mutations/updateWorkflowNode'
+import { useUpdateNodePosition } from 'graphql/mutations/updateWorkflowNodePosition'
 import { GET_WORKFLOW } from 'graphql/queries'
 import {
   useState,
@@ -22,6 +22,7 @@ import {
   useEffect,
 } from 'react'
 import { getConnectorPoint, getConnectorRect } from 'utils/node'
+import { useUpdateNodeParent } from 'graphql/mutations/updateWorkflowNodeParent'
 
 interface FlowChartCanvasProps {
   className?: string
@@ -73,6 +74,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
   ) => {
     const apolloClient = useApolloClient()
     const { mutate: updateNodePosition } = useUpdateNodePosition(workflowId)
+    const { mutate: updateNodeParent } = useUpdateNodeParent(workflowId)
     const [hasLoaded, setHasLoaded] = useState(false)
     const [dragId, setDragId] = useState<string>()
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
@@ -163,7 +165,27 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
         const point = getCanvasPoint(e, canvas)
         const x = point.x / scale
         const y = point.y / scale
-        if (
+
+        if (isConnecting && dragId) {
+          // get the ID of the node released over
+          const id = undefined
+
+          for (const node of nodes) {
+            const isDropped = pointInRect(
+              x - translateOffset.x,
+              y - translateOffset.y,
+              node,
+            )
+            if (isDropped && !node.parentId && node.id !== dragId) {
+              console.log(node)
+              updateNodeParent({
+                variables: {
+                  input: { workflowId, id: node.id, parentId: dragId },
+                },
+              })
+            }
+          }
+        } else if (
           !isConnecting &&
           isDragging &&
           dragId !== undefined &&
