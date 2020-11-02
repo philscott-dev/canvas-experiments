@@ -168,7 +168,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
 
         if (isConnecting && dragId) {
           // get the ID of the node released over
-          const id = undefined
+          //const id = undefined
 
           for (const node of nodes) {
             const isDropped = pointInRect(
@@ -177,7 +177,6 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
               node,
             )
             if (isDropped && !node.parentId && node.id !== dragId) {
-              console.log(node)
               updateNodeParent({
                 variables: {
                   input: { workflowId, id: node.id, parentId: dragId },

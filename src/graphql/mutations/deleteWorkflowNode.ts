@@ -4,6 +4,7 @@ import {
   GetWorkflow,
   GetWorkflowVariables,
 } from 'graphql/queries/__generated__/GetWorkflow'
+import { find } from 'helpers/array'
 import {
   DeleteWorkflowNode,
   DeleteWorkflowNodeVariables,
@@ -32,11 +33,14 @@ export function useDeleteWorkflowNode(workflowId: string) {
       })
 
       if (node && existingData) {
-        let index = -1
-        existingData.workflow.workflowNodes.find((n, i) => {
-          index = i
-          return n.id === node.id
+        const workflowNodes = existingData.workflow.workflowNodes.map((n) => {
+          if (n.parentId === node.id) {
+            return { ...n, parentId: null }
+          }
+          return n
         })
+
+        const index = find(existingData.workflow.workflowNodes, node)
 
         cache.writeQuery({
           query: GET_WORKFLOW,
@@ -44,8 +48,8 @@ export function useDeleteWorkflowNode(workflowId: string) {
             workflow: {
               ...existingData.workflow,
               workflowNodes: [
-                ...existingData.workflow.workflowNodes.slice(0, index),
-                ...existingData.workflow.workflowNodes.slice(index + 1),
+                ...workflowNodes.slice(0, index),
+                ...workflowNodes.slice(index + 1),
               ],
             },
           },

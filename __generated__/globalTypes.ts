@@ -20,6 +20,7 @@ export interface AddWorkflowInput {
  */
 export interface AddWorkflowNodeInput {
   workflowId: string;
+  parentId?: string | null;
   name: string;
   displayName: string;
   description?: string | null;
