@@ -54,7 +54,7 @@ export default function useDraw(
       // do the restore last
       ctx.restore()
     }
-  }, [ctx, scale, translateOffset, nodes, activeId, connectorDrag])
+  }, [ctx, scale, translateOffset, nodes, activeId, connectorDrag, dragId])
 
   useEffect(() => {
     draw()
