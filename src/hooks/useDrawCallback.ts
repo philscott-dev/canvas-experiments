@@ -9,6 +9,8 @@ export default function useDraw(
   scale: number,
   nodes: WorkflowNode[],
   activeId?: string,
+  connectorDrag?: Point,
+  dragId?: string,
 ) {
   const draw = useCallback(() => {
     if (ctx) {
@@ -27,10 +29,23 @@ export default function useDraw(
         '#0253B150',
       )
 
+      if (connectorDrag && dragId) {
+        const node = nodes.find((n) => dragId === n.id)
+        if (node) {
+          drawPath(ctx, translateOffset, node, {
+            ...connectorDrag,
+            width: 1,
+            height: 1,
+          })
+        }
+      }
+
       //draw nodes
       nodes.forEach((node, index) => {
         // draw each rect
         drawNode(ctx, node, translateOffset, scale, activeId)
+
+        const parent = nodes.find((n) => node.parentId === n.id)
 
         //draw paths for nodes, with next node
         drawPath(ctx, translateOffset, node, nodes[index + 1])
@@ -39,7 +54,7 @@ export default function useDraw(
       // do the restore last
       ctx.restore()
     }
-  }, [ctx, scale, translateOffset, nodes, activeId])
+  }, [ctx, scale, translateOffset, nodes, activeId, connectorDrag])
 
   useEffect(() => {
     draw()

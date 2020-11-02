@@ -1,5 +1,5 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
-import { Point } from 'types'
+import { Point, Rect } from 'types'
 import { drawArrow } from './drawArrow'
 import {
   getAdapterPoint,
@@ -10,8 +10,8 @@ import {
 export function drawPath(
   ctx: CanvasRenderingContext2D,
   translateOffset: Point,
-  node: WorkflowNode,
-  nextNode?: WorkflowNode,
+  node: Rect,
+  nextNode?: Rect,
 ) {
   const connectorPoint = getConnectorPoint(node, translateOffset)
   const connectorRect = getConnectorRect(connectorPoint)

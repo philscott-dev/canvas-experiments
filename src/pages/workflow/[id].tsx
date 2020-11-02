@@ -36,7 +36,6 @@ function WorkflowPage({
   const [scale, setScale] = useState<number>(1)
   const [activeId, setActiveId] = useState<string>()
   const [isDragging, setDragging] = useState(false)
-  const [isConnecting, setConnecting] = useState(false)
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false)
 
   /**

@@ -22,7 +22,6 @@ import {
   useEffect,
 } from 'react'
 import { getConnectorPoint, getConnectorRect } from 'utils/node'
-import { CONNECTOR_SIZE } from 'constants/canvas'
 
 interface FlowChartCanvasProps {
   className?: string
@@ -77,7 +76,17 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     const [hasLoaded, setHasLoaded] = useState(false)
     const [dragId, setDragId] = useState<string>()
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
-    const draw = useDrawCallback(ctx, translateOffset, scale, nodes, activeId)
+    const [connectorDrag, setConnectorDrag] = useState<Point>()
+    const [isConnecting, setConnecting] = useState(false)
+    const draw = useDrawCallback(
+      ctx,
+      translateOffset,
+      scale,
+      nodes,
+      activeId,
+      connectorDrag,
+      dragId,
+    )
 
     //draw once
     useEffect(() => {
@@ -117,6 +126,130 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       }
     }
 
+    const onMouseMove = (
+      e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
+    ) => {
+      if (canvas && isDragging) {
+        // get initial data
+        const point = getCanvasPoint(e, canvas)
+        const x = point.x / scale
+        const y = point.y / scale
+        const dragX = x - (clickOffset?.x ?? 0)
+        const dragY = y - (clickOffset?.y ?? 0)
+
+        // handle moving a connector
+        if (isConnecting) {
+          handleDragConnector(x - translateOffset.x, y - translateOffset.y)
+        }
+        // move the node if we've clicked a node
+        else if (isDragging && dragId !== undefined) {
+          handleDragNode(dragX, dragY)
+        }
+        // otherwise move the canvas
+        else if (isDragging && clickOffset) {
+          handleDragCanvas(dragX, dragY)
+          //set the position
+          setClickOffset({ x, y })
+        }
+      }
+    }
+
+    const onMouseUp = (
+      e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
+    ) => {
+      // TODO: needs to be a helper
+      if (canvas) {
+        // get initial data
+        const point = getCanvasPoint(e, canvas)
+        const x = point.x / scale
+        const y = point.y / scale
+        if (
+          !isConnecting &&
+          isDragging &&
+          dragId !== undefined &&
+          clickOffset
+        ) {
+          const index = nodes.findIndex((n) => n.id === dragId)
+          if (index > -1) {
+            const dragX = x - clickOffset.x
+            const dragY = y - clickOffset.y
+            updateNodePosition({
+              variables: {
+                input: {
+                  workflowId,
+                  id: dragId,
+                  x: dragX,
+                  y: dragY,
+                },
+              },
+            })
+          }
+        }
+      }
+
+      // unset everything
+      document.body.style.userSelect = 'inherit'
+      onDragging(false)
+      setDragId(undefined)
+      setClickOffset(undefined)
+
+      // connectors
+      setConnecting(false)
+      setConnectorDrag(undefined)
+    }
+
+    const onWheel = (e: WheelEvent<HTMLCanvasElement>) => {
+      if (canvas) {
+        const x = zoom(canvas, scale, origin, translateOffset, e)
+        onTranslate(x.translate)
+        onScale(x.factor)
+        onOrigin(x.origin)
+        draw()
+      }
+    }
+
+    const handleDragConnector = (dragX: number, dragY: number) => {
+      setConnectorDrag({ x: dragX, y: dragY })
+    }
+
+    const handleDragNode = (dragX: number, dragY: number) => {
+      const index = nodes.findIndex((n) => n.id === dragId)
+      if (index > -1) {
+        const node = nodes[index]
+        const dragNode = {
+          ...node,
+          x: dragX,
+          y: dragY,
+        }
+
+        //write to the apollo cache
+        if (workflow) {
+          apolloClient.cache.writeQuery<GetWorkflow, GetWorkflowVariables>({
+            query: GET_WORKFLOW,
+            variables: { id: parseInt(workflow.id, 10) },
+            data: {
+              workflow: {
+                ...workflow,
+                workflowNodes: [
+                  ...nodes.slice(0, index),
+                  dragNode,
+                  ...nodes.slice(index + 1),
+                ],
+              },
+            },
+          })
+        }
+      }
+    }
+
+    const handleDragCanvas = (dragX: number, dragY: number) => {
+      //accumulate the translate
+      onTranslate({
+        x: translateOffset.x + dragX,
+        y: translateOffset.y + dragY,
+      })
+    }
+
     const handleNodeClick = (x: number, y: number) => {
       const clickPoint = {
         x: x - translateOffset.x,
@@ -124,7 +257,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       }
       for (const node of nodes) {
         const connectorPoint = getConnectorPoint(node) // no translateOffset. idk why?
-        const connectorRect = getConnectorRect(connectorPoint) // no translateOffset
+        const connectorRect = getConnectorRect(connectorPoint) // no translateOffset?
         const isNodeClick = pointInRect(clickPoint.x, clickPoint.y, node)
         const isConnectorClick = pointInRect(
           clickPoint.x,
@@ -133,7 +266,9 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
         )
 
         if (isConnectorClick) {
-          console.log('connector click')
+          setConnecting(true)
+          setDragId(node.id)
+          setClickOffset({ x, y })
           return
         }
 
@@ -209,126 +344,6 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       })
       if (isClicked) {
         onNodeTrashClick()
-      }
-    }
-
-    const onMouseMove = (
-      e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
-    ) => {
-      // TODO: needs to be a helper
-      if (canvas) {
-        // get initial data
-        const point = getCanvasPoint(e, canvas)
-        const x = point.x / scale
-        const y = point.y / scale
-
-        // move the node if we've clicked a node
-        if (isDragging && dragId !== undefined && clickOffset) {
-          const index = nodes.findIndex((n) => n.id === dragId)
-          if (index > -1) {
-            const node = nodes[index]
-            const { width, height } = node
-            const dragX = x - clickOffset.x
-            const dragY = y - clickOffset.y
-            const dragNode = {
-              ...node,
-              x: dragX,
-              y: dragY,
-              width,
-              height,
-            }
-
-            //write to the apollo cache
-            if (workflow) {
-              apolloClient.cache.writeQuery<GetWorkflow, GetWorkflowVariables>({
-                query: GET_WORKFLOW,
-                variables: { id: parseInt(workflow.id, 10) },
-                data: {
-                  workflow: {
-                    ...workflow,
-                    workflowNodes: [
-                      ...nodes.slice(0, index),
-                      dragNode,
-                      ...nodes.slice(index + 1),
-                    ],
-                  },
-                },
-              })
-            }
-          }
-        }
-        // otherwise move the canvas
-        else if (isDragging && clickOffset) {
-          const dragX = x - clickOffset.x // / scale
-          const dragY = y - clickOffset.y // / scale
-
-          //set the position
-          setClickOffset({ x, y })
-
-          //accumulate the translate
-          onTranslate({
-            x: translateOffset.x + dragX,
-            y: translateOffset.y + dragY,
-          })
-        }
-
-        // else we need to check for a parent connector and move the arrow
-        else {
-        }
-      }
-    }
-
-    const onMouseUp = (
-      e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
-    ) => {
-      // TODO: needs to be a helper
-      if (canvas) {
-        // get initial data
-        const point = getCanvasPoint(e, canvas)
-        const x = point.x / scale
-        const y = point.y / scale
-        if (isDragging && dragId !== undefined && clickOffset) {
-          const index = nodes.findIndex((n) => n.id === dragId)
-          if (index > -1) {
-            const node = nodes[index]
-            const { width, height } = node
-            const dragX = x - clickOffset.x
-            const dragY = y - clickOffset.y
-            const dragNode = {
-              ...node,
-              x: dragX,
-              y: dragY,
-              width,
-              height,
-            }
-            updateNodePosition({
-              variables: {
-                input: {
-                  workflowId,
-                  id: dragId,
-                  x: dragX,
-                  y: dragY,
-                },
-              },
-            })
-          }
-        }
-      }
-
-      // unset everything
-      document.body.style.userSelect = 'inherit'
-      onDragging(false)
-      setDragId(undefined)
-      setClickOffset(undefined)
-    }
-
-    const onWheel = (e: WheelEvent<HTMLCanvasElement>) => {
-      if (canvas) {
-        const x = zoom(canvas, scale, origin, translateOffset, e)
-        onTranslate(x.translate)
-        onScale(x.factor)
-        onOrigin(x.origin)
-        draw()
       }
     }
 

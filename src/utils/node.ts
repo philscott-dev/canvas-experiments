@@ -1,12 +1,9 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
-import { Point } from 'types'
+import { Point, Rect } from 'types'
 import { CONNECTOR_SIZE } from 'constants/canvas'
 
 // the right side of a node
-export const getConnectorPoint = (
-  node: WorkflowNode,
-  translateOffset?: Point,
-) => {
+export const getConnectorPoint = (node: Rect, translateOffset?: Point) => {
   const hr = node.height / 2
   return {
     x: node.x + node.width + (translateOffset?.x ?? 0),
@@ -15,10 +12,7 @@ export const getConnectorPoint = (
 }
 
 // the left side of the node
-export const getAdapterPoint = (
-  node: WorkflowNode,
-  translateOffset?: Point,
-) => {
+export const getAdapterPoint = (node: Rect, translateOffset?: Point) => {
   const hr = node.height / 2
   return {
     x: node.x + (translateOffset?.x ?? 0),
