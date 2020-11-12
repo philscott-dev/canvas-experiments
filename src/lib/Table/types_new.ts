@@ -45,3 +45,12 @@ export type CellClickFunction = (
   rowData: Data,
   tableData: Data[],
 ) => void
+
+export interface TableMetaData {
+  cellData: any
+  rowData: any
+  tableData: any
+  cellIndex: number
+  rowIndex: number
+  tableIndex: number
+}

@@ -9,6 +9,7 @@ export default function useOnClickOutside(
 ) {
   const handlerRef = useRef(handler)
 
+  // store the handler
   useEffect(() => {
     handlerRef.current = handler
   })

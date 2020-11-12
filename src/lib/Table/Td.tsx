@@ -1,44 +1,42 @@
-/** @jsx jsx */
 import styled from '@emotion/styled'
-import { FC } from 'react'
-import { jsx } from '@emotion/react'
-import { Data, ValueType, CellType } from './types'
+import { FC, MouseEvent, useRef } from 'react'
 import { useValueType } from './hooks/useValueType'
 import RowExpandArrow from './RowExpandSection/RowExpandArrow'
 import { FiDatabase } from 'react-icons/fi'
+import { Data, CellType, ExtraTableData, CellClickFunction } from './types'
+import { useOnClickOutside } from 'hooks'
 
 export interface TableHeadingProps {
   className?: string
   row: Data
+  extraData?: ExtraTableData
   data: Data[]
   rowIndex: number
   cellKey: string
   activeKey?: string
   expandKey?: string
-  value?: ValueType
-  onCellClick: (
-    key: string,
-    isExpandable: CellType,
-    rowIndex: number,
-    expandIndex: number,
-  ) => void
+  onCellClick?: CellClickFunction
 }
 
 const Td: FC<TableHeadingProps> = ({
   row,
+  extraData,
   data,
   rowIndex,
   className,
   cellKey,
   expandKey,
-  activeKey,
-  value,
   onCellClick,
 }) => {
-  const cell = useValueType(value, row, data, rowIndex)
+  // const dropdownRef = useRef()
+  // useOnClickOutside(dropdownRef, () => {}, true)
 
-  const handleCellClick = () => {
-    onCellClick(cellKey, cell.type, rowIndex, 0)
+  const cell = useValueType(rowIndex, cellKey, row, data, extraData)
+
+  const handleCellClick = (e: MouseEvent<HTMLButtonElement>) => {
+    if (onCellClick) {
+      onCellClick(e, cellKey, cell.type, rowIndex, 0, row[cellKey], row, data)
+    }
   }
   return (
     <TdWrapper
@@ -52,15 +50,21 @@ const Td: FC<TableHeadingProps> = ({
         isExpanded={expandKey === cellKey}
         onMouseDown={handleCellClick}
       >
-        {cell.type === 'table' ? (
-          <DataIconWrap>
-            <FiDatabase />
-          </DataIconWrap>
-        ) : null}
-        <p>{cell.value}</p>
-        {cell.type === 'object' || cell.type === 'array' ? (
-          <RowExpandArrow isActive={expandKey === cellKey} />
-        ) : null}
+        {cell.type === 'jsx' ? (
+          cell.value
+        ) : (
+          <>
+            {cell.type === 'table' ? (
+              <DataIconWrap>
+                <FiDatabase />
+              </DataIconWrap>
+            ) : null}
+            <p>{cell.value}</p>
+            {cell.type === 'object' || cell.type === 'array' ? (
+              <RowExpandArrow isActive={expandKey === cellKey} />
+            ) : null}
+          </>
+        )}
       </Cell>
     </TdWrapper>
   )
@@ -69,6 +73,7 @@ const Td: FC<TableHeadingProps> = ({
 export default Td
 
 const TdWrapper = styled.td<{ isExpanded: boolean; hasExpandKey: boolean }>`
+  position: relative;
   vertical-align: top;
   min-height: 40px;
   font-weight: 300;
@@ -117,6 +122,11 @@ const Cell = styled.button<{ cell: CellType; isExpanded: boolean }>`
     word-break: break-all;
     white-space: ${({ cell }) =>
       cell === 'object' || cell === 'date' ? 'nowrap' : 'inherit'};
+    font-family: ${({ theme }) => theme.font.family};
+    color: ${({ theme }) => theme.color.white[100]};
+  }
+
+  & > * {
     font-family: ${({ theme }) => theme.font.family};
     color: ${({ theme }) => theme.color.white[100]};
   }

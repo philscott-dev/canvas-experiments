@@ -1,18 +1,28 @@
 /** @jsx jsx */
 import styled from '@emotion/styled'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { jsx, css } from '@emotion/react'
 import { splitCamalized } from 'helpers/string'
 import { IconButton } from 'lib'
 import { FiMoreVertical } from 'react-icons/fi'
+import { ExtraTableData } from './types'
 
 export interface ThProps {
   onClick?: (key: string) => void
   heading: string
+  extraData?: ExtraTableData
   className?: string
 }
 
-const Th: FC<ThProps> = ({ heading, onClick, className }) => {
+const Th: FC<ThProps> = ({ heading, extraData, onClick, className }) => {
+  const [elem, setElem] = useState<string | JSX.Element>()
+  useEffect(() => {
+    if (extraData && extraData[heading] && extraData[heading].heading) {
+      setElem(extraData[heading].heading())
+    } else {
+      setElem(splitCamalized(heading).join(' '))
+    }
+  }, [heading, extraData])
   const handleClick = () => {
     if (onClick) {
       onClick(heading)
@@ -29,7 +39,7 @@ const Th: FC<ThProps> = ({ heading, onClick, className }) => {
             `}
           />
         </IconButton>
-        {splitCamalized(heading).join(' ')}
+        {elem}
       </Wrapper>
     </th>
   )

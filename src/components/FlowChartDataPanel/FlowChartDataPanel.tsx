@@ -1,17 +1,35 @@
-/** @jsx jsx */
 import styled from '@emotion/styled'
-import { jsx } from '@emotion/react'
-import { FC } from 'react'
-import { Header, H2, H4 } from 'components/FlowChartDataPanel'
+import { createElement, FC, useRef } from 'react'
 import { Table } from 'lib'
 import { mock } from './mock'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
+import { CellClickFunction } from 'lib/Table/types'
+import { useOnClickOutside } from 'hooks'
 
 interface FlowChartDataPanelProps {
   className?: string
 }
 
 const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
+  const handleCellClick: CellClickFunction = (
+    e,
+    _key,
+    _expandable,
+    _rowIndex,
+    _expandIndex,
+    cellData,
+  ) => {
+    console.log(_key, _expandable, cellData)
+  }
+
+  const handleChange = () => {
+    console.log('yo')
+  }
+
+  const shouldRender = () => {}
+
+  const onCheck = () => {}
+
   return (
     <div className={className}>
       <Wrapper>
@@ -19,8 +37,8 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
           <Table
             title="DYNAMIC SERVICE NAME"
             subtitle="HOME PATH"
-            isScrollable
             data={mock}
+            onCellClick={handleCellClick}
           />
         </Container>
       </Wrapper>

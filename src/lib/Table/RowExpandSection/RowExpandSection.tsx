@@ -5,26 +5,23 @@ import { jsx } from '@emotion/react'
 import { splitAndUpperCase } from 'helpers/string'
 import RowExpandTitle from './RowExpandTitle'
 import RowExpandValue from './RowExpandValue'
-import { CellType } from '../types'
+import { Data, CellClickFunction } from '../types'
 
 interface RowExpandSectionProps {
   className?: string
   expandIndex: number
   rowIndex: number
-  cellKey?: string
+  cellKey: string
   expandKey: string
-  data?: { [key: string]: any }
-  onCellClick: (
-    key: string,
-    isExpandable: CellType,
-    rowIndex: number,
-    expandIndex: number,
-  ) => void
+  row: Data
+  data: Data[]
+  onCellClick?: CellClickFunction
 }
 const RowExpandSection: FC<RowExpandSectionProps> = ({
   className,
   expandIndex,
   rowIndex,
+  row,
   data,
   cellKey,
   expandKey,
@@ -39,14 +36,15 @@ const RowExpandSection: FC<RowExpandSectionProps> = ({
     <section className={className}>
       <RowExpandTitle>{title}</RowExpandTitle>
       <div>
-        {Object.keys(data || []).map((key, i) => (
+        {Object.keys(row || []).map((key, i) => (
           <RowExpandValue
             key={i}
             expandIndex={expandIndex}
             rowIndex={rowIndex}
             cellKey={key}
             expandKey={expandKey}
-            value={data ? data[key] : null}
+            row={row}
+            data={data}
             onCellClick={onCellClick}
           />
         ))}

@@ -7,10 +7,10 @@ import Thead from './Thead'
 import Th from './Th'
 import Tr, { Row } from './Tr'
 import useUniqueKeys from './hooks/useUniqueKeys'
-import { BreadCrumb, Data, ExtraTableData } from './types'
+import { BreadCrumb, Data, ExtraTableData, CellClickFunction } from './types'
 import TableTitlebar from './TableTitlebar/TableTitlebar'
 import { get } from 'helpers/collection'
-import { splitAndCapitalize, splitCamalized } from 'helpers/string'
+import { splitCamalized } from 'helpers/string'
 
 interface TableProps {
   data: Data[]
@@ -21,6 +21,7 @@ interface TableProps {
   className?: string
   title?: string
   subtitle?: string
+  onCellClick?: CellClickFunction
 }
 
 const Table: FC<TableProps> = ({
@@ -32,6 +33,7 @@ const Table: FC<TableProps> = ({
   title,
   subtitle,
   className,
+  onCellClick,
 }) => {
   const [tablePath, setTablePath] = useState<string[][]>([])
   const [tableData, setTableData] = useState<Data[]>([])
@@ -76,8 +78,18 @@ const Table: FC<TableProps> = ({
       <table className={className}>
         <Thead>
           <Row>
+            <Th
+              key={'table__checkbox'}
+              heading={'table__checkbox'}
+              extraData={{
+                table__checkbox: {
+                  heading: () => <div></div>,
+                  cell: () => <div></div>,
+                },
+              }}
+            />
             {keys.map((key) => (
-              <Th key={key} heading={key} />
+              <Th key={key} heading={key} extraData={extraData} />
             ))}
           </Row>
         </Thead>
@@ -92,6 +104,7 @@ const Table: FC<TableProps> = ({
                 extraData={extraData}
                 data={data}
                 onLoadTable={handleLoadTable}
+                onCellClick={onCellClick}
               />
             )
           })}

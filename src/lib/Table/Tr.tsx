@@ -1,6 +1,6 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState } from 'react'
 import styled from '@emotion/styled'
-import { Data, ExtraTableData, CellType } from './types'
+import { Data, ExtraTableData, CellType, CellClickFunction } from './types'
 import Td from './Td'
 import { RowExpandSection } from './RowExpandSection'
 import { get } from 'helpers/collection'
@@ -13,6 +13,7 @@ interface TrProps {
   extraData?: ExtraTableData
   data: Data[]
   onLoadTable: (r: number, keys: string[], key: string) => void
+  onCellClick?: CellClickFunction
 }
 const Tr: FC<TrProps> = ({
   className,
@@ -22,31 +23,47 @@ const Tr: FC<TrProps> = ({
   extraData,
   data,
   onLoadTable,
+  onCellClick,
 }) => {
-  const [row, setRow] = useState<{ [x: string]: any }>({}) //originalRow + extraData props
   const [activeKey, setActiveKey] = useState<string>() // any clicked key cells key
   const [expandKeys, setExpandKeys] = useState<string[]>([]) // array of expanded keys
 
-  // merge original and
-  useEffect(() => {
-    setRow({ ...originalRow, ...extraData })
-  }, [originalRow, extraData])
-
-  const handleSetActiveKey = (
-    key: string,
-    cellType: CellType,
-    rIndex: number, // row
-    eIndex: number, // expand
+  const handleCellClick: CellClickFunction = (
+    e,
+    key,
+    cellType,
+    rIndex, // row
+    eIndex, // expand
+    cellData,
+    rowData,
+    tableData,
   ) => {
     switch (cellType) {
       case 'array':
-        return handleRowExpand(key, eIndex)
+        handleRowExpand(key, eIndex)
+        break
       case 'object':
-        return handleRowExpand(key, eIndex)
+        handleRowExpand(key, eIndex)
+        break
       case 'table':
-        return onLoadTable(rIndex, expandKeys.slice(0, eIndex), key)
+        onLoadTable(rIndex, expandKeys.slice(0, eIndex), key)
+        break
       default:
         setActiveKey(key === activeKey ? undefined : key)
+    }
+
+    // pass to prop
+    if (onCellClick) {
+      onCellClick(
+        e,
+        key,
+        cellType,
+        rIndex,
+        eIndex,
+        cellData,
+        rowData,
+        tableData,
+      )
     }
   }
 
@@ -59,36 +76,52 @@ const Tr: FC<TrProps> = ({
     }
   }
 
+  const getColSpan = () => {
+    // I'm always adding 1 - it doesnt seem to hurt anything
+    // it's there just in case theres a checkbox cell
+    return keys.length + 1
+  }
+
   return (
     <>
       {/* Regular TR */}
       <Row className={className}>
+        <Td
+          key={'table__checkbox'}
+          cellKey={'table__checkbox'}
+          rowIndex={rowIndex}
+          row={originalRow}
+          expandKey={expandKeys[0]}
+          extraData={extraData}
+          data={data}
+        />
         {keys.map((key) => (
           <Td
             key={key}
-            value={row[key]}
             cellKey={key}
             activeKey={activeKey}
             expandKey={expandKeys[0]}
             rowIndex={rowIndex}
             row={originalRow}
+            extraData={extraData}
             data={data}
-            onCellClick={handleSetActiveKey}
+            onCellClick={handleCellClick}
           />
         ))}
       </Row>
       {/* Expand Row */}
       <tr className={className}>
-        <Cell colSpan={keys.length}>
+        <Cell colSpan={getColSpan()}>
           {expandKeys.map((key, index) => (
             <RowExpandSection
               key={index + 1}
               expandIndex={index + 1}
               rowIndex={rowIndex}
               cellKey={key}
+              data={data}
               expandKey={expandKeys[index + 1]}
-              data={get(row, expandKeys.slice(0, index + 1))}
-              onCellClick={handleSetActiveKey}
+              row={get(originalRow, expandKeys.slice(0, index + 1))}
+              onCellClick={handleCellClick}
             />
           ))}
         </Cell>
