@@ -39,6 +39,11 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
             subtitle="HOME PATH"
             data={mock}
             onCellClick={handleCellClick}
+            cellDropdown={{
+              shouldRender: () => true,
+              title: () => 'Pivot To:',
+              options: () => [{ text: '', value: '' }],
+            }}
           />
         </Container>
       </Wrapper>

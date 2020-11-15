@@ -1,10 +1,11 @@
 import styled from '@emotion/styled'
-import { FC, MouseEvent, useRef } from 'react'
+import { FC, MouseEvent, useRef, useState } from 'react'
 import { useValueType } from './hooks/useValueType'
 import RowExpandArrow from './RowExpandSection/RowExpandArrow'
 import { FiDatabase } from 'react-icons/fi'
 import { Data, CellType, ExtraTableData, CellClickFunction } from './types'
 import { useOnClickOutside } from 'hooks'
+import { DropdownOption, DropdownHeading, DropdownMenu } from 'lib'
 
 export interface TableHeadingProps {
   className?: string
@@ -28,18 +29,26 @@ const Td: FC<TableHeadingProps> = ({
   expandKey,
   onCellClick,
 }) => {
-  // const dropdownRef = useRef()
-  // useOnClickOutside(dropdownRef, () => {}, true)
+  const dropdownRef = useRef<HTMLTableCellElement>(null)
+  const [isDropdownVisible, setDropdownVisible] = useState(false)
+  useOnClickOutside(dropdownRef, () => setDropdownVisible(false), true)
 
   const cell = useValueType(rowIndex, cellKey, row, data, extraData)
 
   const handleCellClick = (e: MouseEvent<HTMLButtonElement>) => {
+    if (cell.type === 'date' || cell.type === 'text') {
+      setDropdownVisible(true)
+    }
     if (onCellClick) {
       onCellClick(e, cellKey, cell.type, rowIndex, 0, row[cellKey], row, data)
     }
   }
+
+  const renderDropdown = () => {}
+
   return (
     <TdWrapper
+      ref={dropdownRef}
       className={className}
       hasExpandKey={!!expandKey}
       isExpanded={expandKey === cellKey}
@@ -66,6 +75,10 @@ const Td: FC<TableHeadingProps> = ({
           </>
         )}
       </Cell>
+      <DropdownMenu isVisible={isDropdownVisible}>
+        <DropdownHeading>Send To:</DropdownHeading>
+        <DropdownOption>Test</DropdownOption>
+      </DropdownMenu>
     </TdWrapper>
   )
 }

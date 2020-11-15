@@ -7,10 +7,16 @@ import Thead from './Thead'
 import Th from './Th'
 import Tr, { Row } from './Tr'
 import useUniqueKeys from './hooks/useUniqueKeys'
-import { BreadCrumb, Data, ExtraTableData, CellClickFunction } from './types'
 import TableTitlebar from './TableTitlebar/TableTitlebar'
 import { get } from 'helpers/collection'
 import { splitCamalized } from 'helpers/string'
+import {
+  BreadCrumb,
+  Data,
+  ExtraTableData,
+  CellClickFunction,
+  CellDropdown,
+} from './types'
 
 interface TableProps {
   data: Data[]
@@ -22,6 +28,7 @@ interface TableProps {
   title?: string
   subtitle?: string
   onCellClick?: CellClickFunction
+  cellDropdown?: CellDropdown
 }
 
 const Table: FC<TableProps> = ({

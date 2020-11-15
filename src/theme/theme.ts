@@ -8,6 +8,7 @@ const theme: Theme = {
     gray: {
       200: '#BEBEBE',
       300: '#8A8A8A',
+      600: '#202124',
     },
     white: {
       100: '#FCFCFC',

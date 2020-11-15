@@ -45,3 +45,14 @@ export type CellClickFunction = (
   rowData: Data,
   tableData: Data[],
 ) => void
+
+export interface CellDropdown {
+  shouldRender: () => boolean
+  title: () => string
+  options: () => CellDropdownOption[]
+}
+
+export interface CellDropdownOption {
+  text: string
+  value: any
+}
