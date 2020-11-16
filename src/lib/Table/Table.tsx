@@ -27,11 +27,12 @@ interface TableProps {
   className?: string
   title?: string
   subtitle?: string
-  onCellClick?: CellClickFunction
   cellDropdown?: CellDropdown
+  onCellClick?: CellClickFunction
 }
 
 const Table: FC<TableProps> = ({
+  className,
   data,
   extraData,
   exclude,
@@ -39,7 +40,7 @@ const Table: FC<TableProps> = ({
   isScrollable,
   title,
   subtitle,
-  className,
+  cellDropdown,
   onCellClick,
 }) => {
   const [tablePath, setTablePath] = useState<string[][]>([])
@@ -112,6 +113,7 @@ const Table: FC<TableProps> = ({
                 data={data}
                 onLoadTable={handleLoadTable}
                 onCellClick={onCellClick}
+                cellDropdown={cellDropdown}
               />
             )
           })}

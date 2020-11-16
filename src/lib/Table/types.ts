@@ -50,6 +50,7 @@ export interface CellDropdown {
   shouldRender: () => boolean
   title: () => string
   options: () => CellDropdownOption[]
+  onClick: (e: MouseEvent<HTMLButtonElement>) => void
 }
 
 export interface CellDropdownOption {

@@ -3,9 +3,16 @@ import { FC, MouseEvent, useRef, useState } from 'react'
 import { useValueType } from './hooks/useValueType'
 import RowExpandArrow from './RowExpandSection/RowExpandArrow'
 import { FiDatabase } from 'react-icons/fi'
-import { Data, CellType, ExtraTableData, CellClickFunction } from './types'
 import { useOnClickOutside } from 'hooks'
 import { DropdownOption, DropdownHeading, DropdownMenu } from 'lib'
+import {
+  Data,
+  CellType,
+  ExtraTableData,
+  CellClickFunction,
+  CellDropdown,
+} from './types'
+import Dropdown from './Dropdown'
 
 export interface TableHeadingProps {
   className?: string
@@ -16,6 +23,7 @@ export interface TableHeadingProps {
   cellKey: string
   activeKey?: string
   expandKey?: string
+  cellDropdown?: CellDropdown
   onCellClick?: CellClickFunction
 }
 
@@ -27,18 +35,13 @@ const Td: FC<TableHeadingProps> = ({
   className,
   cellKey,
   expandKey,
+  cellDropdown,
   onCellClick,
 }) => {
-  const dropdownRef = useRef<HTMLTableCellElement>(null)
-  const [isDropdownVisible, setDropdownVisible] = useState(false)
-  useOnClickOutside(dropdownRef, () => setDropdownVisible(false), true)
-
+  const ref = useRef<HTMLTableCellElement>(null)
   const cell = useValueType(rowIndex, cellKey, row, data, extraData)
 
   const handleCellClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (cell.type === 'date' || cell.type === 'text') {
-      setDropdownVisible(true)
-    }
     if (onCellClick) {
       onCellClick(e, cellKey, cell.type, rowIndex, 0, row[cellKey], row, data)
     }
@@ -48,7 +51,7 @@ const Td: FC<TableHeadingProps> = ({
 
   return (
     <TdWrapper
-      ref={dropdownRef}
+      ref={ref}
       className={className}
       hasExpandKey={!!expandKey}
       isExpanded={expandKey === cellKey}
@@ -75,10 +78,7 @@ const Td: FC<TableHeadingProps> = ({
           </>
         )}
       </Cell>
-      <DropdownMenu isVisible={isDropdownVisible}>
-        <DropdownHeading>Send To:</DropdownHeading>
-        <DropdownOption>Test</DropdownOption>
-      </DropdownMenu>
+      <Dropdown ref={ref} cellType={cell.type} cellDropdown={cellDropdown} />
     </TdWrapper>
   )
 }

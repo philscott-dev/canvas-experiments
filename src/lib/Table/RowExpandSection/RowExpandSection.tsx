@@ -5,7 +5,7 @@ import { jsx } from '@emotion/react'
 import { splitAndUpperCase } from 'helpers/string'
 import RowExpandTitle from './RowExpandTitle'
 import RowExpandValue from './RowExpandValue'
-import { Data, CellClickFunction } from '../types'
+import { Data, CellClickFunction, CellDropdown } from '../types'
 
 interface RowExpandSectionProps {
   className?: string
@@ -15,6 +15,7 @@ interface RowExpandSectionProps {
   expandKey: string
   row: Data
   data: Data[]
+  cellDropdown?: CellDropdown
   onCellClick?: CellClickFunction
 }
 const RowExpandSection: FC<RowExpandSectionProps> = ({
@@ -25,6 +26,7 @@ const RowExpandSection: FC<RowExpandSectionProps> = ({
   data,
   cellKey,
   expandKey,
+  cellDropdown,
   onCellClick,
 }) => {
   const [title, setTitle] = useState('')
@@ -45,6 +47,7 @@ const RowExpandSection: FC<RowExpandSectionProps> = ({
             expandKey={expandKey}
             row={row}
             data={data}
+            cellDropdown={cellDropdown}
             onCellClick={onCellClick}
           />
         ))}

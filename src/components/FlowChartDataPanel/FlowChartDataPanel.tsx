@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { createElement, FC, useRef } from 'react'
+import { createElement, FC, MouseEvent, useRef } from 'react'
 import { Table } from 'lib'
 import { mock } from './mock'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
@@ -30,6 +30,10 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
 
   const onCheck = () => {}
 
+  const handleDropdownClick = (e: MouseEvent<HTMLButtonElement>) => {
+    console.log(e.currentTarget.value)
+  }
+
   return (
     <div className={className}>
       <Wrapper>
@@ -42,7 +46,8 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
             cellDropdown={{
               shouldRender: () => true,
               title: () => 'Pivot To:',
-              options: () => [{ text: '', value: '' }],
+              options: () => [{ text: 'Option', value: 'something' }],
+              onClick: handleDropdownClick,
             }}
           />
         </Container>

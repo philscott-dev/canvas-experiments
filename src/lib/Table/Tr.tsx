@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import styled from '@emotion/styled'
-import { Data, ExtraTableData, CellType, CellClickFunction } from './types'
+import { Data, ExtraTableData, CellDropdown, CellClickFunction } from './types'
 import Td from './Td'
 import { RowExpandSection } from './RowExpandSection'
 import { get } from 'helpers/collection'
@@ -12,6 +12,7 @@ interface TrProps {
   originalRow: Data
   extraData?: ExtraTableData
   data: Data[]
+  cellDropdown?: CellDropdown
   onLoadTable: (r: number, keys: string[], key: string) => void
   onCellClick?: CellClickFunction
 }
@@ -22,6 +23,7 @@ const Tr: FC<TrProps> = ({
   originalRow,
   extraData,
   data,
+  cellDropdown,
   onLoadTable,
   onCellClick,
 }) => {
@@ -105,6 +107,7 @@ const Tr: FC<TrProps> = ({
             row={originalRow}
             extraData={extraData}
             data={data}
+            cellDropdown={cellDropdown}
             onCellClick={handleCellClick}
           />
         ))}
@@ -121,6 +124,7 @@ const Tr: FC<TrProps> = ({
               data={data}
               expandKey={expandKeys[index + 1]}
               row={get(originalRow, expandKeys.slice(0, index + 1))}
+              cellDropdown={cellDropdown}
               onCellClick={handleCellClick}
             />
           ))}

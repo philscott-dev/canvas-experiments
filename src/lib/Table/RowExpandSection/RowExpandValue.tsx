@@ -4,7 +4,7 @@ import { css, jsx } from '@emotion/react'
 import { FC, useEffect, useState, MouseEvent, useRef } from 'react'
 import { FiDatabase } from 'react-icons/fi'
 import { splitAndUpperCase } from 'helpers/string'
-import { Data, CellClickFunction } from '../types'
+import { Data, CellClickFunction, CellDropdown } from '../types'
 import { useValueType } from '../hooks/useValueType'
 import RowExpandArrow from './RowExpandArrow'
 import RowExpandValueHeading from './RowExpandValueHeading'
@@ -20,6 +20,7 @@ interface RowExpandValueProps {
   rowIndex: number
   row: Data
   data: Data[]
+  cellDropdown?: CellDropdown
   onCellClick?: CellClickFunction
 }
 const RowExpandValue: FC<RowExpandValueProps> = ({
