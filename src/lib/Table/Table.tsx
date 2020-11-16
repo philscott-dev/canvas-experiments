@@ -86,7 +86,7 @@ const Table: FC<TableProps> = ({
       <table className={className}>
         <Thead>
           <Row>
-            <Th
+            {/* <Th
               key={'table__checkbox'}
               heading={'table__checkbox'}
               extraData={{
@@ -95,7 +95,7 @@ const Table: FC<TableProps> = ({
                   cell: () => <div></div>,
                 },
               }}
-            />
+            /> */}
             {keys.map((key) => (
               <Th key={key} heading={key} extraData={extraData} />
             ))}

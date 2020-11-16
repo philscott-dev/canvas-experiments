@@ -88,7 +88,7 @@ const Tr: FC<TrProps> = ({
     <>
       {/* Regular TR */}
       <Row className={className}>
-        <Td
+        {/* <Td
           key={'table__checkbox'}
           cellKey={'table__checkbox'}
           rowIndex={rowIndex}
@@ -96,7 +96,7 @@ const Tr: FC<TrProps> = ({
           expandKey={expandKeys[0]}
           extraData={extraData}
           data={data}
-        />
+        /> */}
         {keys.map((key) => (
           <Td
             key={key}

@@ -38,7 +38,8 @@ const Td: FC<TableHeadingProps> = ({
   cellDropdown,
   onCellClick,
 }) => {
-  const ref = useRef<HTMLTableCellElement>(null)
+  const wrapperRef = useRef<HTMLTableCellElement>(null)
+  const innerRef = useRef<HTMLButtonElement>(null)
   const cell = useValueType(rowIndex, cellKey, row, data, extraData)
 
   const handleCellClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -51,13 +52,14 @@ const Td: FC<TableHeadingProps> = ({
 
   return (
     <TdWrapper
-      ref={ref}
+      ref={wrapperRef}
       className={className}
       hasExpandKey={!!expandKey}
       isExpanded={expandKey === cellKey}
     >
       <Cell
         type="button"
+        ref={innerRef}
         cell={cell.type}
         isExpanded={expandKey === cellKey}
         onMouseDown={handleCellClick}
@@ -78,7 +80,7 @@ const Td: FC<TableHeadingProps> = ({
           </>
         )}
       </Cell>
-      <Dropdown ref={ref} cellType={cell.type} cellDropdown={cellDropdown} />
+      <Dropdown ref={wrapperRef} cell={cell} cellDropdown={cellDropdown} />
     </TdWrapper>
   )
 }

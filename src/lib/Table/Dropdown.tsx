@@ -5,16 +5,17 @@ import { jsx, css } from '@emotion/react'
 import { CellDropdown } from './types'
 import { DropdownOption, DropdownHeading, DropdownMenu } from 'lib'
 import { useOnClickOutside, useOnClick } from 'hooks'
-import { CellType } from './types_new'
+import { CellState, CellType } from './types_new'
+import { isFunction } from 'lodash'
 
 interface DropdownProps {
   className?: string
   cellDropdown?: CellDropdown
-  cellType: CellType
+  cell: CellState
 }
 
 const Dropdown = forwardRef<HTMLElement, DropdownProps>(
-  ({ className, cellType, cellDropdown }, ref) => {
+  ({ className, cell, cellDropdown }, ref) => {
     const [isDropdownVisible, setDropdownVisible] = useState(false)
     useOnClickOutside(
       ref as RefObject<HTMLElement>,
@@ -28,18 +29,25 @@ const Dropdown = forwardRef<HTMLElement, DropdownProps>(
       true,
     )
 
-    const title = useMemo(() => cellDropdown?.title(), [cellDropdown])
-    const options = useMemo(() => cellDropdown?.options(), [cellDropdown])
-    const shouldRender = useMemo(() => cellDropdown?.shouldRender(), [
+    const title = useMemo(() => cellDropdown?.title(cell), [cellDropdown, cell])
+    const options = useMemo(() => cellDropdown?.options(cell), [
       cellDropdown,
+      cell,
     ])
+    const shouldRender = useMemo(
+      () =>
+        isFunction(cellDropdown?.shouldRender)
+          ? cellDropdown?.shouldRender(cell)
+          : true,
+      [cellDropdown, cell],
+    )
 
     const handleOptionClick = (e: MouseEvent<HTMLButtonElement>) => {
       setDropdownVisible(false)
-      cellDropdown?.onClick(e)
+      cellDropdown?.onClick(e, cell)
     }
 
-    if (!shouldRender || (cellType !== 'text' && cellType !== 'date')) {
+    if (!shouldRender || (cell.type !== 'text' && cell.type !== 'date')) {
       return null
     }
 
@@ -47,8 +55,12 @@ const Dropdown = forwardRef<HTMLElement, DropdownProps>(
       <div className={className}>
         <DropdownMenu isVisible={isDropdownVisible}>
           <DropdownHeading>{title}</DropdownHeading>
-          {options?.map((option) => (
-            <DropdownOption value={option.value} onClick={handleOptionClick}>
+          {options?.map((option, index) => (
+            <DropdownOption
+              key={index}
+              value={option.value}
+              onClick={handleOptionClick}
+            >
               {option.text}
             </DropdownOption>
           ))}
@@ -58,4 +70,6 @@ const Dropdown = forwardRef<HTMLElement, DropdownProps>(
   },
 )
 
-export default styled(Dropdown)``
+export default styled(Dropdown)`
+  position: absolute;
+`

@@ -3,7 +3,7 @@ import { createElement, FC, MouseEvent, useRef } from 'react'
 import { Table } from 'lib'
 import { mock } from './mock'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
-import { CellClickFunction } from 'lib/Table/types'
+import { CellClickFunction, CellState } from 'lib/Table/types'
 import { useOnClickOutside } from 'hooks'
 
 interface FlowChartDataPanelProps {
@@ -30,9 +30,15 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
 
   const onCheck = () => {}
 
-  const handleDropdownClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleDropdownClick = (
+    e: MouseEvent<HTMLButtonElement>,
+    cell: CellState,
+  ) => {
     console.log(e.currentTarget.value)
+    console.log(cell)
   }
+
+  const renderOptions = () => {}
 
   return (
     <div className={className}>
@@ -45,8 +51,8 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
             onCellClick={handleCellClick}
             cellDropdown={{
               shouldRender: () => true,
-              title: () => 'Pivot To:',
-              options: () => [{ text: 'Option', value: 'something' }],
+              title: () => 'Send To:',
+              options: (cell) => [{ text: 'Option', value: 'something' }],
               onClick: handleDropdownClick,
             }}
           />

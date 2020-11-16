@@ -11,6 +11,7 @@ import RowExpandValueHeading from './RowExpandValueHeading'
 import RowExpandValueText from './RowExpandValueText'
 import { DropdownOption, DropdownHeading, DropdownMenu } from 'lib'
 import { useOnClickOutside } from 'hooks'
+import Dropdown from '../Dropdown'
 
 interface RowExpandValueProps {
   className?: string
@@ -31,11 +32,10 @@ const RowExpandValue: FC<RowExpandValueProps> = ({
   rowIndex,
   row,
   data,
+  cellDropdown,
   onCellClick,
 }) => {
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const [isDropdownVisible, setDropdownVisible] = useState(false)
-  useOnClickOutside(dropdownRef, () => setDropdownVisible(false), true)
+  const ref = useRef<HTMLDivElement>(null)
 
   const cell = useValueType(rowIndex, cellKey, row)
   const [title, setTitle] = useState('')
@@ -44,9 +44,6 @@ const RowExpandValue: FC<RowExpandValueProps> = ({
   }, [cellKey])
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (cell.type === 'date' || cell.type === 'text') {
-      setDropdownVisible(true)
-    }
     if (onCellClick) {
       onCellClick(
         e,
@@ -61,7 +58,7 @@ const RowExpandValue: FC<RowExpandValueProps> = ({
     }
   }
   return (
-    <Wrapper ref={dropdownRef}>
+    <Wrapper ref={ref}>
       <ValueButton
         className={className}
         isActive={expandKey === cellKey}
@@ -80,16 +77,15 @@ const RowExpandValue: FC<RowExpandValueProps> = ({
           ) : null}
         </Flex>
       </ValueButton>
-      <DropdownMenu
-        isVisible={isDropdownVisible}
+      <Dropdown
+        ref={ref}
+        cell={cell}
+        cellDropdown={cellDropdown}
         css={css`
           top: 50px;
           left: 0;
         `}
-      >
-        <DropdownHeading>Send To:</DropdownHeading>
-        <DropdownOption>Test</DropdownOption>
-      </DropdownMenu>
+      />
     </Wrapper>
   )
 }
