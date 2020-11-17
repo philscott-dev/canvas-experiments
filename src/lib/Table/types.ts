@@ -49,7 +49,7 @@ export type CellClickFunction = (
 export interface CellDropdown {
   shouldRender?: (cell: CellState) => boolean
   title: (cell: CellState) => string
-  options: (cell: CellState) => CellDropdownOption[]
+  options: (cell: CellState) => CellDropdownOption[] | undefined
   onClick: (e: MouseEvent<HTMLButtonElement>, cell: CellState) => void
 }
 

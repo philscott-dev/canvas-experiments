@@ -1,6 +1,6 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import styled from '@emotion/styled'
-import { FC, DragEvent, useState } from 'react'
+import { FC, DragEvent, useState, useMemo } from 'react'
 import { FlowChartNodeMenu } from '../FlowChartNodeMenu'
 import Section from './Section'
 import { SidebarLeft, SidebarRight } from './Sidebar'
@@ -12,6 +12,8 @@ import { ExpandLevel } from 'enums'
 interface FlowChartUIProps {
   className?: string
   title: string
+  activeId?: string
+  nodes?: WorkflowNode[]
   onCenter: () => void
   onZoomIn: () => void
   onZoomOut: () => void
@@ -20,6 +22,8 @@ interface FlowChartUIProps {
 const FlowChartUI: FC<FlowChartUIProps> = ({
   className,
   title,
+  activeId,
+  nodes,
   onCenter,
   onZoomIn,
   onZoomOut,
@@ -27,6 +31,10 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
 }) => {
   const [activePanel, setActivePanel] = useState<string>()
   const [expandLevel, setExpandLevel] = useState<ExpandLevel>(ExpandLevel.NONE)
+  const workflowNode = useMemo(
+    () => nodes?.find((node) => node.id === activeId),
+    [nodes, activeId],
+  )
 
   const handleActivePanel = (panel: string) => {
     setActivePanel(panel)
@@ -34,8 +42,10 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
   const handleExpand = (expand: ExpandLevel) => {
     setExpandLevel(expand)
   }
+
   return (
     <div className={className}>
+      {/* Upper Section Canvas Controls */}
       <Section expandLevel={expandLevel}>
         <SidebarLeft>
           <FlowChartNodeMenu onDragStart={onDragStart} />
@@ -49,11 +59,15 @@ const FlowChartUI: FC<FlowChartUIProps> = ({
           />
         </SidebarRight>
       </Section>
+
+      {/* Lower Section Expansion Panel */}
       <FlowChartDetailPanel
         activePanel={activePanel}
         expandLevel={expandLevel}
         onActivePanel={handleActivePanel}
         onExpand={handleExpand}
+        workflowNode={workflowNode}
+        nodes={nodes}
       />
     </div>
   )

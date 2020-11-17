@@ -29,7 +29,7 @@ function WorkflowPage({
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { ctx } = useCanvas(canvasRef)
-  const [node, setNode] = useState<WorkflowNode>() // TODO: rename this thing. dont use it for canvas interactions, it's only used for dragging DOM to canvas
+  const [dragNode, setDragNode] = useState<WorkflowNode>() // used for transitioning from DOM to Canvas
   const [dragStartOffset, setDragStartOffset] = useState<Point>({ x: 0, y: 0 })
   const [translateOffset, setTranslateOffset] = useState<Point>({ x: 0, y: 0 })
   const [origin, setOrigin] = useState<Point>({ x: 0, y: 0 }) // for scale calculations
@@ -49,7 +49,7 @@ function WorkflowPage({
     const y = point.y / scale
     setDragging(true)
     setDragStartOffset({ x, y })
-    setNode(n)
+    setDragNode(n)
   }
 
   const handleTranslate = (pt: Point) => {
@@ -108,7 +108,7 @@ function WorkflowPage({
       const point = getCanvasPoint(e, ctx.canvas)
       const x = point.x / scale
       const y = point.y / scale
-      if (node) {
+      if (dragNode) {
         addWorkflowNode({
           variables: {
             workflowNodeInput: {
@@ -117,16 +117,17 @@ function WorkflowPage({
               width: NODE_WIDTH,
               height: NODE_HEIGHT,
               workflowId: router.query.id as string,
-              name: node.name,
-              displayName: node.displayName,
-              colorPrimary: node.colorPrimary,
-              colorSecondary: node.colorSecondary,
+              name: dragNode.name,
+              displayName: dragNode.displayName,
+              colorPrimary: dragNode.colorPrimary,
+              colorSecondary: dragNode.colorSecondary,
             },
           },
         })
       }
 
       setDragging(false)
+      setDragNode(undefined)
     }
   }
 
@@ -169,6 +170,8 @@ function WorkflowPage({
         onCenter={handleCenter}
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
+        activeId={activeId}
+        nodes={data?.workflow.workflowNodes}
       />
       <FlowChartCanvas
         ref={canvasRef}

@@ -1,5 +1,6 @@
+import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import styled from '@emotion/styled'
-import { createElement, FC, MouseEvent, useRef } from 'react'
+import { createElement, FC, MouseEvent, useMemo, useRef } from 'react'
 import { Table } from 'lib'
 import { mock } from './mock'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
@@ -8,9 +9,20 @@ import { useOnClickOutside } from 'hooks'
 
 interface FlowChartDataPanelProps {
   className?: string
+  workflowNode?: WorkflowNode
+  nodes?: WorkflowNode[]
 }
 
-const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
+const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
+  className,
+  workflowNode,
+  nodes,
+}) => {
+  const childNodes = useMemo(
+    () => nodes?.filter((node) => node.parentId === workflowNode?.id),
+    [nodes, workflowNode],
+  )
+
   const handleCellClick: CellClickFunction = (
     e,
     _key,
@@ -50,9 +62,13 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({ className }) => {
             data={mock}
             onCellClick={handleCellClick}
             cellDropdown={{
-              shouldRender: () => true,
+              shouldRender: () => !!childNodes?.length,
               title: () => 'Send To:',
-              options: (cell) => [{ text: 'Option', value: 'something' }],
+              options: (cell) =>
+                childNodes?.map((node) => ({
+                  text: node.displayName,
+                  value: node.id,
+                })),
               onClick: handleDropdownClick,
             }}
           />

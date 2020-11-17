@@ -1,7 +1,6 @@
-/** @jsx jsx */
+import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import styled from '@emotion/styled'
 import { FC } from 'react'
-import { jsx } from '@emotion/react'
 import { FiLink2, FiDatabase } from 'react-icons/fi'
 import { FaCode, FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import { ExpandLevel } from 'enums'
@@ -15,6 +14,8 @@ interface FlowChartDetailPanelProps {
   displayName?: string
   activePanel?: string
   expandLevel: ExpandLevel
+  workflowNode?: WorkflowNode
+  nodes?: WorkflowNode[]
   onExpand: (expand: ExpandLevel) => void
   onActivePanel: (panel: string) => void
 }
@@ -23,6 +24,8 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   displayName,
   expandLevel,
   activePanel,
+  workflowNode,
+  nodes,
   onExpand,
   onActivePanel,
 }) => {
@@ -66,7 +69,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
             ) : (
               <FaChevronUp />
             )}
-            <Title>{displayName || 'Select A Node'}</Title>
+            <Title>{displayName || 'Configure'}</Title>
           </Control>
           <Control
             value="code"
@@ -75,13 +78,13 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
           >
             <FaCode />
           </Control>
-          <Control
+          {/* <Control
             value="link"
             isActive={activePanel === 'link'}
             onClick={handleTabClick}
           >
             <FiLink2 />
-          </Control>
+          </Control> */}
           <Control
             value="data"
             isActive={activePanel === 'data'}
@@ -106,11 +109,11 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
             expandLevel={expandLevel}
           />
         </DetailPanel>
-        <DetailPanel isActive={activePanel === 'link'}>
+        {/* <DetailPanel isActive={activePanel === 'link'}>
           <div>link</div>
-        </DetailPanel>
+        </DetailPanel> */}
         <DetailPanel isActive={activePanel === 'data'}>
-          <FlowChartDataPanel />
+          <FlowChartDataPanel workflowNode={workflowNode} nodes={nodes} />
         </DetailPanel>
       </Body>
     </section>
