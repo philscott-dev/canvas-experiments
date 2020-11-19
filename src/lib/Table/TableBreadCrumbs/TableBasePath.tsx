@@ -1,33 +1,42 @@
 /** @jsx jsx */
 import { FC } from 'react'
+import styled from '@emotion/styled'
 import { css, jsx } from '@emotion/react'
 import { FiHome } from 'react-icons/fi'
 import { Anchor } from 'lib/Anchor'
 
-const TableBasePath: FC<{
+interface TableBasePathProps {
+  className?: string
   label: string
   href?: string
   onClick: () => void
-}> = ({ label, href, onClick }) => {
+}
+const TableBasePath: FC<TableBasePathProps> = ({
+  className,
+  label,
+  href,
+  onClick,
+}) => {
   return (
     <Anchor
+      className={className}
       aria-label="Home"
       href={href}
       onMouseDown={onClick}
       size="small"
-      css={anchorCss}
     >
       {label?.length ? label : <FiHome />}
     </Anchor>
   )
 }
 
-const anchorCss = css`
+export default styled(TableBasePath)`
   display: flex;
   align-items: center;
   line-height: unset;
   text-transform: uppercase;
   text-decoration: none;
-`
 
-export default TableBasePath
+  font-weight: 600;
+  color: ${({ theme }) => theme.color.gray[300]};
+`

@@ -2,9 +2,11 @@
 import styled from '@emotion/styled'
 import { FC } from 'react'
 import { jsx, css } from '@emotion/react'
-import { H4 } from 'lib'
+import { Text } from 'lib'
 import { TableBreadCrumbs } from '../TableBreadCrumbs'
 import { BreadCrumb } from '../types'
+import { Flex } from 'lib/Flex'
+import HeadingIcon from './HeadingIcon'
 
 interface TableTitlebarProps {
   className?: string
@@ -29,24 +31,33 @@ const TableTitlebar: FC<TableTitlebarProps> = ({
 
   return (
     <div className={className}>
-      <div>
-        <H4 css={h4css}>{title}</H4>
-        <TableBreadCrumbs
-          basePath={{ label: subtitle || '' }}
-          paths={breadCrumbs}
-          onBaseClick={onBaseBreadCrumbClick}
-          onClick={handleBreadCrumbClick}
-        />
-      </div>
+      <Flex>
+        <HeadingIcon />
+        <div>
+          <Text
+            size="large"
+            css={css`
+              text-transform: uppercase;
+            `}
+          >
+            {title}
+          </Text>
+          <TableBreadCrumbs
+            basePath={{ label: subtitle || '' }}
+            paths={breadCrumbs}
+            onBaseClick={onBaseBreadCrumbClick}
+            onClick={handleBreadCrumbClick}
+          />
+        </div>
+      </Flex>
     </div>
   )
+
 }
 
 export default styled(TableTitlebar)`
   display: flex;
   justify-content: space-between;
-`
-
-const h4css = css`
-  text-transform: uppercase;
+  margin-top: 24px;
+  margin-bottom: 12px;
 `

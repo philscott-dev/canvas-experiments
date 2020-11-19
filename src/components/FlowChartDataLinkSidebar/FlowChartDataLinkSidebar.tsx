@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { ServiceLinkHeading } from 'components/ServiceLinkHeading'
 import { FC } from 'react'
 import Heading from './Heading'
+import ServiceLinkEmpty from 'components/ServiceLinkList/ServiceLinkEmpty'
 
 interface FlowChartDataLinkSidebarProps {
   className?: string
@@ -15,15 +16,17 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   return (
     <div className={className}>
       <Heading serviceCount={childNodes?.length ?? 0} />
-      {childNodes?.length
-        ? childNodes.map((node) => (
-            <ServiceLinkHeading
-              title={node.displayName}
-              subtitle={'subroute'}
-              color={node.colorPrimary}
-            />
-          ))
-        : 'No Connections'}
+      {childNodes?.length ? (
+        childNodes.map((node) => (
+          <ServiceLinkHeading
+            title={node.displayName}
+            subtitle={'subroute'}
+            color={node.colorPrimary}
+          />
+        ))
+      ) : (
+        <ServiceLinkEmpty />
+      )}
     </div>
   )
 }

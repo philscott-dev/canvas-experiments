@@ -1,19 +1,34 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
+import { ServiceLinkHeading } from 'components/ServiceLinkHeading'
 import styled from '@emotion/styled'
 import { FC } from 'react'
 import Heading from './Heading'
+import ServiceLinkEmpty from 'components/ServiceLinkList/ServiceLinkEmpty'
 
 interface FlowChartDataLinkSidebarProps {
   className?: string
-  childNodes?: WorkflowNode[] | undefined
+  parentNodes?: WorkflowNode[] | undefined
+  activeNode?: WorkflowNode
 }
 const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   className,
-  childNodes,
+  parentNodes,
+  activeNode,
 }) => {
   return (
     <div className={className}>
-      <Heading />
+      <Heading serviceCount={parentNodes?.length ?? 0} />
+      {parentNodes?.length ? (
+        parentNodes.map((node) => (
+          <ServiceLinkHeading
+            title={node.displayName}
+            subtitle={'subroute'}
+            color={node.colorPrimary}
+          />
+        ))
+      ) : (
+        <ServiceLinkEmpty />
+      )}
     </div>
   )
 }

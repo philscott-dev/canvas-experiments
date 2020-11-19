@@ -1,22 +1,32 @@
 /** @jsx jsx */
 import { FC } from 'react'
+import styled from '@emotion/styled'
 import { css, jsx } from '@emotion/react'
 import { FiHome } from 'react-icons/fi'
 import { Anchor } from 'lib/Anchor'
 import Slash from './Slash'
 import { BreadCrumb } from '../types'
 
-const TablePath: FC<{
+interface TablePathProps {
+  className?: string
   label: string
   href?: string
   index: number
   onClick: (index: number, breadCrumb: BreadCrumb) => void
-}> = ({ label, href, index, onClick }) => {
+}
+
+const TablePath: FC<TablePathProps> = ({
+  label,
+  href,
+  index,
+  onClick,
+  className,
+}) => {
   const handleClick = () => {
     onClick(index, { label, href })
   }
   return (
-    <>
+    <div className={className}>
       <Slash />
       <Anchor
         aria-label="Home"
@@ -27,9 +37,17 @@ const TablePath: FC<{
       >
         {label}
       </Anchor>
-    </>
+    </div>
   )
 }
+
+export default styled(TablePath)`
+  display: flex;
+  > a {
+    font-weight: 600;
+    color: ${({ theme }) => theme.color.gray[300]};
+  }
+`
 
 const anchorCss = css`
   display: flex;
@@ -38,5 +56,3 @@ const anchorCss = css`
   text-transform: uppercase;
   text-decoration: none;
 `
-
-export default TablePath

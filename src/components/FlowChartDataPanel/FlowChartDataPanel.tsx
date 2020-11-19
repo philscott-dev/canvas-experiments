@@ -23,6 +23,11 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
     [nodes, workflowNode],
   )
 
+  const parentNodes = useMemo(
+    () => nodes?.filter((node) => node.id === workflowNode?.parentId),
+    [nodes, workflowNode],
+  )
+
   const handleCellClick: CellClickFunction = (
     e,
     _key,
@@ -33,14 +38,6 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
   ) => {
     console.log(_key, _expandable, cellData)
   }
-
-  const handleChange = () => {
-    console.log('yo')
-  }
-
-  const shouldRender = () => {}
-
-  const onCheck = () => {}
 
   const handleDropdownClick = (
     e: MouseEvent<HTMLButtonElement>,
@@ -54,7 +51,10 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
 
   return (
     <div className={className}>
-      <FlowChartDataInputSidebar />
+      <FlowChartDataInputSidebar
+        parentNodes={parentNodes}
+        activeNode={workflowNode}
+      />
       <Wrapper>
         {workflowNode ? (
           <Table

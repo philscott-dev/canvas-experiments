@@ -42,7 +42,6 @@ const Container = styled.div`
   align-items: center;
   text-transform: capitalize;
   border-bottom: 1px solid ${({ theme }) => theme.color.blue[700]};
-  margin-bottom: 32px;
 `
 
 export default TableBreadCrumbs
