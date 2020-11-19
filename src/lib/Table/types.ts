@@ -54,6 +54,8 @@ export interface CellDropdown {
 }
 
 export interface CellDropdownOption {
-  text: string
+  title: string
+  subtitle: string
+  color: string
   value: any
 }

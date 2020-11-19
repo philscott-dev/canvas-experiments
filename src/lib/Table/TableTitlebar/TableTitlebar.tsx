@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import styled from '@emotion/styled'
 import { FC } from 'react'
-import { jsx } from '@emotion/react'
+import { jsx, css } from '@emotion/react'
 import { H4 } from 'lib'
 import { TableBreadCrumbs } from '../TableBreadCrumbs'
 import { BreadCrumb } from '../types'
@@ -30,7 +30,7 @@ const TableTitlebar: FC<TableTitlebarProps> = ({
   return (
     <div className={className}>
       <div>
-        <H4>{title}</H4>
+        <H4 css={h4css}>{title}</H4>
         <TableBreadCrumbs
           basePath={{ label: subtitle || '' }}
           paths={breadCrumbs}
@@ -45,4 +45,8 @@ const TableTitlebar: FC<TableTitlebarProps> = ({
 export default styled(TableTitlebar)`
   display: flex;
   justify-content: space-between;
+`
+
+const h4css = css`
+  text-transform: uppercase;
 `

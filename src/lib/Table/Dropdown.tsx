@@ -7,6 +7,7 @@ import { DropdownOption, DropdownHeading, DropdownMenu } from 'lib'
 import { useOnClickOutside, useOnClick } from 'hooks'
 import { CellState, CellType } from './types_new'
 import { isFunction } from 'lodash'
+import { ServiceLinkHeading } from 'components/ServiceLinkHeading'
 
 interface DropdownProps {
   className?: string
@@ -61,7 +62,17 @@ const Dropdown = forwardRef<HTMLElement, DropdownProps>(
               value={option.value}
               onClick={handleOptionClick}
             >
-              {option.text}
+              {/* Pivot Secific*/}
+              <ServiceLinkHeading
+                title={option.title}
+                subtitle={option.subtitle}
+                color={option.color}
+                showCount={false}
+                css={css`
+                  margin-top: 8px;
+                  margin-bottom: 0;
+                `}
+              />
             </DropdownOption>
           ))}
         </DropdownMenu>

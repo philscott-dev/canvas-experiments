@@ -3,9 +3,9 @@ import styled from '@emotion/styled'
 import { createElement, FC, MouseEvent, useMemo, useRef } from 'react'
 import { Table } from 'lib'
 import { mock } from './mock'
+import FlowChartDataInputSidebar from '../FlowChartDataInputSidebar'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
 import { CellClickFunction, CellState } from 'lib/Table/types'
-import { useOnClickOutside } from 'hooks'
 
 interface FlowChartDataPanelProps {
   className?: string
@@ -54,27 +54,30 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
 
   return (
     <div className={className}>
+      <FlowChartDataInputSidebar />
       <Wrapper>
-        <Container>
+        {workflowNode ? (
           <Table
-            title="DYNAMIC SERVICE NAME"
+            title={workflowNode?.displayName}
             subtitle="HOME PATH"
             data={mock}
             onCellClick={handleCellClick}
             cellDropdown={{
               shouldRender: () => !!childNodes?.length,
-              title: () => 'Send To:',
+              title: () => 'Add To',
               options: (cell) =>
                 childNodes?.map((node) => ({
-                  text: node.displayName,
+                  title: node.displayName,
+                  subtitle: 'subroute',
                   value: node.id,
+                  color: node.colorPrimary,
                 })),
               onClick: handleDropdownClick,
             }}
           />
-        </Container>
+        ) : null}
       </Wrapper>
-      <FlowChartDataLinkSidebar />
+      <FlowChartDataLinkSidebar childNodes={childNodes} />
     </div>
   )
 }
@@ -89,6 +92,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   flex-grow: 1;
   padding: 0 24px;
+  overflow: auto;
 `
 
 const Container = styled.section`

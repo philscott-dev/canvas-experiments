@@ -11,9 +11,10 @@ export default styled.p<{ isDelete?: boolean; disabled?: boolean }>`
   outline: none;
   border: none;
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   padding: 8px 24px 4px 24px;
   text-transform: uppercase;
+  font-weight: 500;
   font-family: ${({ theme }) => theme.font.family};
   transition: ${({ theme }) => theme.transition.all};
   color: ${({ theme }) => theme.color.gray[200]};
