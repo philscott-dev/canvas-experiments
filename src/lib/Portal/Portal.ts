@@ -1,26 +1,31 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 interface PortalProps {
   mountId: string
 }
 
-let el: HTMLDivElement
-
 const Portal: FC<PortalProps> = ({ children, mountId }) => {
+  const elemRef = useRef<Element>()
   useEffect(() => {
-    el = document?.createElement('div')
+    elemRef.current = document?.createElement('div')
   }, [])
 
   useEffect(() => {
+    const elem = elemRef.current
     const portalRoot = document.getElementById(mountId)
-    portalRoot?.appendChild(el)
+    if (elem) {
+      portalRoot?.appendChild(elem)
+    }
+
     return () => {
-      portalRoot?.removeChild(el)
+      if (elem) {
+        portalRoot?.removeChild(elem)
+      }
     }
   })
 
-  return el ? createPortal(children, el) : null
+  return elemRef.current ? createPortal(children, elemRef.current) : null
 }
 
 export default Portal

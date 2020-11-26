@@ -37,6 +37,6 @@ export default styled(TableBasePath)`
   text-transform: uppercase;
   text-decoration: none;
 
-  font-weight: 600;
+  font-weight: 500;
   color: ${({ theme }) => theme.color.gray[300]};
 `

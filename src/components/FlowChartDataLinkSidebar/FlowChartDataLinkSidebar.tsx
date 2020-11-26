@@ -19,6 +19,7 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
       {childNodes?.length ? (
         childNodes.map((node) => (
           <ServiceLinkHeading
+            key={node.id}
             title={node.displayName}
             subtitle={'subroute'}
             color={node.colorPrimary}

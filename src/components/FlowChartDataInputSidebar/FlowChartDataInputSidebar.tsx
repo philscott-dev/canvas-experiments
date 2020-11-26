@@ -4,6 +4,8 @@ import styled from '@emotion/styled'
 import { FC } from 'react'
 import Heading from './Heading'
 import ServiceLinkEmpty from 'components/ServiceLinkList/ServiceLinkEmpty'
+import { pivotQueueVar } from 'graphql/cache'
+import { useReactiveVar } from '@apollo/client'
 
 interface FlowChartDataLinkSidebarProps {
   className?: string
@@ -15,12 +17,16 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   parentNodes,
   activeNode,
 }) => {
+  const queue = useReactiveVar(pivotQueueVar)
+  const keys = Object.keys(queue)
+
   return (
     <div className={className}>
       <Heading serviceCount={parentNodes?.length ?? 0} />
       {parentNodes?.length ? (
         parentNodes.map((node) => (
           <ServiceLinkHeading
+            key={node.id}
             title={node.displayName}
             subtitle={'subroute'}
             color={node.colorPrimary}

@@ -10,7 +10,7 @@ import { AddWorkflowInput } from "./../../../../__generated__/globalTypes";
 // ====================================================
 
 export interface AddWorkflow_addWorkflow {
-  __typename: "WorkFlow";
+  __typename: "Workflow";
   id: string;
   /**
    * The title of the workflow.

@@ -6,6 +6,7 @@ import { mock } from './mock'
 import FlowChartDataInputSidebar from '../FlowChartDataInputSidebar'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
 import { CellClickFunction, CellState } from 'lib/Table/types'
+import { pivotQueueVar } from 'graphql/cache'
 
 interface FlowChartDataPanelProps {
   className?: string
@@ -43,8 +44,10 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
     e: MouseEvent<HTMLButtonElement>,
     cell: CellState,
   ) => {
-    console.log(e.currentTarget.value)
-    console.log(cell)
+    const nodeId = parseInt(e.currentTarget.value, 10)
+    const { value } = cell
+    const array = pivotQueueVar()[nodeId] || []
+    pivotQueueVar({ ...pivotQueueVar(), [nodeId]: [...array, value] })
   }
 
   const renderOptions = () => {}
@@ -69,7 +72,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
                 childNodes?.map((node) => ({
                   title: node.displayName,
                   subtitle: 'subroute',
-                  value: node.id,
+                  value: node.id, //e.currentTarget.value
                   color: node.colorPrimary,
                 })),
               onClick: handleDropdownClick,

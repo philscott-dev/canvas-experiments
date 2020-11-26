@@ -11,7 +11,7 @@ interface ServiceLinkHeadingProps {
   showCount?: boolean
   count?: number
   color: string
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void
+  onMouseDown?: (e: MouseEvent<HTMLAnchorElement>) => void
 }
 
 const ServiceLinkHeading: FC<ServiceLinkHeadingProps> = ({
@@ -21,17 +21,17 @@ const ServiceLinkHeading: FC<ServiceLinkHeadingProps> = ({
   showCount = true,
   count,
   color,
-  onClick,
+  onMouseDown,
 }) => {
   return (
-    <button className={className} onClick={onClick}>
+    <a className={className} onMouseDown={onMouseDown}>
       <ServiceLinkIcon color={color} count={count} />
       <div>
         <Text>{title}</Text>
         <Text.Deemphasized size="small">{subtitle}</Text.Deemphasized>
       </div>
       {showCount ? <ServiceLinkCount count={count} /> : null}
-    </button>
+    </a>
   )
 }
 

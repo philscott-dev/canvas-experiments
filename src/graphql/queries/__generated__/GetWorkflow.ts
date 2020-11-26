@@ -23,7 +23,7 @@ export interface GetWorkflow_workflow_workflowNodes {
 }
 
 export interface GetWorkflow_workflow {
-  __typename: "WorkFlow";
+  __typename: "Workflow";
   id: string;
   /**
    * The title of the workflow.

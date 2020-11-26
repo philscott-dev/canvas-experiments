@@ -40,7 +40,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "WorkFlow",
+                "name": "Workflow",
                 "ofType": null
               }
             },
@@ -62,7 +62,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "WorkFlow",
+                    "name": "Workflow",
                     "ofType": null
                   }
                 }
@@ -89,7 +89,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "WorkFlow",
+        "name": "Workflow",
         "description": null,
         "fields": [
           {
@@ -496,7 +496,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "WorkFlow",
+                "name": "Workflow",
                 "ofType": null
               }
             },
@@ -620,7 +620,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "WorkFlow",
+                "name": "Workflow",
                 "ofType": null
               }
             },

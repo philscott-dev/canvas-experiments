@@ -29,6 +29,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   onExpand,
   onActivePanel,
 }) => {
+  console.log(activePanel)
   const lastExpand = useLastExpand(expandLevel)
   const handleNameClick = () => {
     const level =
@@ -69,7 +70,14 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
             ) : (
               <FaChevronUp />
             )}
-            <Title>{displayName || 'Configure'}</Title>
+            <Title>{activePanel || 'Configure'}</Title>
+          </Control>
+          <Control
+            value="data"
+            isActive={activePanel === 'data'}
+            onClick={handleTabClick}
+          >
+            <FiDatabase />
           </Control>
           <Control
             value="code"
@@ -85,13 +93,6 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
           >
             <FiLink2 />
           </Control> */}
-          <Control
-            value="data"
-            isActive={activePanel === 'data'}
-            onClick={handleTabClick}
-          >
-            <FiDatabase />
-          </Control>
         </FlexLeft>
         <FlexRight>
           <Control onClick={handleExpand}>

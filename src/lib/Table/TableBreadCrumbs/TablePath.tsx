@@ -44,7 +44,7 @@ const TablePath: FC<TablePathProps> = ({
 export default styled(TablePath)`
   display: flex;
   > a {
-    font-weight: 600;
+    font-weight: 500;
     color: ${({ theme }) => theme.color.gray[300]};
   }
 `

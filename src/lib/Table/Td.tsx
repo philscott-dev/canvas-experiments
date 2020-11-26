@@ -48,8 +48,6 @@ const Td: FC<TableHeadingProps> = ({
     }
   }
 
-  const renderDropdown = () => {}
-
   return (
     <TdWrapper
       ref={wrapperRef}
@@ -58,7 +56,6 @@ const Td: FC<TableHeadingProps> = ({
       isExpanded={expandKey === cellKey}
     >
       <Cell
-        type="button"
         ref={innerRef}
         cell={cell.type}
         isExpanded={expandKey === cellKey}

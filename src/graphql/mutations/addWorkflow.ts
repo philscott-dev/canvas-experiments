@@ -21,22 +21,26 @@ export function useAddWorkflow() {
     AddWorkflowVariables
   >(ADD_WORKFLOW, {
     update(cache, { data }) {
-      const newWorkflow = data?.addWorkflow
-      const existingData = cache.readQuery<GetAllWorkflows>({
-        query: GET_ALL_WORKFLOWS,
-      })
-
-      if (newWorkflow && existingData) {
-        cache.writeQuery({
-          query: GET_ALL_WORKFLOWS,
-          data: {
-            workflows: [
-              ...existingData.workflows,
-              { ...newWorkflow, __typename: 'Workflow' },
-            ],
+      const addWorkflow = data?.addWorkflow
+      cache.modify({
+        fields: {
+          workflows(existingWorkflowRefs = []) {
+            const newWorkflowRef = cache.writeFragment({
+              data: addWorkflow,
+              fragment: gql`
+                fragment NewWorkflow on Workflow {
+                  id
+                  title
+                  description
+                  startId
+                  endId
+                }
+              `,
+            })
+            return [...existingWorkflowRefs, newWorkflowRef]
           },
-        })
-      }
+        },
+      })
     },
   })
 

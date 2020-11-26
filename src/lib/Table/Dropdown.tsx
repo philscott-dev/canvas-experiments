@@ -60,7 +60,7 @@ const Dropdown = forwardRef<HTMLElement, DropdownProps>(
             <DropdownOption
               key={index}
               value={option.value}
-              onClick={handleOptionClick}
+              onMouseDown={handleOptionClick}
             >
               {/* Pivot Secific*/}
               <ServiceLinkHeading
