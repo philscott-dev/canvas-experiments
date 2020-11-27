@@ -7,6 +7,8 @@ import FlowChartDataInputSidebar from '../FlowChartDataInputSidebar'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
 import { CellClickFunction, CellState } from 'lib/Table/types'
 import { pivotQueueVar } from 'graphql/cache'
+import { useReactiveVar } from '@apollo/client'
+import { PivotQueue } from 'components/PivotQueue'
 
 interface FlowChartDataPanelProps {
   className?: string
@@ -19,6 +21,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
   workflowNode,
   nodes,
 }) => {
+  const pivotQueue = useReactiveVar(pivotQueueVar)
   const childNodes = useMemo(
     () => nodes?.filter((node) => node.parentId === workflowNode?.id),
     [nodes, workflowNode],
@@ -44,13 +47,20 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
     e: MouseEvent<HTMLButtonElement>,
     cell: CellState,
   ) => {
-    const nodeId = parseInt(e.currentTarget.value, 10)
-    const { value } = cell
-    const array = pivotQueueVar()[nodeId] || []
-    pivotQueueVar({ ...pivotQueueVar(), [nodeId]: [...array, value] })
+    const parentId = workflowNode!.id
+    const childId = e.currentTarget.value
+    const value = cell.value
+    const parentQueue = pivotQueue[parentId] || {}
+    const childQueue = parentQueue[childId] || []
+    pivotQueueVar({
+      ...pivotQueue,
+      [parentId]: { ...parentQueue, [childId]: [...childQueue, value] },
+    })
   }
 
   const renderOptions = () => {}
+
+  console.log(pivotQueue)
 
   return (
     <div className={className}>
@@ -80,7 +90,10 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
           />
         ) : null}
       </Wrapper>
-      <FlowChartDataLinkSidebar childNodes={childNodes} />
+      <FlowChartDataLinkSidebar
+        childNodes={childNodes}
+        activeNode={workflowNode}
+      />
     </div>
   )
 }

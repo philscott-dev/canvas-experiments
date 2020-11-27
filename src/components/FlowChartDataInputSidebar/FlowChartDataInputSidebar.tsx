@@ -1,11 +1,11 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
-import { ServiceLinkHeading } from 'components/ServiceLinkHeading'
 import styled from '@emotion/styled'
 import { FC } from 'react'
 import Heading from './Heading'
 import ServiceLinkEmpty from 'components/ServiceLinkList/ServiceLinkEmpty'
 import { pivotQueueVar } from 'graphql/cache'
 import { useReactiveVar } from '@apollo/client'
+import { PivotQueue } from 'components/PivotQueue'
 
 interface FlowChartDataLinkSidebarProps {
   className?: string
@@ -17,16 +17,15 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   parentNodes,
   activeNode,
 }) => {
-  const queue = useReactiveVar(pivotQueueVar)
-  const keys = Object.keys(queue)
-
   return (
     <div className={className}>
       <Heading serviceCount={parentNodes?.length ?? 0} />
       {parentNodes?.length ? (
         parentNodes.map((node) => (
-          <ServiceLinkHeading
+          <PivotQueue
             key={node.id}
+            childId={activeNode?.id}
+            parentId={node?.id}
             title={node.displayName}
             subtitle={'subroute'}
             color={node.colorPrimary}

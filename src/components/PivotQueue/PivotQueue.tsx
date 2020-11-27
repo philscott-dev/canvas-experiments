@@ -1,10 +1,13 @@
 import styled from '@emotion/styled'
 import { FC, useState } from 'react'
 import { ServiceLinkHeading } from 'components/ServiceLinkHeading'
+import { usePivotQueue } from 'graphql/queries/getPivotQueue'
+import PivotValue from './PivotValue'
 
 interface PivotQueueProps {
   className?: string
-  nodeId: string
+  parentId?: string | null
+  childId?: string | null
   title: string
   subtitle?: string
   color: string
@@ -12,13 +15,20 @@ interface PivotQueueProps {
 
 const PivotQueue: FC<PivotQueueProps> = ({
   className,
-  nodeId,
+  parentId,
+  childId,
   title,
   subtitle,
   color,
 }) => {
+  const queue = usePivotQueue(childId, parentId)
+  console.log(queue, childId, parentId, title)
   const [isCollapsed, setCollapsed] = useState(false)
-  const handleCollapse = () => {}
+  const handleHeadingClick = () => {
+    setCollapsed(!isCollapsed)
+  }
+
+  const handleSelectValue = () => {}
   const handleRemoveValue = () => {}
   return (
     <div className={className}>
@@ -26,7 +36,20 @@ const PivotQueue: FC<PivotQueueProps> = ({
         title={title}
         subtitle={subtitle || 'subroute'}
         color={color}
+        isCollapsed={isCollapsed}
+        onMouseDown={handleHeadingClick}
       />
+      {isCollapsed ? null : (
+        <>
+          {queue.map((value) => (
+            <PivotValue
+              value={value}
+              onMouseDown={handleSelectValue}
+              onRemove={handleRemoveValue}
+            />
+          ))}
+        </>
+      )}
     </div>
   )
 }

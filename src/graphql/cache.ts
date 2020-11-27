@@ -39,17 +39,28 @@ export default new InMemoryCache({
           read(x, variables) {
             return pivotQueueVar()
           },
-          merge(existing = [], incoming = []) {
-            return [...existing, ...incoming]
-          },
         },
       },
     },
   },
 })
 
-export interface PivotQueue {
+export interface PivotChild {
   [key: string]: any[]
+}
+
+export interface PivotQueue {
+  [key: string]: PivotChild
+}
+
+const pivotQueue: PivotQueue = {
+  parent1: {
+    child1: [1, 2, 3, 4],
+    child2: [1, 2, 3, 4],
+  },
+  parent2: {
+    child1: ['2', '4'],
+  },
 }
 
 export const pivotQueueVar = makeVar<PivotQueue>({})

@@ -28,6 +28,7 @@ const Heading: FC<HeadingProps> = ({ className, serviceCount }) => {
 export default styled(Heading)`
   margin-top: 24px;
   margin-left: -6px;
+  margin-bottom: 24px;
   /* margin-left: 16px;
   margin-right: 16px; */
 `

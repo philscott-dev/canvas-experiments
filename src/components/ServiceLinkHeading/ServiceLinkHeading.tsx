@@ -1,7 +1,9 @@
+/** @jsx jsx */
 import styled from '@emotion/styled'
+import { css, jsx } from '@emotion/react'
 import { FC, MouseEvent } from 'react'
 import ServiceLinkIcon from './ServiceLinkIcon'
-import { Text } from 'lib'
+import { Text, Anchor } from 'lib'
 import ServiceLinkCount from './ServiceLinkCount'
 
 interface ServiceLinkHeadingProps {
@@ -11,7 +13,8 @@ interface ServiceLinkHeadingProps {
   showCount?: boolean
   count?: number
   color: string
-  onMouseDown?: (e: MouseEvent<HTMLAnchorElement>) => void
+  isCollapsed: boolean
+  onMouseDown: (e: MouseEvent) => void
 }
 
 const ServiceLinkHeading: FC<ServiceLinkHeadingProps> = ({
@@ -21,25 +24,40 @@ const ServiceLinkHeading: FC<ServiceLinkHeadingProps> = ({
   showCount = true,
   count,
   color,
+  isCollapsed,
   onMouseDown,
 }) => {
   return (
-    <a className={className} onMouseDown={onMouseDown}>
-      <ServiceLinkIcon color={color} count={count} />
-      <div>
-        <Text>{title}</Text>
-        <Text.Deemphasized size="small">{subtitle}</Text.Deemphasized>
+    <div className={className}>
+      <div css={wrapperCss}>
+        <ServiceLinkIcon color={color} count={count} />
+        <div>
+          <Anchor onMouseDown={onMouseDown}>{title}</Anchor>
+          <Text.Deemphasized size="small">{subtitle}</Text.Deemphasized>
+        </div>
       </div>
-      {showCount ? <ServiceLinkCount count={count} /> : null}
-    </a>
+      {showCount ? (
+        <ServiceLinkCount
+          count={count}
+          isCollapsed={isCollapsed}
+          onMouseDown={onMouseDown}
+        />
+      ) : null}
+    </div>
   )
 }
 
 export default styled(ServiceLinkHeading)`
   display: flex;
+  justify-content: space-between;
+  margin-top: 32px;
+  margin-bottom: 12px;
+`
+
+const wrapperCss = css`
+  display: flex;
   background: transparent;
   border: none;
   outline: none;
   padding: 0;
-  margin-top: 32px;
 `
