@@ -11,7 +11,6 @@ export function find<T extends { id?: number | string }>(
   entity: T,
 ) {
   for (let i = 0; i < array.length; i++) {
-    console.log(array[i], entity)
     // check for id first
     if (entity.id && array[i].id && array[i].id === entity.id) {
       return i

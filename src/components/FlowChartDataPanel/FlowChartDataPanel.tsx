@@ -6,9 +6,6 @@ import { mock } from './mock'
 import FlowChartDataInputSidebar from '../FlowChartDataInputSidebar'
 import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
 import { CellClickFunction, CellState } from 'lib/Table/types'
-import { pivotQueueVar } from 'graphql/cache'
-import { useReactiveVar } from '@apollo/client'
-import { PivotQueue } from 'components/PivotQueue'
 import { addPivotValue } from 'graphql/mutations/pivotQueue/addPivotValue'
 
 interface FlowChartDataPanelProps {
@@ -22,7 +19,6 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
   workflowNode,
   nodes,
 }) => {
-  const pivotQueue = useReactiveVar(pivotQueueVar)
   const childNodes = useMemo(
     () => nodes?.filter((node) => node.parentId === workflowNode?.id),
     [nodes, workflowNode],
@@ -40,9 +36,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
     _rowIndex,
     _expandIndex,
     cellData,
-  ) => {
-    console.log(_key, _expandable, cellData)
-  }
+  ) => {}
 
   const handleDropdownClick = (
     e: MouseEvent<HTMLButtonElement>,
@@ -54,7 +48,23 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
     addPivotValue({ value, parentId, childId })
   }
 
-  const renderOptions = () => {}
+  /**
+   * Dropdown Options
+   */
+
+  const shouldRenderDropdown = () => !!childNodes?.length
+  const renderTitle = () => 'Add To'
+  const renderOptions = () =>
+    childNodes?.map((node) => ({
+      title: node.displayName,
+      subtitle: 'subroute',
+      value: node.id, //e.currentTarget.value
+      color: node.colorPrimary,
+    }))
+
+  /**
+   * Render Component
+   */
 
   return (
     <div className={className}>
@@ -70,15 +80,9 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
             data={mock}
             onCellClick={handleCellClick}
             cellDropdown={{
-              shouldRender: () => !!childNodes?.length,
-              title: () => 'Add To',
-              options: (cell) =>
-                childNodes?.map((node) => ({
-                  title: node.displayName,
-                  subtitle: 'subroute',
-                  value: node.id, //e.currentTarget.value
-                  color: node.colorPrimary,
-                })),
+              shouldRender: shouldRenderDropdown,
+              title: renderTitle,
+              options: renderOptions,
               onClick: handleDropdownClick,
             }}
           />
