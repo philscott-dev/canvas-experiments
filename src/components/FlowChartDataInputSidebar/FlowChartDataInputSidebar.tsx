@@ -5,7 +5,7 @@ import Heading from './Heading'
 import ServiceLinkEmpty from 'components/ServiceLinkList/ServiceLinkEmpty'
 import { pivotQueueVar } from 'graphql/cache'
 import { useReactiveVar } from '@apollo/client'
-import { PivotQueue } from 'components/PivotQueue'
+import { PivotQueue, QueueFunctionType } from 'components/PivotQueue'
 
 interface FlowChartDataLinkSidebarProps {
   className?: string
@@ -17,6 +17,12 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   parentNodes,
   activeNode,
 }) => {
+  const handleSelectValue: QueueFunctionType = (value, parentId, childId) => {
+    console.log(value)
+  }
+  const handleRemoveValue: QueueFunctionType = (value, parentId, childId) => {
+    console.log(value, parentId, childId)
+  }
   return (
     <div className={className}>
       <Heading serviceCount={parentNodes?.length ?? 0} />
@@ -29,6 +35,8 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
             title={node.displayName}
             subtitle={'subroute'}
             color={node.colorPrimary}
+            onSelectValue={handleSelectValue}
+            onRemoveValue={handleRemoveValue}
           />
         ))
       ) : (

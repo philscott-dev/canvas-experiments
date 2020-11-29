@@ -5,23 +5,29 @@ import { FiX } from 'react-icons/fi'
 
 interface PivotValueProps {
   className?: string
-  value: string
-  onMouseDown: () => void
-  onRemove: () => void
+  value: any
+  onSelectValue: (value: any) => void
+  onRemoveValue: (value: any) => void
 }
 
 const PivotValue: FC<PivotValueProps> = ({
   className,
   value,
-  onMouseDown,
-  onRemove,
+  onSelectValue,
+  onRemoveValue,
 }) => {
+  const handleSelectValue = () => {
+    onSelectValue(value)
+  }
+  const handleRemoveValue = () => {
+    onRemoveValue(value)
+  }
   return (
     <div className={className}>
-      <RemoveButton onMouseDown={onRemove}>
+      <RemoveButton onMouseDown={handleRemoveValue}>
         <FiX />
       </RemoveButton>
-      <Anchor size="small" onMouseDown={onMouseDown}>
+      <Anchor size="small" onMouseDown={handleSelectValue}>
         {value}
       </Anchor>
     </div>

@@ -9,6 +9,7 @@ import { CellClickFunction, CellState } from 'lib/Table/types'
 import { pivotQueueVar } from 'graphql/cache'
 import { useReactiveVar } from '@apollo/client'
 import { PivotQueue } from 'components/PivotQueue'
+import { addPivotValue } from 'graphql/mutations/pivotQueue/addPivotValue'
 
 interface FlowChartDataPanelProps {
   className?: string
@@ -50,17 +51,10 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
     const parentId = workflowNode!.id
     const childId = e.currentTarget.value
     const value = cell.value
-    const parentQueue = pivotQueue[parentId] || {}
-    const childQueue = parentQueue[childId] || []
-    pivotQueueVar({
-      ...pivotQueue,
-      [parentId]: { ...parentQueue, [childId]: [...childQueue, value] },
-    })
+    addPivotValue({ value, parentId, childId })
   }
 
   const renderOptions = () => {}
-
-  console.log(pivotQueue)
 
   return (
     <div className={className}>

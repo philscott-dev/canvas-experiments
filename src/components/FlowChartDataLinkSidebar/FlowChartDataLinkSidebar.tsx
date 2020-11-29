@@ -1,6 +1,6 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import styled from '@emotion/styled'
-import { PivotQueue } from 'components/PivotQueue'
+import { PivotQueue, QueueFunctionType } from 'components/PivotQueue'
 import { FC } from 'react'
 import Heading from './Heading'
 import ServiceLinkEmpty from 'components/ServiceLinkList/ServiceLinkEmpty'
@@ -15,6 +15,12 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   childNodes,
   activeNode,
 }) => {
+  const handleSelectValue: QueueFunctionType = (value, parentId, childId) => {
+    console.log(value)
+  }
+  const handleRemoveValue: QueueFunctionType = (value, parentId, childId) => {
+    console.log(value, parentId, childId)
+  }
   return (
     <div className={className}>
       <Heading serviceCount={childNodes?.length ?? 0} />
@@ -27,6 +33,8 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
             title={node.displayName}
             subtitle={'subroute'}
             color={node.colorPrimary}
+            onSelectValue={handleSelectValue}
+            onRemoveValue={handleRemoveValue}
           />
         ))
       ) : (

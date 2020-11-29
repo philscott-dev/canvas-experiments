@@ -17,7 +17,7 @@ const ServiceLinkIcon = styled.div<ServiceLinkIconProps>`
   border-width: 4px;
   border-color: ${({ color }) => color};
   background: ${({ count, color }) =>
-    count && count > 0 ? color : 'transparent'};
+    count && count > 0 ? 'transparent' : 'transparent'};
 `
 
 export default ServiceLinkIcon
