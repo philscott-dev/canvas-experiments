@@ -23,7 +23,7 @@ import {
   Search,
   Page,
 } from 'lib'
-import { pivotQueueVar } from 'graphql/cache'
+import { pivotQueueVar } from 'graphql/cache/cache'
 
 function IndexPage({
   initialApolloState,

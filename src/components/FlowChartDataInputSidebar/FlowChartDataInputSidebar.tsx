@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { FC } from 'react'
 import Heading from './Heading'
 import ServiceLinkEmpty from 'components/ServiceLinkList/ServiceLinkEmpty'
-import { pivotQueueVar } from 'graphql/cache'
+import { pivotQueueVar } from 'graphql/cache/cache'
 import { useReactiveVar } from '@apollo/client'
 import { PivotQueue, QueueFunctionType } from 'components/PivotQueue'
 

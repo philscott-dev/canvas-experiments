@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import cache from './cache'
+import cache from './cache/cache'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { onError } from '@apollo/client/link/error'

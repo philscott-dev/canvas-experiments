@@ -29,12 +29,9 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   onExpand,
   onActivePanel,
 }) => {
-  console.log(activePanel)
   const lastExpand = useLastExpand(expandLevel)
   const handleNameClick = () => {
-    const level =
-      expandLevel === ExpandLevel.NONE ? lastExpand : ExpandLevel.NONE
-    onExpand(level)
+    onExpand(expandLevel === ExpandLevel.NONE ? lastExpand : ExpandLevel.NONE)
   }
 
   const handleTabClick = (value?: string) => {
