@@ -1,12 +1,13 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import styled from '@emotion/styled'
-import { createElement, FC, MouseEvent, useMemo, useRef } from 'react'
+import { FC, MouseEvent, useMemo } from 'react'
 import { Table } from 'lib'
 import { mock } from './mock'
 import FlowChartDataInputSidebar from '../FlowChartDataInputSidebar'
-import FlowChartDataLinkSidebar from '../FlowChartDataLinkSidebar'
+import FlowChartPivotSidebar from '../FlowChartPivotSidebar'
 import { CellClickFunction, CellState } from 'lib/Table/types'
 import { addPivotValue } from 'graphql/mutations/pivotQueue/addPivotValue'
+import { usePivotData } from 'graphql/reactiveVars/pivotDataVar'
 
 interface FlowChartDataPanelProps {
   className?: string
@@ -19,6 +20,8 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
   workflowNode,
   nodes,
 }) => {
+  const data = usePivotData()
+  // console.log(data)
   const childNodes = useMemo(
     () => nodes?.filter((node) => node.parentId === workflowNode?.id),
     [nodes, workflowNode],
@@ -77,7 +80,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
           <Table
             title={workflowNode?.displayName}
             subtitle="HOME PATH"
-            data={mock}
+            data={[] || data || mock}
             onCellClick={handleCellClick}
             cellDropdown={{
               shouldRender: shouldRenderDropdown,
@@ -88,7 +91,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
           />
         ) : null}
       </Wrapper>
-      <FlowChartDataLinkSidebar
+      <FlowChartPivotSidebar
         childNodes={childNodes}
         activeNode={workflowNode}
       />

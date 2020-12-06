@@ -1,7 +1,8 @@
 import { makeVar } from '@apollo/client'
 
 interface ActivePivot {
-  childId: string
+  parentId?: string
+  childId?: string
   value: string
 }
 

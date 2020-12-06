@@ -13,13 +13,13 @@ export enum Method {
   DELETE = 'DELETE',
 }
 
-const baseUrl = 'http://localhost:3001/api'
+const baseUrl = 'http://localhost:9002'
 
 export default async function fetcher(
   method: Method,
   endpoint: string,
   query?: { [key: string]: any },
-  body?: { [key: string]: any },
+  body?: { [key: string]: any } | any,
 ) {
   try {
     // stringify query and call api
@@ -28,7 +28,7 @@ export default async function fetcher(
       `${baseUrl}${endpoint}${params ? '?' + params : ''}`,
       {
         method,
-        body: body ? JSON.stringify(body) : null,
+        body: body ? JSON.stringify({ query: body }) : null,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -44,7 +44,7 @@ export default async function fetcher(
     return json
   } catch (err) {
     // catch errors
-    console.log(err.statusCode)
+    console.log(err)
     throw new Error(err)
   }
 }

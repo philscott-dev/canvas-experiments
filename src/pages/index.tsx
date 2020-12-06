@@ -10,7 +10,6 @@ import CreateModal from 'components/AddWorkflowModal/AddWorkflowModal'
 import { EmptyState } from 'lib/EmtpyState'
 import { useGetAllWorkflows } from 'graphql/queries'
 import { Wrapper } from 'components'
-import { useQuery, useReactiveVar } from '@apollo/client'
 import {
   H1,
   H2,
@@ -23,12 +22,10 @@ import {
   Search,
   Page,
 } from 'lib'
-import { pivotQueueVar } from 'graphql/cache/cache'
 
 function IndexPage({
   initialApolloState,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-
   const { loading, error, data } = useGetAllWorkflows()
   const { replace, push, query } = useRouter()
   const [searchTerm, setSearchTerm] = useState<string>(

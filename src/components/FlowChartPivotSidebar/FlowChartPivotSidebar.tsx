@@ -3,14 +3,14 @@ import styled from '@emotion/styled'
 import { PivotQueue, QueueFunctionType } from 'components/PivotQueue'
 import { FC } from 'react'
 import Heading from './Heading'
-import ServiceLinkEmpty from 'components/ServiceLinkList/ServiceLinkEmpty'
+import { ServiceLinkEmpty } from 'components'
 
-interface FlowChartDataLinkSidebarProps {
+interface FlowChartPivotSidebarProps {
   className?: string
   childNodes?: WorkflowNode[] | undefined
   activeNode?: WorkflowNode
 }
-const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
+const FlowChartPivotSidebar: FC<FlowChartPivotSidebarProps> = ({
   className,
   childNodes,
   activeNode,
@@ -44,7 +44,7 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
   )
 }
 
-export default styled(FlowChartDataLinkSidebar)`
+export default styled(FlowChartPivotSidebar)`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

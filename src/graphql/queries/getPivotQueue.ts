@@ -1,5 +1,5 @@
 import { useReactiveVar } from '@apollo/client'
-import { pivotQueueVar } from 'graphql/cache/pivotQueueVar'
+import { pivotQueueVar } from 'graphql/reactiveVars/pivotQueueVar'
 
 export const usePivotQueue = (
   childId?: string | null,

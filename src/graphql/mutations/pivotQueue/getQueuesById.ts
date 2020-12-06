@@ -1,5 +1,5 @@
 import { IDType } from 'components/PivotQueue'
-import { PivotQueue } from 'graphql/cache/pivotQueueVar'
+import { PivotQueue } from 'graphql/reactiveVars/pivotQueueVar'
 
 export const getQueuesById = (
   queue: PivotQueue,

@@ -58,5 +58,5 @@ export default styled(TableTitlebar)`
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 `

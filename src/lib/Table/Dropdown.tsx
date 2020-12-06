@@ -64,6 +64,8 @@ const Dropdown = forwardRef<HTMLElement, DropdownProps>(
             >
               {/* Pivot Secific*/}
               <ServiceLinkHeading
+                isCollapsed={false}
+                onMouseDown={() => {}}
                 title={option.title}
                 subtitle={option.subtitle}
                 color={option.color}

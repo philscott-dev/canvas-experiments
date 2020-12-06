@@ -1,11 +1,10 @@
-import { GetWorkflow_workflow as Workflow } from '../queries/__generated__/GetWorkflow'
+import { GetWorkflow_workflow as Workflow } from './queries/__generated__/GetWorkflow'
 import { InMemoryCache } from '@apollo/client'
-import { pivotQueueVar } from './pivotQueueVar'
 
 export default new InMemoryCache({
   typePolicies: {
     UnconventionalRootQuery: {
-      queryType: true,
+      queryType: true, // makes the root cache accessible
       // fields: {
       //   workflows: {
       //     merge(
@@ -25,21 +24,21 @@ export default new InMemoryCache({
           read(existing) {
             return existing
           },
-          //always take incoming - fixes delete warning
+          // always take incoming - fixes delete warning
           merge(_, incoming) {
             return incoming
           },
         },
       },
     },
-    Pivot: {
-      fields: {
-        pivotQueue: {
-          read(x, variables) {
-            return pivotQueueVar()
-          },
-        },
-      },
-    },
+    // Pivot: {
+    //   fields: {
+    //     pivotQueue: {
+    //       read(x, variables) {
+    //         return pivotQueueVar()
+    //       },
+    //     },
+    //   },
+    // },
   },
 })

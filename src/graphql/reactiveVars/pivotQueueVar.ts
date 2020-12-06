@@ -9,4 +9,3 @@ export interface PivotQueue {
 }
 
 export const pivotQueueVar = makeVar<PivotQueue>({})
-

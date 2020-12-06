@@ -1,4 +1,4 @@
-import { pivotQueueVar } from 'graphql/cache/pivotQueueVar'
+import { pivotQueueVar } from 'graphql/reactiveVars/pivotQueueVar'
 import { PivotFunction } from '.'
 import { getQueuesById } from './getQueuesById'
 

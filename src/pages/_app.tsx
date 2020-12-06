@@ -5,9 +5,11 @@ import { getYear } from 'date-fns'
 import { ThemeProvider } from '@emotion/react'
 import { theme } from 'theme'
 import { AppProps } from 'next/app'
+import { PortalMount } from 'lib'
+import { SWRConfig } from 'swr'
+import swrConfig from 'config/swrConfig'
 import 'styles/fonts.css'
 import 'styles/default.css'
-import { PortalMount } from 'lib'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const apolloClient = useApollo(pageProps.initialApolloState)
@@ -29,8 +31,10 @@ const App = ({ Component, pageProps }: AppProps) => {
       </Head>
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
-          <PortalMount id="portal" />
+          <SWRConfig value={swrConfig}>
+            <Component {...pageProps} />
+            <PortalMount id="portal" />
+          </SWRConfig>
         </ThemeProvider>
       </ApolloProvider>
     </>
