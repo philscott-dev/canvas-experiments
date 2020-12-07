@@ -11,15 +11,12 @@ interface UrlOptions {
   path?: string | PathOptions
 }
 
-export const buildPathname = (
-  pathname: string,
-  params?: ParsedUrlQueryInput,
-) => {
+export const buildPathname = ({ pathname, params }: PathOptions) => {
   if (!params) {
     return pathname
   }
   return Object.keys(params).reduce(
-    (acc, param) => acc.replace(param, String(params[param])),
+    (acc, param) => acc.replace(`:${param}`, String(params[param])),
     pathname,
   )
 }
@@ -28,10 +25,7 @@ export const buildUrl = ({ baseUrl, query, path }: UrlOptions) => {
   let fullUrl = new URL(baseUrl)
 
   if (path) {
-    const pathname =
-      typeof path === 'string'
-        ? path
-        : buildPathname(path.pathname, path.params)
+    const pathname = typeof path === 'string' ? path : buildPathname(path)
     fullUrl = new URL(pathname, fullUrl)
   }
 
