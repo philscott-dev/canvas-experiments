@@ -33,5 +33,5 @@ export const buildUrl = ({ baseUrl, query, path }: UrlOptions) => {
     fullUrl = new URL('?' + querystring.stringify(query), fullUrl)
   }
 
-  return fullUrl.toString()
+  return fullUrl
 }
