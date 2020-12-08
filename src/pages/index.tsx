@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react'
 import { initializeApollo } from 'graphql/apolloClient'
-import { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import type { InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -10,6 +10,7 @@ import CreateModal from 'components/AddWorkflowModal/AddWorkflowModal'
 import { EmptyState } from 'lib/EmtpyState'
 import { useGetAllWorkflows } from 'graphql/queries'
 import { Wrapper } from 'components'
+import { buildUrl, parseUrl } from 'helpers/url'
 import {
   H1,
   H2,
@@ -26,6 +27,24 @@ import {
 function IndexPage({
   initialApolloState,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  useEffect(() => {
+    const urlObj = parseUrl(
+      'http://google.com:8080/:id/endpoint/:value/?query=8&thing=stuff',
+    )
+    console.log(urlObj)
+    const url = buildUrl({
+      baseUrl: 'http://google.com/',
+      query: { key1: 'x', key2: 1 },
+      path: {
+        pathname: '/what/:is/up/:dude',
+        params: {
+          is: 1,
+          dude: 'string',
+        },
+      },
+    })
+  })
+
   const { loading, error, data } = useGetAllWorkflows()
   const { replace, push, query } = useRouter()
   const [searchTerm, setSearchTerm] = useState<string>(

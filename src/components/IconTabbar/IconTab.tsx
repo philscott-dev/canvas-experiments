@@ -6,11 +6,17 @@ import { jsx } from '@emotion/react'
 interface IconTabProps {
   className?: string
   isActive?: boolean
+  disabled?: boolean
 }
 
-const IconTab: FC<IconTabProps> = ({ className, isActive, children }) => {
+const IconTab: FC<IconTabProps> = ({
+  className,
+  isActive = false,
+  disabled = false,
+  children,
+}) => {
   return (
-    <button className={className}>
+    <button disabled={disabled} className={className}>
       {children}
       <Highlight isActive={isActive} />
     </button>
@@ -32,12 +38,17 @@ export default styled(IconTab)`
       color: ${({ theme }) => theme.color.blue[300]};
       transition: all 0.2s ease-in-out;
     }
+    cursor: pointer;
   }
-
-  cursor: pointer;
+  &:disabled {
+    > svg {
+      color: ${({ theme }) => theme.color.gray[300]};
+    }
+    cursor: default;
+  }
 `
 
-const Highlight = styled.div<{ isActive?: boolean }>`
+const Highlight = styled.div<IconTabProps>`
   height: 4px;
   margin-top: 4px;
   background: ${({ isActive, theme }) =>

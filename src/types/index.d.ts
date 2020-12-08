@@ -48,11 +48,14 @@ export type BaseNode = {
   displayName: string
   colorPrimary: string
   colorSecondary: string
+  url?: string
 }
 
 export interface RectNode extends BaseNode {
   rect: Rect
 }
+
+
 
 
 

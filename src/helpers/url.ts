@@ -35,3 +35,36 @@ export const buildUrl = ({ baseUrl, query, path }: UrlOptions) => {
 
   return fullUrl
 }
+
+/**
+apimanagerService(id: 1) {
+  paramsQuery: []
+  paramsPath: []
+  paramsBody: []
+  paramsHeader: []
+  paramsCookie: []
+}
+apimanagerRoute(id: 1) {
+  name - displayName
+  route - route template
+  method - GET
+  nameSlug - SAM ui slug - could dynamically build doc links with this
+  paramsQuery: []
+  paramsPath: []
+  paramsBody: []
+  paramsHeader: []
+  paramsCookie: []
+}
+
+ */
+
+// :optional? - route
+export const parseUrl = (urlString: string) => {
+  const url = new URL(urlString)
+  const path = url.pathname.split('/')
+  const query = querystring.parse(url.search.split('?')[1])
+  const params = path
+    .filter((param) => param.charAt(0) === ':')
+    .map((s) => s.substring(1))
+  return { url, params, query }
+}

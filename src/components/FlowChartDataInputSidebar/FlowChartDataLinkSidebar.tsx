@@ -9,6 +9,7 @@ import fetcher, { Method } from 'services/api'
 import mockQuery from 'services/gql_mock'
 import { activePivotVar } from 'graphql/reactiveVars/activePivotVar'
 import { FiFile, FiFileText, FiGitPullRequest, FiList } from 'react-icons/fi'
+import { AiOutlineDatabase, AiOutlineFileSearch } from 'react-icons/ai'
 
 interface FlowChartDataLinkSidebarProps {
   className?: string
@@ -55,12 +56,12 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
           <FiGitPullRequest />
         </IconTab>
         {/* Other Parameters */}
-        <IconTab>
-          <FiFileText />
+        <IconTab disabled>
+          <AiOutlineFileSearch />
         </IconTab>
         {/* Manual Parser */}
-        <IconTab>
-          <FiList />
+        <IconTab disabled>
+          <AiOutlineDatabase />
         </IconTab>
       </IconTabbar>
       {/* <PivotQueue

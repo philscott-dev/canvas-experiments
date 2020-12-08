@@ -80,7 +80,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
           <Table
             title={workflowNode?.displayName}
             subtitle="HOME PATH"
-            data={[] || data || mock}
+            data={mock}
             onCellClick={handleCellClick}
             cellDropdown={{
               shouldRender: shouldRenderDropdown,
