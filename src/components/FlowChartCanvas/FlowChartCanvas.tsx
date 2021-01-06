@@ -23,6 +23,7 @@ import {
 } from 'react'
 import { getConnectorPoint, getConnectorRect } from 'utils/node'
 import { useUpdateNodeParent } from 'graphql/mutations/updateWorkflowNodeParent'
+import { ICON_HEIGHT, ICON_WIDTH } from 'constants/canvas'
 
 interface FlowChartCanvasProps {
   className?: string
@@ -170,7 +171,7 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
         if (activeId) {
           const activeNode = nodes.find((n) => n.id === activeId)
           if (activeNode) {
-            //console.log(activeNode, x, y)
+            handleIconHover(mouseX, mouseY, activeNode)
           }
         }
       }
@@ -342,8 +343,8 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       const isClicked = pointInRect(clickX, clickY, {
         x: iconX,
         y: iconY,
-        width: 18,
-        height: 20,
+        width: ICON_WIDTH,
+        height: ICON_HEIGHT,
       })
       if (isClicked) {
         onNodePlayClick()
@@ -362,8 +363,8 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       const isClicked = pointInRect(clickX, clickY, {
         x: iconX,
         y: iconY,
-        width: 18,
-        height: 20,
+        width: ICON_WIDTH,
+        height: ICON_HEIGHT,
       })
       if (isClicked) {
         onNodeSettingsClick()
@@ -382,12 +383,57 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       const isClicked = pointInRect(clickX, clickY, {
         x: iconX,
         y: iconY,
-        width: 18,
-        height: 20,
+        width: ICON_WIDTH,
+        height: ICON_HEIGHT,
       })
       if (isClicked) {
         onNodeTrashClick()
       }
+    }
+
+    const handleIconHover = (
+      mouseX: number,
+      mouseY: number,
+      activeNode: WorkflowNode,
+    ) => {
+      if (!canvas) return
+      const playX = activeNode.x + 8
+      const playY = activeNode.y + activeNode.height + 10
+      const isPlayHovered = pointInRect(mouseX, mouseY, {
+        x: playX,
+        y: playY,
+        width: ICON_WIDTH,
+        height: ICON_HEIGHT,
+      })
+      if (isPlayHovered) {
+        return (canvas.style.cursor = 'pointer')
+      }
+
+      const settingsX = activeNode.x - 56 + activeNode.width
+      const settingsY = activeNode.y + activeNode.height + 11
+      const isSettingsHovered = pointInRect(mouseX, mouseY, {
+        x: settingsX,
+        y: settingsY,
+        width: ICON_WIDTH,
+        height: ICON_HEIGHT,
+      })
+      if (isSettingsHovered) {
+        return (canvas.style.cursor = 'pointer')
+      }
+
+      const trashX = activeNode.x + activeNode.width - 28
+      const trashY = activeNode.y + activeNode.height + 12
+      const isTrashHovered = pointInRect(mouseX, mouseY, {
+        x: trashX,
+        y: trashY,
+        width: ICON_WIDTH,
+        height: ICON_HEIGHT,
+      })
+      if (isTrashHovered) {
+        return (canvas.style.cursor = 'pointer')
+      }
+
+      canvas.style.cursor = 'default'
     }
 
     return (
