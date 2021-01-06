@@ -432,8 +432,6 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
       if (isTrashHovered) {
         return (canvas.style.cursor = 'pointer')
       }
-
-      canvas.style.cursor = 'default'
     }
 
     return (
