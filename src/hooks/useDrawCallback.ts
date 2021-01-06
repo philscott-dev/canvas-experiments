@@ -10,6 +10,7 @@ export default function useDraw(
   scale: number,
   nodes: WorkflowNode[],
   activeId?: string,
+  hoverId?: string,
   connectorDrag?: Point,
   dragId?: string,
 ) {
@@ -33,7 +34,7 @@ export default function useDraw(
       //draw nodes
       nodes.forEach((node, index) => {
         // draw each rect
-        drawNode(ctx, node, translateOffset, scale, activeId)
+        drawNode(ctx, node, translateOffset, scale, activeId, hoverId)
         drawConnector(ctx, translateOffset, node)
 
         const parent = nodes.find((n) => node.parentId === n.id)
@@ -59,7 +60,16 @@ export default function useDraw(
       // do the restore last
       ctx.restore()
     }
-  }, [ctx, scale, translateOffset, nodes, activeId, connectorDrag, dragId])
+  }, [
+    ctx,
+    scale,
+    translateOffset,
+    nodes,
+    activeId,
+    hoverId,
+    connectorDrag,
+    dragId,
+  ])
 
   useEffect(() => {
     draw()

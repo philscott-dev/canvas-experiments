@@ -11,6 +11,7 @@ export function drawNode(
   translateOffset: Point,
   scale: number,
   activeId?: string,
+  hoverId?: string,
 ) {
   ctx.beginPath()
   const rect = {
@@ -24,6 +25,14 @@ export function drawNode(
 
   //highlight with border
   const isActive = activeId === node.id
+  const isHovered = hoverId === node.id
+
+  if (isHovered) {
+    ctx.lineWidth = 4
+    ctx.strokeStyle = theme.color.blue[300]
+    ctx.stroke()
+  }
+
   if (isActive) {
     // highlight the border
     ctx.lineWidth = 5
@@ -37,11 +46,12 @@ export function drawNode(
   //draw inner tab
   const ACTIVE_OFFSET = 2.5
   const radius = { tl: 8, tr: 0, br: 0, bl: 8 }
+  const useOffset = isActive || isHovered
   const tabRect = {
-    x: node.x + translateOffset.x + (isActive ? ACTIVE_OFFSET : 0),
-    y: node.y + translateOffset.y + (isActive ? ACTIVE_OFFSET : 0),
-    width: 48 - (isActive ? ACTIVE_OFFSET : 0),
-    height: node.height - (isActive ? ACTIVE_OFFSET * 2 : 0),
+    x: node.x + translateOffset.x + (useOffset ? ACTIVE_OFFSET : 0),
+    y: node.y + translateOffset.y + (useOffset ? ACTIVE_OFFSET : 0),
+    width: 48 - (useOffset ? ACTIVE_OFFSET : 0),
+    height: node.height - (useOffset ? ACTIVE_OFFSET * 2 : 0),
   }
 
   ctx.beginPath()

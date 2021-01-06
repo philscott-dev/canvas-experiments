@@ -80,12 +80,14 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     const [clickOffset, setClickOffset] = useState<Point>() // probably needs renaming
     const [connectorDrag, setConnectorDrag] = useState<Point>()
     const [isConnecting, setConnecting] = useState(false)
+    const [hoverId, setHoverId] = useState<string>()
     const draw = useDrawCallback(
       ctx,
       translateOffset,
       scale,
       nodes,
       activeId,
+      hoverId,
       connectorDrag,
       dragId,
     )
@@ -131,14 +133,15 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     const onMouseMove = (
       e: MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>,
     ) => {
-      if (canvas && isDragging) {
-        // get initial data
-        const point = getCanvasPoint(e, canvas)
-        const x = point.x / scale
-        const y = point.y / scale
+      if (!canvas) return
+      const point = getCanvasPoint(e, canvas)
+      const x = point.x / scale
+      const y = point.y / scale
+      if (isDragging) {
         const dragX = x - (clickOffset?.x ?? 0)
         const dragY = y - (clickOffset?.y ?? 0)
 
+        canvas.style.cursor = 'grabbing'
         // handle moving a connector
         if (isConnecting) {
           handleDragConnector(x - translateOffset.x, y - translateOffset.y)
@@ -153,6 +156,23 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
           //set the position
           setClickOffset({ x, y })
         }
+      } else {
+        // if not dragging, check for hover effects
+        const mouseX = x - translateOffset.x
+        const mouseY = y - translateOffset.y
+        const hoverNode = nodes.find((node) =>
+          pointInRect(mouseX, mouseY, node),
+        )
+        setHoverId(hoverNode?.id)
+        canvas.style.cursor = hoverNode ? 'pointer' : 'default'
+
+        // if theres an active node, check for control hovers
+        if (activeId) {
+          const activeNode = nodes.find((n) => n.id === activeId)
+          if (activeNode) {
+            //console.log(activeNode, x, y)
+          }
+        }
       }
     }
 
@@ -161,6 +181,8 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
     ) => {
       // TODO: needs to be a helper
       if (canvas) {
+        canvas.style.cursor = hoverId ? 'pointer' : 'default'
+
         // get initial data
         const point = getCanvasPoint(e, canvas)
         const x = point.x / scale

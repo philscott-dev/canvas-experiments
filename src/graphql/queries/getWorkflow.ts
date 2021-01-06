@@ -25,7 +25,7 @@ export const GET_WORKFLOW = gql`
         # new things
         # serviceId
         # routeId
-        # configuredValue {
+        # params {
         #   type # route, service
         #   paramType # query, body, path, header, cookie
         #   id # SAM ID
