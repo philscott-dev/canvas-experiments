@@ -161,11 +161,20 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
         // if not dragging, check for hover effects
         const mouseX = x - translateOffset.x
         const mouseY = y - translateOffset.y
-        const hoverNode = nodes.find((node) =>
-          pointInRect(mouseX, mouseY, node),
-        )
-        setHoverId(hoverNode?.id)
-        canvas.style.cursor = hoverNode ? 'pointer' : 'default'
+
+        for (const node of nodes) {
+          const connectorPoint = getConnectorPoint(node)
+          const connectorRect = getConnectorRect(connectorPoint)
+          const isConnectorHovered = pointInRect(mouseX, mouseY, connectorRect)
+          if (pointInRect(mouseX, mouseY, node) || isConnectorHovered) {
+            setHoverId(node.id)
+            canvas.style.cursor = isConnectorHovered ? 'grab' : 'pointer'
+            break // break out early if we find a node
+          } else {
+            canvas.style.cursor = 'default'
+            setHoverId(undefined)
+          }
+        }
 
         // if theres an active node, check for control hovers
         if (activeId) {
@@ -310,6 +319,9 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
         )
 
         if (isConnectorClick) {
+          if (canvas) {
+            canvas.style.cursor = 'dragging'
+          }
           setConnecting(true)
           setDragId(node.id)
           setClickOffset({ x, y })
