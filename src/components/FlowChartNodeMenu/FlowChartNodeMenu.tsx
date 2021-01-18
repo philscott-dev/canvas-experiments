@@ -1,7 +1,8 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import { FC, useState, DragEvent } from 'react'
 import styled from '@emotion/styled'
-import { FiX } from 'react-icons/fi'
+import { FiCloud, FiX } from 'react-icons/fi'
+import { GrAction } from 'react-icons/gr'
 import { Animation } from './animation/enum'
 import FlowChartNode from '../FlowChartNode/FlowChartNode'
 import Expander from './Expander'
@@ -15,6 +16,7 @@ import Text from './Text'
 
 //make this date driven
 import services from '../../mock/services'
+import HeaderTitle from './HeaderTitle'
 
 interface FlowChartNodeMenuProps {
   className?: string
@@ -25,13 +27,31 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
   className,
   onDragStart,
 }) => {
-  const [isVisible, setVisibility] = useState<Animation>(Animation.NONE)
+  const [isActionsVisible, setActionsVisible] = useState<Animation>(
+    Animation.NONE,
+  )
+  const [isServicesVisible, setServicesVisible] = useState<Animation>(
+    Animation.NONE,
+  )
 
-  const handleClick = () => {
-    if (isVisible === Animation.NONE || isVisible === Animation.OUT) {
-      return setVisibility(Animation.IN)
+  const handleServicesClick = () => {
+    if (
+      isServicesVisible === Animation.NONE ||
+      isServicesVisible === Animation.OUT
+    ) {
+      return setServicesVisible(Animation.IN)
     }
-    setVisibility(Animation.OUT)
+    setServicesVisible(Animation.OUT)
+  }
+
+  const handleActionsClick = () => {
+    if (
+      isActionsVisible === Animation.NONE ||
+      isActionsVisible === Animation.OUT
+    ) {
+      return setActionsVisible(Animation.IN)
+    }
+    setActionsVisible(Animation.OUT)
   }
 
   const handleDragStart = (
@@ -42,12 +62,47 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
   }
   return (
     <div className={className}>
-      <InsertButton onMouseDown={handleClick} />
-      <Expander isVisible={isVisible}>
-        <Menu isVisible={isVisible}>
+      <InsertButton
+        text="SERVICES"
+        icon={<FiCloud />}
+        onMouseDown={handleServicesClick}
+      />
+      <InsertButton
+        text="ACTIONS"
+        icon={<GrAction />}
+        onMouseDown={handleActionsClick}
+      />
+      <Expander isVisible={isServicesVisible}>
+        <Menu isVisible={isServicesVisible}>
           <Header>
-            <Text>SERVICES</Text>
-            <CloseButton onMouseDown={handleClick}>
+            <HeaderTitle>
+              <FiCloud />
+              <Text>SERVICES</Text>
+            </HeaderTitle>
+            <CloseButton onMouseDown={handleServicesClick}>
+              <FiX />
+            </CloseButton>
+          </Header>
+          <SearchInput />
+          <MenuBody>
+            {services.map((service) => (
+              <FlowChartNode
+                key={service.id}
+                node={service}
+                onDragStart={handleDragStart}
+              />
+            ))}
+          </MenuBody>
+        </Menu>
+      </Expander>
+      <Expander isVisible={isActionsVisible} offset={56}>
+        <Menu isVisible={isActionsVisible}>
+          <Header>
+            <HeaderTitle>
+              <GrAction />
+              <Text>ACTIONS</Text>
+            </HeaderTitle>
+            <CloseButton onMouseDown={handleActionsClick}>
               <FiX />
             </CloseButton>
           </Header>
