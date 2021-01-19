@@ -27,9 +27,7 @@ const PivotQueue: FC<PivotQueueProps> = ({
   onRemoveValue,
   onSelectValue,
 }) => {
-  console.log(childId, parentId)
   const queue = usePivotQueue(childId, parentId)
-  console.log(queue)
   const [isCollapsed, setCollapsed] = useState(false)
   const handleHeadingClick = () => {
     setCollapsed(!isCollapsed)

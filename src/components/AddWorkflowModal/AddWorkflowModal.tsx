@@ -57,7 +57,6 @@ const AddWorkflowModal: FC<AddWorkflowModalProps> = ({
         description: description as string,
       }
       mutate({ variables: { input } })
-      //router.push('/[id]', `/${ss.id}`)
     } catch (err) {
       console.log(err)
     }

@@ -23,9 +23,9 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
   workflowNode,
   childNodes,
   parentNodes,
-  nodes,
 }) => {
   const data = usePivotData()
+  console.log(data)
 
   const handleCellClick: CellClickFunction = (
     e,

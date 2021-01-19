@@ -22,8 +22,6 @@ const FlowChartPivotSidebar: FC<FlowChartPivotSidebarProps> = ({
     // console.log(value, parentId, childId)
   }
 
-  console.log(childNodes)
-
   return (
     <div className={className}>
       <Heading serviceCount={childNodes?.length ?? 0} />

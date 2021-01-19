@@ -12,5 +12,7 @@ export const addPivotValue: PivotFunction = ({ value, parentId, childId }) => {
       ...queue,
       [parentId]: { ...parentQueue, [childId]: [...childQueue, value] },
     })
+
+    //get the child details of the node
   }
 }

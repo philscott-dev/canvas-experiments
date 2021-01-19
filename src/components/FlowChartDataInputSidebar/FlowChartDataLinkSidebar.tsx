@@ -27,8 +27,9 @@ const FlowChartDataLinkSidebar: FC<FlowChartDataLinkSidebarProps> = ({
     childId,
   ) => {
     if (childId && parentId) {
-      const res = await fetcher(Method.POST, '/graphql', undefined, mockQuery)
-      const data = res.data.allCompanies
+      console.log(childId, parentId)
+      //const res = await fetcher(Method.POST, '/graphql', undefined, mockQuery)
+      const data: any = []
       activePivotVar({ value, parentId, childId })
       setPivotData({ data, value, parentId, childId })
     }
