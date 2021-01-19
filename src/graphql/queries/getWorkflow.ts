@@ -10,7 +10,7 @@ export const GET_WORKFLOW = gql`
       startId
       workflowNodes {
         id #Pivot UI ID
-        parentId # associated Pivot UI IDs
+        parentIds # associated Pivot UI IDs
         name # slug
         displayName # override in UI
         description # override in UI

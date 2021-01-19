@@ -1,6 +1,6 @@
 import { GetWorkflow_workflow_workflowNodes as WorkflowNode } from 'graphql/queries/__generated__/GetWorkflow'
 import styled from '@emotion/styled'
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { FiLink2, FiDatabase } from 'react-icons/fi'
 import { FaCode, FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import { ExpandLevel } from 'enums'
@@ -8,6 +8,7 @@ import { FlowChartCodeEditor, FlowChartControl as Control } from 'components'
 import useLastExpand from './useLastExpand'
 import FlowChartDataPanel from '../FlowChartDataPanel/FlowChartDataPanel'
 import { Bar, Body, DetailPanel, FlexLeft, FlexRight, Title } from './index'
+import FlowChartIngest from 'components/FlowChartIngest/FlowChartIngest'
 
 interface FlowChartDetailPanelProps {
   className?: string
@@ -29,6 +30,22 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
   onExpand,
   onActivePanel,
 }) => {
+  const childNodes = useMemo(
+    () =>
+      nodes?.filter((node) =>
+        node.parentIds.some((id) => id === workflowNode?.id),
+      ),
+    [nodes, workflowNode],
+  )
+
+  const parentNodes = useMemo(
+    () =>
+      nodes?.filter((node) =>
+        workflowNode?.parentIds.some((id) => id === node.id),
+      ),
+    [nodes, workflowNode],
+  )
+
   const lastExpand = useLastExpand(expandLevel)
   const handleNameClick = () => {
     onExpand(expandLevel === ExpandLevel.NONE ? lastExpand : ExpandLevel.NONE)
@@ -67,8 +84,17 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
             ) : (
               <FaChevronUp />
             )}
-            <Title>{activePanel || 'Configure'}</Title>
+            <Title>{workflowNode?.displayName || 'Select a Node'}</Title>
           </Control>
+          {workflowNode?.name === 'script' ? (
+            <Control
+              value="code"
+              isActive={activePanel === 'script'}
+              onClick={handleTabClick}
+            >
+              <FaCode />
+            </Control>
+          ) : null}
           <Control
             value="data"
             isActive={activePanel === 'data'}
@@ -76,13 +102,7 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
           >
             <FiDatabase />
           </Control>
-          <Control
-            value="code"
-            isActive={activePanel === 'code'}
-            onClick={handleTabClick}
-          >
-            <FaCode />
-          </Control>
+
           {/* <Control
             value="link"
             isActive={activePanel === 'link'}
@@ -100,18 +120,35 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
           </Control>
         </FlexRight>
       </Bar>
+
+      {/* Detail Panel */}
       <Body expandLevel={expandLevel}>
-        <DetailPanel isActive={activePanel === 'code'}>
+        {/* Script */}
+        <DetailPanel isActive={workflowNode?.name === 'script'}>
           <FlowChartCodeEditor
-            isActive={activePanel === 'code'}
+            isActive={workflowNode?.name === 'script'}
             expandLevel={expandLevel}
           />
         </DetailPanel>
-        {/* <DetailPanel isActive={activePanel === 'link'}>
-          <div>link</div>
-        </DetailPanel> */}
-        <DetailPanel isActive={activePanel === 'data'}>
-          <FlowChartDataPanel workflowNode={workflowNode} nodes={nodes} />
+        {/* Ingest */}
+        <DetailPanel
+          isActive={activePanel === 'data' && workflowNode?.name !== 'ingest'}
+        >
+          <FlowChartDataPanel
+            workflowNode={workflowNode}
+            nodes={nodes}
+            childNodes={childNodes}
+            parentNodes={parentNodes}
+          />
+        </DetailPanel>
+        {/* Service Data */}
+        <DetailPanel
+          isActive={activePanel === 'data' && workflowNode?.name === 'ingest'}
+        >
+          <FlowChartIngest
+            workflowNode={workflowNode}
+            childNodes={childNodes}
+          />
         </DetailPanel>
       </Body>
     </section>
@@ -119,12 +156,12 @@ const FlowChartDetailPanel: FC<FlowChartDetailPanelProps> = ({
 }
 
 export default styled(FlowChartDetailPanel)`
+  z-index: 1;
   display: flex;
   flex: 1;
   box-sizing: border-box;
   flex-direction: column;
   justify-content: flex-end;
-  padding-top: 24px;
   height: 50%; /* Important for scrolling */
   transition: all 0.25s ease-in-out;
 `

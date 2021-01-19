@@ -13,7 +13,7 @@ const UPDATE_NODE_PARENT = gql`
   mutation UpdateNodeParent($input: WorkflowNodeParentInput!) {
     updateWorkflowNodeParent(input: $input) {
       id
-      parentId
+      parentIds
     }
   }
 `
@@ -34,7 +34,7 @@ export function useUpdateNodeParent(workflowId: string) {
       })
 
       if (positionData && existingData) {
-        const { id, parentId } = positionData
+        const { id, parentIds } = positionData
         let index = -1
         const workflowNode = existingData.workflow.workflowNodes.find(
           (n, i) => {
@@ -50,7 +50,7 @@ export function useUpdateNodeParent(workflowId: string) {
               ...existingData.workflow,
               workflowNodes: [
                 ...existingData.workflow.workflowNodes.slice(0, index),
-                { ...workflowNode, parentId },
+                { ...workflowNode, parentIds },
                 ...existingData.workflow.workflowNodes.slice(index + 1),
               ],
             },

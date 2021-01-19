@@ -37,13 +37,12 @@ export default function useDraw(
         drawNode(ctx, node, translateOffset, scale, activeId, hoverId)
         drawConnector(ctx, translateOffset, node)
 
-        const parent = nodes.find((n) => node.parentId === n.id)
-        if (parent) {
-          drawPath(ctx, translateOffset, parent, node)
+        const parents = nodes.filter((n) => node.parentIds.includes(n.id))
+        if (parents.length) {
+          for (const parent of parents) {
+            drawPath(ctx, translateOffset, parent, node)
+          }
         }
-
-        //draw paths for nodes, with next node
-        //drawPath(ctx, translateOffset, node, nodes[index + 1])
       })
 
       if (connectorDrag && dragId) {

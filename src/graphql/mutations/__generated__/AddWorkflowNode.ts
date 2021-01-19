@@ -12,7 +12,7 @@ import { AddWorkflowNodeInput } from "./../../../../__generated__/globalTypes";
 export interface AddWorkflowNode_addWorkflowNode {
   __typename: "WorkflowNode";
   id: string;
-  parentId: string | null;
+  parentIds: string[];
   name: string;
   displayName: string;
   description: string | null;

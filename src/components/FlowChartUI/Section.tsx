@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { ExpandLevel } from 'enums'
 
 export default styled.section<{ expandLevel: ExpandLevel }>`
+  z-index: 0;
   box-sizing: border-box;
   display: flex;
   min-height: 88px;

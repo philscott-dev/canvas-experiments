@@ -208,7 +208,9 @@ const FlowChartCanvas = forwardRef<HTMLCanvasElement, FlowChartCanvasProps>(
               y - translateOffset.y,
               node,
             )
-            if (isDropped && !node.parentId && node.id !== dragId) {
+
+            // "&& !node.parentId" was controlling keeping nodes separated
+            if (isDropped && node.id !== dragId) {
               updateNodeParent({
                 variables: {
                   input: { workflowId, id: node.id, parentId: dragId },

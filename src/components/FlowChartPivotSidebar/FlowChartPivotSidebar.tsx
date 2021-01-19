@@ -16,11 +16,14 @@ const FlowChartPivotSidebar: FC<FlowChartPivotSidebarProps> = ({
   activeNode,
 }) => {
   const handleSelectValue: QueueFunctionType = (value, parentId, childId) => {
-    console.log(value)
+    // console.log(value)
   }
   const handleRemoveValue: QueueFunctionType = (value, parentId, childId) => {
-    console.log(value, parentId, childId)
+    // console.log(value, parentId, childId)
   }
+
+  console.log(childNodes)
+
   return (
     <div className={className}>
       <Heading serviceCount={childNodes?.length ?? 0} />
@@ -31,7 +34,7 @@ const FlowChartPivotSidebar: FC<FlowChartPivotSidebarProps> = ({
             parentId={activeNode?.id}
             childId={node.id}
             title={node.displayName}
-            subtitle={'subroute'}
+            subtitle={''}
             color={node.colorPrimary}
             onSelectValue={handleSelectValue}
             onRemoveValue={handleRemoveValue}

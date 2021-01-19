@@ -30,6 +30,7 @@ const InsertButton: FC<InsertButtonProps> = ({
 }
 
 export default styled(InsertButton)`
+  box-shadow: none;
   justify-content: flex-start;
   box-sizing: content-box;
   pointer-events: all;

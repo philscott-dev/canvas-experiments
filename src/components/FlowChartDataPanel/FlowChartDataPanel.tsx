@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { FC, MouseEvent, useMemo } from 'react'
 import { Table } from 'lib'
 import { mock } from './mock'
+import TableWrapper from './TableWrapper'
 import FlowChartDataInputSidebar from '../FlowChartDataInputSidebar'
 import FlowChartPivotSidebar from '../FlowChartPivotSidebar'
 import { CellClickFunction, CellState } from 'lib/Table/types'
@@ -13,24 +14,18 @@ interface FlowChartDataPanelProps {
   className?: string
   workflowNode?: WorkflowNode
   nodes?: WorkflowNode[]
+  childNodes?: WorkflowNode[]
+  parentNodes?: WorkflowNode[]
 }
 
 const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
   className,
   workflowNode,
+  childNodes,
+  parentNodes,
   nodes,
 }) => {
   const data = usePivotData()
-  // console.log(data)
-  const childNodes = useMemo(
-    () => nodes?.filter((node) => node.parentId === workflowNode?.id),
-    [nodes, workflowNode],
-  )
-
-  const parentNodes = useMemo(
-    () => nodes?.filter((node) => node.id === workflowNode?.parentId),
-    [nodes, workflowNode],
-  )
 
   const handleCellClick: CellClickFunction = (
     e,
@@ -75,7 +70,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
         parentNodes={parentNodes}
         activeNode={workflowNode}
       />
-      <Wrapper>
+      <TableWrapper>
         {workflowNode ? (
           <Table
             title={workflowNode?.displayName}
@@ -90,7 +85,7 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
             }}
           />
         ) : null}
-      </Wrapper>
+      </TableWrapper>
       <FlowChartPivotSidebar
         childNodes={childNodes}
         activeNode={workflowNode}
@@ -102,17 +97,4 @@ const FlowChartDataPanel: FC<FlowChartDataPanelProps> = ({
 export default styled(FlowChartDataPanel)`
   display: flex;
   height: 100%;
-`
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  padding: 0 24px;
-  overflow: auto;
-`
-
-const Container = styled.section`
-  flex: 1;
-  overflow: auto;
 `

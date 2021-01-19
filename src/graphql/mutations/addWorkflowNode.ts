@@ -13,7 +13,7 @@ const ADD_WORKFLOW_NODE = gql`
   mutation AddWorkflowNode($workflowNodeInput: AddWorkflowNodeInput!) {
     addWorkflowNode(input: $workflowNodeInput) {
       id
-      parentId
+      parentIds
       name
       displayName
       description

@@ -39,7 +39,7 @@ export interface Radius {
   bl: number
 }
 
-export type BaseNodeType = 'service'
+export type BaseNodeType = 'service' | 'action' | 'transform'
 
 export type BaseNode = {
   id: string

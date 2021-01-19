@@ -132,6 +132,7 @@ function WorkflowPage({
   }
 
   const handleClickNode = (id: string) => {
+    console.log(id)
     setActiveId(id)
   }
 

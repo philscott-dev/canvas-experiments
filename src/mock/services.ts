@@ -63,15 +63,6 @@ export const spur: BaseNode = {
   colorSecondary: '#545454',
 }
 
-export const phishlabs: BaseNode = {
-  id: '7',
-  type: 'service',
-  name: 'service7',
-  displayName: 'Service 7',
-  colorPrimary: '#4004EB',
-  colorSecondary: '#25008F',
-}
-
 export const riskIQ: BaseNode = {
   id: '8',
   type: 'service',
@@ -100,14 +91,11 @@ export const hyas: BaseNode = {
 }
 
 export default [
-  virustotal,
-  domainTools,
   farsight,
   recordedFuture,
   threatstream,
   urlHaus,
   spur,
-  phishlabs,
   riskIQ,
   virustotalFileFeed,
   hyas,

@@ -10,7 +10,7 @@
 export interface GetWorkflow_workflow_workflowNodes {
   __typename: "WorkflowNode";
   id: string;
-  parentId: string | null;
+  parentIds: string[];
   name: string;
   displayName: string;
   description: string | null;

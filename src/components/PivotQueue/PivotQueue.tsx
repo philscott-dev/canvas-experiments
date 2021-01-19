@@ -27,7 +27,9 @@ const PivotQueue: FC<PivotQueueProps> = ({
   onRemoveValue,
   onSelectValue,
 }) => {
+  console.log(childId, parentId)
   const queue = usePivotQueue(childId, parentId)
+  console.log(queue)
   const [isCollapsed, setCollapsed] = useState(false)
   const handleHeadingClick = () => {
     setCollapsed(!isCollapsed)
@@ -44,26 +46,32 @@ const PivotQueue: FC<PivotQueueProps> = ({
     <div className={className}>
       <ServiceLinkHeading
         title={title}
-        subtitle={subtitle || 'subroute'}
+        subtitle={subtitle || ''}
         color={color}
         isCollapsed={isCollapsed}
         onMouseDown={handleHeadingClick}
         count={queue?.length ?? 0}
       />
-      {isCollapsed ? null : (
-        <>
-          {queue.map((value, index) => (
-            <PivotValue
-              key={index}
-              value={value}
-              onSelectValue={handleSelectValue}
-              onRemoveValue={handleRemoveValue}
-            />
-          ))}
-        </>
-      )}
+      <span>
+        {isCollapsed ? null : (
+          <>
+            {queue.map((value, index) => (
+              <PivotValue
+                key={index}
+                value={value}
+                onSelectValue={handleSelectValue}
+                onRemoveValue={handleRemoveValue}
+              />
+            ))}
+          </>
+        )}
+      </span>
     </div>
   )
 }
 
-export default styled(PivotQueue)``
+export default styled(PivotQueue)`
+  & > span {
+    display: flex;
+  }
+`

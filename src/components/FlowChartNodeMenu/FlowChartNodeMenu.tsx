@@ -15,7 +15,8 @@ import MenuBody from './MenuBody'
 import Text from './Text'
 
 //make this date driven
-import services from '../../mock/services'
+import actions from 'mock/actions'
+import services from 'mock/services'
 import HeaderTitle from './HeaderTitle'
 
 interface FlowChartNodeMenuProps {
@@ -108,10 +109,10 @@ const FlowChartNodeMenu: FC<FlowChartNodeMenuProps> = ({
           </Header>
           <SearchInput />
           <MenuBody>
-            {services.map((service) => (
+            {actions.map((action) => (
               <FlowChartNode
-                key={service.id}
-                node={service}
+                key={action.id}
+                node={action}
                 onDragStart={handleDragStart}
               />
             ))}
