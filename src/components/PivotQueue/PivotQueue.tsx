@@ -72,6 +72,5 @@ const PivotQueue: FC<PivotQueueProps> = ({
 
 export default styled(PivotQueue)`
   & > span {
-    display: flex;
   }
 `
