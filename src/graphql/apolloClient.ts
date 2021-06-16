@@ -36,7 +36,7 @@ const createApolloClient = () => {
 
   // establish the connection to the service
   const httpLink = new HttpLink({
-    uri: 'http://localhost:4000',
+    uri: `http://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}`,
     credentials: 'same-origin',
   })
 
@@ -46,7 +46,7 @@ const createApolloClient = () => {
   // once not in SSR, split http and ws traffic
   if (!ssrMode) {
     const wsLink = new WebSocketLink({
-      uri: 'ws://localhost:4000/graphql',
+      uri: `ws://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/graphql`,
       options: {
         reconnect: true,
       },
