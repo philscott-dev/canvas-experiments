@@ -88,7 +88,7 @@ function IndexPage({
         <div>
           <Link href="/" passHref>
             <Anchor>
-              <H1>SOAR EXPLORER</H1>
+              <H1>WORKFLOW EXPLORER</H1>
               <H2>Workflows</H2>
             </Anchor>
           </Link>
