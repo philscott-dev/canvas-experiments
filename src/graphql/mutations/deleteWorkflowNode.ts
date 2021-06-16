@@ -34,8 +34,11 @@ export function useDeleteWorkflowNode(workflowId: string) {
 
       if (node && existingData) {
         const workflowNodes = existingData.workflow.workflowNodes.map((n) => {
-          if (n.parentId === node.id) {
-            return { ...n, parentId: null }
+          if (n.parentIds.includes(node.id)) {
+            return {
+              ...n,
+              parentId: n.parentIds.filter((id) => id === node.id),
+            }
           }
           return n
         })

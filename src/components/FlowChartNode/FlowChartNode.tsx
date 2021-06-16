@@ -27,7 +27,7 @@ const FlowChartNode: FC<FlowChartNodeProps> = ({
         height: 0,
         __typename: 'WorkflowNode',
         id: 'id',
-        parentId: 'id',
+        parentIds: [],
         description: '',
       },
       e,
