@@ -4,17 +4,14 @@ module.exports = {
     ecmaVersion: 11,
     sourceType: 'module',
   },
-  extends: [
-    'react-app',
-    'prettier/@typescript-eslint',
-    'plugin:prettier/recommended',
-  ],
+  extends: ['react-app', 'plugin:prettier/recommended'],
   rules: {
     eqeqeq: 0,
     '@typescript-eslint/no-unused-vars': 0,
     '@typescript-eslint/consistent-type-assertions': 0,
     'react/react-in-jsx-scope': 0,
     'react/proptypes': 0,
+    'import/no-webpack-loader-syntax': 0,
     'react/jsx-filename-extension': [
       1,
       {
