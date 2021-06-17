@@ -1,14 +1,14 @@
 import { useMemo } from 'react'
 import cache from './cache'
-import { WebSocketLink } from '@apollo/client/link/ws'
-import { getMainDefinition } from '@apollo/client/utilities'
+// import { WebSocketLink } from '@apollo/client/link/ws'
+// import { getMainDefinition } from '@apollo/client/utilities'
 import { onError } from '@apollo/client/link/error'
 import {
   ApolloClient,
   NormalizedCacheObject,
-  ApolloLink,
+  //ApolloLink,
   HttpLink,
-  split,
+  //split,
 } from '@apollo/client'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
@@ -44,26 +44,26 @@ const createApolloClient = () => {
   link = httpLink
 
   // once not in SSR, split http and ws traffic
-  if (!ssrMode) {
-    const wsLink = new WebSocketLink({
-      uri: `ws://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/graphql`,
-      options: {
-        reconnect: true,
-      },
-    })
+  // if (!ssrMode) {
+  //   const wsLink = new WebSocketLink({
+  //     uri: `ws://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/graphql`,
+  //     options: {
+  //       reconnect: true,
+  //     },
+  //   })
 
-    link = split(
-      ({ query }) => {
-        const definition = getMainDefinition(query)
-        return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
-        )
-      },
-      wsLink,
-      httpLink,
-    )
-  }
+  //   link = split(
+  //     ({ query }) => {
+  //       const definition = getMainDefinition(query)
+  //       return (
+  //         definition.kind === 'OperationDefinition' &&
+  //         definition.operation === 'subscription'
+  //       )
+  //     },
+  //     wsLink,
+  //     httpLink,
+  //   )
+  // }
 
   // Configured Apollo Client
   return new ApolloClient({
